@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NextTurn - Order Food</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #172033;
+        }
+
+        header {
+            background: #123b70;
+            color: white;
+            padding: 18px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .back-btn {
+            background: white;
+            color: #123b70;
+            border: none;
+            padding: 9px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 25px 18px 100px;
+        }
+
+        .page-title {
+            margin-bottom: 20px;
+        }
+
+        .page-title h1 {
+            font-size: 28px;
+            margin-bottom: 6px;
+        }
+
+        .page-title p {
+            color: #667085;
+        }
+
+        .categories {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            margin-bottom: 25px;
+            padding-bottom: 5px;
+        }
+
+        .category-btn {
+            border: none;
+            background: white;
+            color: #123b70;
+            padding: 10px 17px;
+            border-radius: 20px;
+            cursor: pointer;
+            white-space: nowrap;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .category-btn.active {
+            background: #123b70;
+            color: white;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .food-card {
+            background: white;
+            border-radius: 14px;
+            padding: 18px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        .food-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .food-card h3 {
+            margin-bottom: 7px;
+        }
+
+        .category-name {
+            font-size: 13px;
+            color: #667085;
+            margin-bottom: 12px;
+        }
+
+        .price {
+            font-size: 19px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .add-btn {
+            width: 100%;
+            border: none;
+            background: #123b70;
+            color: white;
+            padding: 11px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .add-btn:hover {
+            background: #0d2d55;
+        }
+
+        .add-btn:disabled {
+            background: #aab2bd;
+            cursor: not-allowed;
+        }
+
+        .stock {
+            font-size: 13px;
+            color: #198754;
+            margin-bottom: 10px;
+        }
+
+        .out-stock {
+            color: #d93025;
+            font-weight: bold;
+        }
+
+        .cart {
+            margin-top: 30px;
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        .cart h2 {
+            margin-bottom: 15px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            padding: 13px 0;
+            gap: 10px;
+        }
+
+        .item-info {
+            flex: 1;
+        }
+
+        .item-name {
+            font-weight: bold;
+        }
+
+        .item-price {
+            font-size: 13px;
+            color: #667085;
+            margin-top: 4px;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quantity-controls button {
+            width: 30px;
+            height: 30px;
+            border: none;
+            background: #e8eef7;
+            color: #123b70;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .summary {
+            margin-top: 20px;
+            border-top: 2px solid #eee;
+            padding-top: 15px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 9px 0;
+        }
+
+        .total {
+            font-size: 20px;
+            font-weight: bold;
+            color: #123b70;
+            margin-top: 12px;
+        }
+
+        .payment-btn {
+            width: 100%;
+            margin-top: 18px;
+            padding: 14px;
+            border: none;
+            border-radius: 9px;
+            background: #198754;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .empty {
+            text-align: center;
+            color: #777;
+            padding: 20px 0;
+        }
+
+        @media (max-width: 800px) {
+            .menu-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 520px) {
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+
+            header {
+                padding: 15px;
+            }
+
+            .page-title h1 {
+                font-size: 24px;
+            }
+
+            .cart-item {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">⚡ NextTurn</div>
+    <button class="back-btn" onclick="goBack()">← Back</button>
+</header>
+
+<div class="container">
+
+    <div class="page-title">
+        <h1>🍴 College Canteen</h1>
+        <p>Choose your food and place your order.</p>
+    </div>
+
+    <div class="categories" id="categories"></div>
+
+    <div class="menu-grid" id="menuGrid"></div>
+
+    <div class="cart">
+        <h2>🛒 Your Cart</h2>
+
+        <div id="cartItems">
+            <div class="empty">Your cart is empty.</div>
+        </div>
+
+        <div class="summary">
+
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <span id="subtotal">₹0.00</span>
+            </div>
+
+            <div class="summary-row">
+                <span>Service Charge</span>
+                <span id="serviceCharge">₹0.00</span>
+            </div>
+
+            <div class="summary-row total">
+                <span>Total</span>
+                <span id="grandTotal">₹0.00</span>
+            </div>
+
+            <button class="payment-btn" onclick="proceedToPayment()">
+                Proceed to Payment →
+            </button>
+
+        </div>
+    </div>
+
+</div>
+
+<script src="menu.js"></script>
+
+<script>
+    let cart = JSON.parse(localStorage.getItem("nextTurnCart")) || [];
+    let selectedCategory = "All";
+
+    const categoryIcons = {
+        "All": "🍽️",
+        "Snacks": "🍟",
+        "Fast Food": "🍔",
+        "Meals": "🍛",
+        "Drinks": "🥤"
+    };
+
+    function displayCategories() {
+        const categoriesDiv = document.getElementById("categories");
+
+        const categories = ["All", ...new Set(menu.map(item => item.category))];
+
+        categoriesDiv.innerHTML = categories.map(category => `
+            <button
+                class="category-btn ${category === selectedCategory ? "active" : ""}"
+                onclick="selectCategory('${category}')">
+                ${categoryIcons[category] || "🍴"} ${category}
+            </button>
+        `).join("");
+    }
+
+    function selectCategory(category) {
+        selectedCategory = category;
+        displayCategories();
+        displayMenu();
+    }
+
+    function displayMenu() {
+        const menuGrid = document.getElementById("menuGrid");
+
+        const filteredMenu = selectedCategory === "All"
+            ? menu
+            : menu.filter(item => item.category === selectedCategory);
+
+        menuGrid.innerHTML = filteredMenu.map(item => {
+
+            const cartItem = cart.find(cartItem => cartItem.id === item.id);
+            const quantity = cartItem ? cartItem.quantity : 0;
+
+            return `
+                <div class="food-card">
+
+                    <div class="food-icon">
+                        ${categoryIcons[item.category] || "🍴"}
+                    </div>
+
+                    <h3>${item.name}</h3>
+
+                    <div class="category-name">
+                        ${item.category}
+                    </div>
+
+                    <div class="price">
+                        ₹${item.price.toFixed(2)}
+                    </div>
+
+                    <div class="stock ${!item.available ? "out-stock" : ""}">
+                        ${item.available ? "● Available" : "● Out of Stock"}
+                    </div>
+
+                    <button
+                        class="add-btn"
+                        onclick="addToCart(${item.id})"
+                        ${!item.available ? "disabled" : ""}>
+                        ${quantity > 0 ? "Added: " + quantity : "Add to Cart"}
+                    </button>
+
+                </div>
+            `;
+        }).join("");
+    }
+
+    function addToCart(id) {
+
+        const item = menu.find(item => item.id === id);
+
+        if (!item || !item.available) {
+            return;
+        }
+
+        const existingItem = cart.find(cartItem => cartItem.id === id);
+
+        if (existingItem) {
+            existingItem.quantity++;
+        } else {
+            cart.push({
+                id: item.id,
+                name: item.name,
+                price: item.price,
+                quantity: 1
+            });
+        }
+
+        saveCart();
+        displayMenu();
+        displayCart();
+    }
+
+    function changeQuantity(id, change) {
+
+        const item = cart.find(cartItem => cartItem.id === id);
+
+        if (!item) {
+            return;
+        }
+
+        item.quantity += change;
+
+        if (item.quantity <= 0) {
+            cart = cart.filter(cartItem => cartItem.id !== id);
+        }
+
+        saveCart();
+        displayMenu();
+        displayCart();
+    }
+
+    function calculateServiceCharge(item) {
+
+        // Exact NextTurn rule:
+        // ₹20 or less = ₹0.50 per quantity
+        // Above ₹20 = ₹1.00 per quantity
+
+        return item.price <= 20
+            ? 0.50 * item.quantity
+            : 1.00 * item.quantity;
+    }
+
+    function displayCart() {
+
+        const cartItemsDiv = document.getElementById("cartItems");
+
+        if (cart.length === 0) {
+
+            cartItemsDiv.innerHTML =
+                `<div class="empty">Your cart is empty.</div>`;
+
+            document.getElementById("subtotal").textContent = "₹0.00";
+            document.getElementById("serviceCharge").textContent = "₹0.00";
+            document.getElementById("grandTotal").textContent = "₹0.00";
+
+            return;
+        }
+
+        cartItemsDiv.innerHTML = cart.map(item => {
+
+            const itemTotal =
+                (item.price * item.quantity) +
+                calculateServiceCharge(item);
+
+            return `
+                <div class="cart-item">
+
+                    <div class="item-info">
+                        <div class="item-name">${item.name}</div>
+
+                        <div class="item-price">
+                            ₹${item.price.toFixed(2)} each
+                        </div>
+                    </div>
+
+                    <div class="quantity-controls">
+
+                        <button onclick="changeQuantity(${item.id}, -1)">
+                            −
+                        </button>
+
+                        <strong>${item.quantity}</strong>
+
+                        <button onclick="changeQuantity(${item.id}, 1)">
+                            +
+                        </button>
+
+                    </div>
+
+                    <strong>
+                        ₹${itemTotal.toFixed(2)}
+                    </strong>
+
+                </div>
+            `;
+        }).join("");
+
+        let subtotal = 0;
+        let serviceCharge = 0;
+
+        cart.forEach(item => {
+            subtotal += item.price * item.quantity;
+            serviceCharge += calculateServiceCharge(item);
+        });
+
+        const grandTotal = subtotal + serviceCharge;
+
+        document.getElementById("subtotal").textContent =
+            "₹" + subtotal.toFixed(2);
+
+        document.getElementById("serviceCharge").textContent =
+            "₹" + serviceCharge.toFixed(2);
+
+        document.getElementById("grandTotal").textContent =
+            "₹" + grandTotal.toFixed(2);
+    }
+
+    function saveCart() {
+        localStorage.setItem(
+            "nextTurnCart",
+            JSON.stringify(cart)
+        );
+    }
+
+    function proceedToPayment() {
+
+        if (cart.length === 0) {
+            alert("Please add at least one food item.");
+            return;
+        }
+
+        window.location.href = "payment.html";
+    }
+
+    function goBack() {
+        window.location.href = "student.html";
+    }
+
+    displayCategories();
+    displayMenu();
+    displayCart();
+</script>
+
+</body>
+  </html>
