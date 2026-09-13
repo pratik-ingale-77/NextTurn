@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>NextTurn - College Canteen</title>
 
   <style>
@@ -19,91 +20,120 @@
     }
 
     header {
-      background: #102a43;
+      background: #172554;
       color: white;
-      padding: 18px 25px;
+      padding: 18px 7%;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
     .logo {
-      font-size: 24px;
+      font-size: 25px;
       font-weight: bold;
     }
 
     .college {
       font-size: 13px;
-      opacity: 0.8;
+      margin-top: 4px;
+      opacity: 0.85;
+    }
+
+    .login-top {
+      background: white;
+      color: #172554;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
     }
 
     .hero {
+      width: 92%;
       max-width: 1100px;
-      margin: 40px auto;
-      padding: 20px;
+      margin: 55px auto 35px;
       text-align: center;
     }
 
     .hero h1 {
-      font-size: 42px;
-      margin-bottom: 12px;
-      color: #102a43;
+      font-size: 44px;
+      color: #172554;
+      margin-bottom: 15px;
+    }
+
+    .hero h1 span {
+      color: #2563eb;
     }
 
     .hero p {
-      color: #52606d;
-      margin-bottom: 30px;
+      max-width: 700px;
+      margin: auto;
+      color: #64748b;
+      font-size: 17px;
+      line-height: 1.6;
     }
 
-    .login-container {
-      max-width: 850px;
-      margin: auto;
+    .login-section {
+      width: 92%;
+      max-width: 900px;
+      margin: 40px auto;
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 25px;
+      gap: 22px;
     }
 
     .login-card {
       background: white;
       padding: 30px;
-      border-radius: 18px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-      text-align: left;
+      border-radius: 16px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07);
+      text-align: center;
+      border: 1px solid #e2e8f0;
+    }
+
+    .login-icon {
+      font-size: 42px;
+      margin-bottom: 15px;
     }
 
     .login-card h2 {
       margin-bottom: 10px;
-      color: #102a43;
+      color: #172033;
     }
 
     .login-card p {
-      color: #66788a;
+      color: #64748b;
+      font-size: 14px;
+      line-height: 1.5;
       margin-bottom: 20px;
     }
 
-    .login-card button {
+    .continue-btn {
       width: 100%;
-      padding: 13px;
       border: none;
-      border-radius: 10px;
-      background: #102a43;
+      padding: 13px;
+      border-radius: 9px;
+      background: #2563eb;
       color: white;
-      font-size: 16px;
+      font-size: 15px;
+      font-weight: bold;
       cursor: pointer;
     }
 
-    .login-card button:hover {
-      background: #1f4e79;
+    .continue-btn:hover {
+      background: #1d4ed8;
     }
 
     .features {
+      width: 92%;
       max-width: 1000px;
-      margin: 50px auto;
-      padding: 20px;
+      margin: 45px auto;
     }
 
     .features h2 {
       text-align: center;
+      color: #172554;
       margin-bottom: 25px;
     }
 
@@ -115,30 +145,84 @@
 
     .feature {
       background: white;
-      padding: 22px;
-      border-radius: 14px;
+      padding: 24px;
+      border-radius: 13px;
       text-align: center;
-      box-shadow: 0 5px 18px rgba(0,0,0,0.06);
+      border: 1px solid #e2e8f0;
     }
 
-    .feature span {
+    .feature-icon {
       font-size: 30px;
-      display: block;
+      margin-bottom: 12px;
+    }
+
+    .feature h3 {
+      margin-bottom: 8px;
+      font-size: 17px;
+    }
+
+    .feature p {
+      color: #64748b;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .info {
+      width: 92%;
+      max-width: 900px;
+      margin: 40px auto;
+      background: #eff6ff;
+      padding: 25px;
+      border-radius: 13px;
+      text-align: center;
+      color: #1e3a8a;
+    }
+
+    .info h2 {
       margin-bottom: 10px;
     }
 
-    footer {
-      text-align: center;
-      padding: 25px;
-      color: #66788a;
+    .info p {
+      font-size: 14px;
+      line-height: 1.6;
     }
 
-    @media(max-width: 700px) {
+    footer {
+      margin-top: 50px;
+      background: #172554;
+      color: white;
+      text-align: center;
+      padding: 22px;
+      font-size: 13px;
+    }
+
+    @media (max-width: 700px) {
+
+      header {
+        padding: 16px 5%;
+      }
+
+      .logo {
+        font-size: 21px;
+      }
+
+      .login-top {
+        display: none;
+      }
+
+      .hero {
+        margin-top: 40px;
+      }
+
       .hero h1 {
         font-size: 32px;
       }
 
-      .login-container {
+      .hero p {
+        font-size: 15px;
+      }
+
+      .login-section {
         grid-template-columns: 1fr;
       }
 
@@ -146,8 +230,8 @@
         grid-template-columns: 1fr;
       }
 
-      header {
-        padding: 15px;
+      .login-card {
+        padding: 25px;
       }
     }
   </style>
@@ -155,93 +239,164 @@
 
 <body>
 
+  <!-- HEADER -->
   <header>
-    <div class="logo">⚡ NextTurn</div>
-    <div class="college">College Canteen</div>
+
+    <div>
+      <div class="logo">⚡ NextTurn</div>
+      <div class="college">College Canteen Digital Ordering</div>
+    </div>
+
+    <button class="login-top" onclick="openLogin()">
+      Login
+    </button>
+
   </header>
 
+
+  <!-- HERO -->
   <section class="hero">
-    <h1>Order Smart. Skip the Queue.</h1>
+
+    <h1>
+      Order Smart. <span>Skip the Queue.</span>
+    </h1>
 
     <p>
-      Order your food from the classroom, get your token,
-      track your order and collect it when it's ready.
+      NextTurn is a digital ordering and token management system
+      designed exclusively for our college canteen. Order food from
+      your classroom, submit payment proof, receive your token and
+      track your order until it is ready.
     </p>
 
-    <div class="login-container">
-
-      <div class="login-card">
-        <h2>🎓 Student Login</h2>
-
-        <p>
-          Order food, make payment, receive your token
-          and track your order.
-        </p>
-
-        <button onclick="studentLogin()">
-          Continue as Student
-        </button>
-      </div>
-
-      <div class="login-card">
-        <h2>👨‍🍳 Staff Login</h2>
-
-        <p>
-          Manage incoming orders, payments, tokens,
-          food availability and revenue.
-        </p>
-
-        <button onclick="staffLogin()">
-          Continue as Staff
-        </button>
-      </div>
-
-    </div>
   </section>
 
+
+  <!-- LOGIN OPTIONS -->
+  <section class="login-section">
+
+    <!-- STUDENT -->
+    <div class="login-card">
+
+      <div class="login-icon">🎓</div>
+
+      <h2>Student</h2>
+
+      <p>
+        Order food from the classroom, submit payment proof,
+        receive your digital token and track your order.
+      </p>
+
+      <button class="continue-btn" onclick="openLogin()">
+        Continue as Student
+      </button>
+
+    </div>
+
+
+    <!-- STAFF -->
+    <div class="login-card">
+
+      <div class="login-icon">👨‍💼</div>
+
+      <h2>Staff</h2>
+
+      <p>
+        Manage incoming orders, verify payments, generate tokens,
+        update food availability and mark orders as completed.
+      </p>
+
+      <button class="continue-btn" onclick="openLogin()">
+        Continue as Staff
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- FEATURES -->
   <section class="features">
 
-    <h2>Why NextTurn?</h2>
+    <h2>How NextTurn Works</h2>
 
     <div class="feature-grid">
 
       <div class="feature">
-        <span>🍔</span>
+
+        <div class="feature-icon">🍔</div>
+
         <h3>Order Online</h3>
-        <p>Order food directly from your classroom.</p>
+
+        <p>
+          Select available food items from the college canteen
+          menu and place your order from your classroom.
+        </p>
+
       </div>
 
+
       <div class="feature">
-        <span>🎟️</span>
+
+        <div class="feature-icon">🎟️</div>
+
         <h3>Digital Token</h3>
-        <p>Get a token after payment verification.</p>
+
+        <p>
+          After staff verifies your payment, you receive a
+          digital token number for your order.
+        </p>
+
       </div>
 
+
       <div class="feature">
-        <span>📱</span>
+
+        <div class="feature-icon">📱</div>
+
         <h3>Track Your Order</h3>
-        <p>Know when your food is being prepared.</p>
+
+        <p>
+          Track your token, current serving number and order
+          status until your food is ready.
+        </p>
+
       </div>
 
     </div>
 
   </section>
 
+
+  <!-- PROJECT INFO -->
+  <section class="info">
+
+    <h2>🏫 Made for Our College Canteen</h2>
+
+    <p>
+      NextTurn helps students avoid unnecessary waiting in the
+      canteen while helping staff manage orders, payments,
+      tokens and food availability more efficiently.
+    </p>
+
+  </section>
+
+
+  <!-- FOOTER -->
   <footer>
-    © 2026 NextTurn • College Canteen Digital Ordering
+
+    © 2026 NextTurn • College Canteen Digital Ordering System
+
   </footer>
 
+
+  <!-- JAVASCRIPT -->
   <script>
 
-    function studentLogin() {
-      alert("Student Login will be available in the next step.");
-    }
-
-    function staffLogin() {
-      alert("Staff Login will be available in the next step.");
+    function openLogin() {
+      window.location.href = "login.html";
     }
 
   </script>
 
 </body>
-  </html>
+    </html>
