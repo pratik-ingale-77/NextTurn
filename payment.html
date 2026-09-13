@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NextTurn - Payment</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #172033;
+        }
+
+        header {
+            background: #123b70;
+            color: white;
+            padding: 17px 20px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .back-btn {
+            background: white;
+            color: #123b70;
+            border: none;
+            padding: 9px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            padding: 25px 18px 70px;
+        }
+
+        .title {
+            margin-bottom: 22px;
+        }
+
+        .title h1 {
+            font-size: 28px;
+            margin-bottom: 6px;
+        }
+
+        .title p {
+            color: #667085;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 22px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        .card h2 {
+            margin-bottom: 18px;
+            font-size: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d0d5dd;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #123b70;
+        }
+
+        input[type="file"] {
+            padding: 10px;
+            background: #f8fafc;
+        }
+
+        .required {
+            color: #d93025;
+        }
+
+        .payment-box {
+            background: #eef5ff;
+            border-radius: 12px;
+            padding: 17px;
+            margin-bottom: 18px;
+        }
+
+        .payment-box h3 {
+            color: #123b70;
+            margin-bottom: 8px;
+        }
+
+        .payment-box p {
+            color: #475467;
+            line-height: 1.5;
+        }
+
+        .demo-payment {
+            margin-top: 12px;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            border: 1px dashed #123b70;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 11px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .item-name {
+            font-weight: bold;
+        }
+
+        .item-quantity {
+            color: #667085;
+            font-size: 13px;
+            margin-top: 3px;
+        }
+
+        .summary {
+            margin-top: 18px;
+            border-top: 2px solid #eee;
+            padding-top: 15px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+        }
+
+        .total {
+            color: #123b70;
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 14px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            margin-top: 20px;
+
+            border: none;
+            border-radius: 9px;
+
+            background: #198754;
+            color: white;
+
+            font-size: 16px;
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background: #157347;
+        }
+
+        .submit-btn:disabled {
+            background: #98a2b3;
+            cursor: not-allowed;
+        }
+
+        .security {
+            margin-top: 13px;
+            text-align: center;
+            color: #667085;
+            font-size: 13px;
+        }
+
+        .success {
+            display: none;
+            background: #e9f8ef;
+            border: 1px solid #9ad8b0;
+            color: #146c35;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .success h2 {
+            margin-bottom: 8px;
+        }
+
+        .success p {
+            line-height: 1.5;
+        }
+
+        .home-btn {
+            margin-top: 15px;
+            padding: 11px 18px;
+            border: none;
+            border-radius: 8px;
+            background: #123b70;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .empty {
+            text-align: center;
+            color: #777;
+            padding: 25px 0;
+        }
+
+        @media (max-width: 750px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            .title h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">⚡ NextTurn</div>
+
+    <button class="back-btn" onclick="goBack()">
+        ← Back
+    </button>
+</header>
+
+
+<div class="container">
+
+    <div class="title">
+        <h1>💳 Complete Your Order</h1>
+        <p>Submit your details and payment proof for staff verification.</p>
+    </div>
+
+
+    <div class="layout">
+
+        <!-- STUDENT DETAILS -->
+
+        <div class="card">
+
+            <h2>👤 Student Details</h2>
+
+            <form id="paymentForm">
+
+                <div class="form-group">
+
+                    <label>
+                        Full Name <span class="required">*</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="studentName"
+                        placeholder="Enter your full name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Student ID <span class="required">*</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="studentId"
+                        placeholder="Enter your college ID"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        College Gmail <span class="required">*</span>
+                    </label>
+
+                    <input
+                        type="email"
+                        id="studentEmail"
+                        placeholder="example@college.edu"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Phone Number <span class="required">*</span>
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="phone"
+                        placeholder="Enter phone number"
+                        pattern="[0-9]{10}"
+                        maxlength="10"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Payment Screenshot <span class="required">*</span>
+                    </label>
+
+                    <input
+                        type="file"
+                        id="paymentProof"
+                        accept="image/png,image/jpeg,image/jpg"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="payment-box">
+
+                    <h3>📱 Payment Instructions</h3>
+
+                    <p>
+                        Complete the payment using the college canteen's
+                        official payment method and upload the screenshot
+                        as proof.
+                    </p>
+
+                    <div class="demo-payment">
+
+                        <strong>NextTurn Canteen Payment</strong>
+
+                        <br><br>
+
+                        UPI ID:
+                        <strong>canteen@upi</strong>
+
+                        <br>
+
+                        <small>
+                            Demo payment details — real UPI will be
+                            connected later.
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="submit-btn"
+                    id="submitBtn">
+
+                    Submit Payment Proof
+
+                </button>
+
+                <div class="security">
+                    🔒 Your payment proof is shared only with canteen staff.
+                </div>
+
+            </form>
+
+        </div>
+
+
+        <!-- ORDER SUMMARY -->
+
+        <div class="card">
+
+            <h2>🛒 Order Summary</h2>
+
+            <div id="orderItems">
+
+                <div class="empty">
+                    Loading order...
+                </div>
+
+            </div>
+
+
+            <div class="summary">
+
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <strong id="subtotal">₹0.00</strong>
+                </div>
+
+                <div class="summary-row">
+                    <span>Service Charge</span>
+                    <strong id="serviceCharge">₹0.00</strong>
+                </div>
+
+                <div class="summary-row total">
+                    <span>Total</span>
+                    <span id="grandTotal">₹0.00</span>
+                </div>
+
+            </div>
+
+
+            <div class="payment-box" style="margin-top:20px;">
+
+                <h3>🎟️ What happens next?</h3>
+
+                <p>
+                    1. Staff receives your order.<br>
+                    2. Staff verifies your payment proof.<br>
+                    3. Your digital token is generated.<br>
+                    4. You can track your position in the queue.<br>
+                    5. Collect your food when your token is ready.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- SUCCESS MESSAGE -->
+
+    <div class="success" id="successBox">
+
+        <h2>✅ Payment Proof Submitted!</h2>
+
+        <p>
+            Your order has been sent to the canteen staff.
+            Please wait for payment verification.
+        </p>
+
+        <p style="margin-top:8px;">
+            🎟️ <strong>Your token will be generated after staff verification.</strong>
+        </p>
+
+        <button class="home-btn" onclick="goToDashboard()">
+            Go to Student Dashboard
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    /*
+        NextTurn payment page
+
+        This version uses localStorage for demonstration.
+
+        Later:
+        Student details + order + payment proof
+        will be sent to the Java Spring Boot backend.
+    */
+
+
+    let cart =
+        JSON.parse(localStorage.getItem("nextTurnCart")) || [];
+
+
+    function calculateServiceCharge(item) {
+
+        /*
+            NextTurn service charge rule:
+
+            Price <= ₹20
+            = ₹0.50 per quantity
+
+            Price > ₹20
+            = ₹1.00 per quantity
+        */
+
+        return item.price <= 20
+            ? 0.50 * item.quantity
+            : 1.00 * item.quantity;
+    }
+
+
+    function displayOrder() {
+
+        const orderItems =
+            document.getElementById("orderItems");
+
+
+        if (cart.length === 0) {
+
+            orderItems.innerHTML = `
+                <div class="empty">
+                    Your cart is empty.
+                </div>
+            `;
+
+            document.getElementById("subtotal")
+                .textContent = "₹0.00";
+
+            document.getElementById("serviceCharge")
+                .textContent = "₹0.00";
+
+            document.getElementById("grandTotal")
+                .textContent = "₹0.00";
+
+            return;
+        }
+
+
+        let subtotal = 0;
+        let serviceCharge = 0;
+
+
+        orderItems.innerHTML = cart.map(item => {
+
+            const itemSubtotal =
+                item.price * item.quantity;
+
+            const itemServiceCharge =
+                calculateServiceCharge(item);
+
+            const itemTotal =
+                itemSubtotal + itemServiceCharge;
+
+
+            subtotal += itemSubtotal;
+            serviceCharge += itemServiceCharge;
+
+
+            return `
+                <div class="order-item">
+
+                    <div>
+                        <div class="item-name">
+                            ${item.name}
+                        </div>
+
+                        <div class="item-quantity">
+                            ₹${item.price.toFixed(2)}
+                            × ${item.quantity}
+                        </div>
+                    </div>
+
+                    <strong>
+                        ₹${itemTotal.toFixed(2)}
+                    </strong>
+
+                </div>
+            `;
+
+        }).join("");
+
+
+        const grandTotal =
+            subtotal + serviceCharge;
+
+
+        document.getElementById("subtotal")
+            .textContent =
+            "₹" + subtotal.toFixed(2);
+
+
+        document.getElementById("serviceCharge")
+            .textContent =
+            "₹" + serviceCharge.toFixed(2);
+
+
+        document.getElementById("grandTotal")
+            .textContent =
+            "₹" + grandTotal.toFixed(2);
+    }
+
+
+    document.getElementById("paymentForm")
+        .addEventListener("submit", function(event) {
+
+            event.preventDefault();
+
+
+            if (cart.length === 0) {
+
+                alert(
+                    "Your cart is empty. Please select food first."
+                );
+
+                return;
+            }
+
+
+            const studentName =
+                document.getElementById("studentName").value.trim();
+
+
+            const studentId =
+                document.getElementById("studentId").value.trim();
+
+
+            const studentEmail =
+                document.getElementById("studentEmail").value.trim();
+
+
+            const phone =
+                document.getElementById("phone").value.trim();
+
+
+            const paymentProof =
+                document.getElementById("paymentProof").files[0];
+
+
+            if (!studentName ||
+                !studentId ||
+                !studentEmail ||
+                !phone ||
+                !paymentProof) {
+
+                alert(
+                    "Please complete all required fields."
+                );
+
+                return;
+            }
+
+
+            if (!/^[0-9]{10}$/.test(phone)) {
+
+                alert(
+                    "Please enter a valid 10-digit phone number."
+                );
+
+                return;
+            }
+
+
+            const allowedTypes = [
+                "image/jpeg",
+                "image/jpg",
+                "image/png"
+            ];
+
+
+            if (!allowedTypes.includes(paymentProof.type)) {
+
+                alert(
+                    "Please upload a JPG or PNG payment screenshot."
+                );
+
+                return;
+            }
+
+
+            const submitBtn =
+                document.getElementById("submitBtn");
+
+
+            submitBtn.disabled = true;
+
+            submitBtn.textContent =
+                "Submitting Payment Proof...";
+
+
+            /*
+                Demo order object.
+
+                Later this will be sent to
+                the Java Spring Boot backend.
+            */
+
+            const subtotal =
+                cart.reduce(
+                    (sum, item) =>
+                        sum + (item.price * item.quantity),
+                    0
+                );
+
+
+            const serviceCharge =
+                cart.reduce(
+                    (sum, item) =>
+                        sum + calculateServiceCharge(item),
+                    0
+                );
+
+
+            const total =
+                subtotal + serviceCharge;
+
+
+            const order = {
+
+                orderId:
+                    "NT-" +
+                    Date.now(),
+
+                studentName:
+                    studentName,
+
+                studentId:
+                    studentId,
+
+                studentEmail:
+                    studentEmail,
+
+                phone:
+                    phone,
+
+                items:
+                    cart,
+
+                subtotal:
+                    subtotal,
+
+                serviceCharge:
+                    serviceCharge,
+
+                total:
+                    total,
+
+                paymentStatus:
+                    "Pending Verification",
+
+                orderStatus:
+                    "Payment Submitted",
+
+                token:
+                    null,
+
+                createdAt:
+                    new Date().toISOString()
+            };
+
+
+            /*
+                Save demo order locally.
+
+                The actual payment screenshot file
+                is not uploaded yet.
+
+                Backend file upload will be added
+                later with Spring Boot.
+            */
+
+            localStorage.setItem(
+                "nextTurnCurrentOrder",
+                JSON.stringify(order)
+            );
+
+
+            localStorage.setItem(
+                "nextTurnPaymentStatus",
+                "Pending Verification"
+            );
+
+
+            // Empty the cart after submission.
+            localStorage.removeItem("nextTurnCart");
+
+
+            setTimeout(function() {
+
+                document.getElementById("paymentForm")
+                    .style.display = "none";
+
+
+                document.getElementById("successBox")
+                    .style.display = "block";
+
+
+                submitBtn.disabled = false;
+
+            }, 800);
+
+        });
+
+
+    function goBack() {
+
+        window.location.href =
+            "order.html";
+    }
+
+
+    function goToDashboard() {
+
+        window.location.href =
+            "student.html";
+    }
+
+
+    displayOrder();
+
+</script>
+
+</body>
+  </html>
