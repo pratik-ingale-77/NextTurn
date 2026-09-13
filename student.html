@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>NextTurn - Student Dashboard</title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f4f7fb;
+      color: #172033;
+    }
+
+    header {
+      background: #102a43;
+      color: white;
+      padding: 18px 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .student-info {
+      text-align: right;
+      font-size: 14px;
+    }
+
+    .student-info small {
+      opacity: 0.75;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 30px 20px;
+    }
+
+    .welcome {
+      margin-bottom: 25px;
+    }
+
+    .welcome h1 {
+      color: #102a43;
+      margin-bottom: 7px;
+    }
+
+    .welcome p {
+      color: #66788a;
+    }
+
+    .notification {
+      background: white;
+      border-left: 5px solid #102a43;
+      padding: 17px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    }
+
+    .notification strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 25px;
+      min-height: 170px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.07);
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+    }
+
+    .icon {
+      font-size: 35px;
+      margin-bottom: 15px;
+    }
+
+    .card h2 {
+      color: #102a43;
+      font-size: 19px;
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      color: #66788a;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .token-box {
+      margin-top: 30px;
+      background: #102a43;
+      color: white;
+      padding: 25px;
+      border-radius: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .token-box h2 {
+      margin-bottom: 6px;
+    }
+
+    .token {
+      font-size: 38px;
+      font-weight: bold;
+    }
+
+    .status {
+      margin-top: 8px;
+      opacity: 0.85;
+    }
+
+    .logout {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .logout button {
+      padding: 12px 30px;
+      border: none;
+      border-radius: 9px;
+      background: #d9534f;
+      color: white;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    @media(max-width: 750px) {
+
+      .dashboard-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .token-box {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+      }
+
+    }
+
+    @media(max-width: 500px) {
+
+      header {
+        padding: 15px;
+      }
+
+      .logo {
+        font-size: 20px;
+      }
+
+      .student-info {
+        font-size: 12px;
+      }
+
+      .container {
+        padding: 22px 15px;
+      }
+
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <header>
+
+    <div class="logo">
+      ⚡ NextTurn
+    </div>
+
+    <div class="student-info">
+      <strong>Student</strong><br>
+      <small>College Canteen</small>
+    </div>
+
+  </header>
+
+
+  <main class="container">
+
+    <section class="welcome">
+
+      <h1>Welcome, Student 👋</h1>
+
+      <p>
+        Order your food from the classroom and skip the canteen queue.
+      </p>
+
+    </section>
+
+
+    <div class="notification">
+
+      <strong>🔔 Notifications</strong>
+
+      <span>
+        You don't have any new notifications.
+      </span>
+
+    </div>
+
+
+    <section class="dashboard-grid">
+
+
+      <div class="card" onclick="orderFood()">
+
+        <div class="icon">🍔</div>
+
+        <h2>Order Food</h2>
+
+        <p>
+          Browse today's canteen menu and place your order.
+        </p>
+
+      </div>
+
+
+      <div class="card" onclick="trackOrder()">
+
+        <div class="icon">🎟️</div>
+
+        <h2>Track My Order</h2>
+
+        <p>
+          Check your token, queue position and estimated waiting time.
+        </p>
+
+      </div>
+
+
+      <div class="card" onclick="orderHistory()">
+
+        <div class="icon">📋</div>
+
+        <h2>Order History</h2>
+
+        <p>
+          View your previous canteen orders.
+        </p>
+
+      </div>
+
+
+      <div class="card" onclick="paymentHistory()">
+
+        <div class="icon">💳</div>
+
+        <h2>Payment History</h2>
+
+        <p>
+          Check your previous payments and transaction details.
+        </p>
+
+      </div>
+
+
+      <div class="card" onclick="notifications()">
+
+        <div class="icon">🔔</div>
+
+        <h2>Notifications</h2>
+
+        <p>
+          Get updates when your food is almost ready or ready.
+        </p>
+
+      </div>
+
+
+      <div class="card" onclick="profile()">
+
+        <div class="icon">👤</div>
+
+        <h2>My Profile</h2>
+
+        <p>
+          View and manage your student information.
+        </p>
+
+      </div>
+
+
+    </section>
+
+
+    <section class="token-box">
+
+      <div>
+
+        <h2>🎟️ Current Token</h2>
+
+        <div class="status">
+          No active order
+        </div>
+
+      </div>
+
+      <div class="token">
+        —
+      </div>
+
+    </section>
+
+
+    <div class="logout">
+
+      <button onclick="logout()">
+        Logout
+      </button>
+
+    </div>
+
+  </main>
+
+
+  <script>
+
+    function orderFood() {
+      window.location.href = "order.html";
+    }
+
+    function trackOrder() {
+      alert("Order tracking will be connected soon.");
+    }
+
+    function orderHistory() {
+      alert("Order history will be connected soon.");
+    }
+
+    function paymentHistory() {
+      alert("Payment history will be connected soon.");
+    }
+
+    function notifications() {
+      alert("Notifications will be connected soon.");
+    }
+
+    function profile() {
+      alert("Student profile will be connected soon.");
+    }
+
+    function logout() {
+      window.location.href = "login.html";
+    }
+
+  </script>
+
+</body>
+
+  </html>
