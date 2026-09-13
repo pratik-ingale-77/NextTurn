@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NextTurn - Staff Dashboard</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f4f7fb;
+      color: #172033;
+    }
+
+    header {
+      background: #14213d;
+      color: white;
+      padding: 18px 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .brand {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      opacity: 0.8;
+      margin-top: 3px;
+    }
+
+    .logout {
+      background: #ef4444;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .container {
+      width: 92%;
+      max-width: 1200px;
+      margin: 25px auto;
+    }
+
+    .welcome {
+      margin-bottom: 22px;
+    }
+
+    .welcome h1 {
+      font-size: 28px;
+      margin-bottom: 6px;
+    }
+
+    .welcome p {
+      color: #64748b;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .stat {
+      background: white;
+      padding: 20px;
+      border-radius: 14px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+    }
+
+    .stat h3 {
+      color: #64748b;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .stat strong {
+      font-size: 26px;
+      color: #14213d;
+    }
+
+    .section {
+      background: white;
+      padding: 22px;
+      border-radius: 14px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+      margin-bottom: 25px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .section h2 {
+      font-size: 21px;
+    }
+
+    .refresh {
+      border: none;
+      background: #2563eb;
+      color: white;
+      padding: 9px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .order-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 15px;
+    }
+
+    .order-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+    }
+
+    .order-id {
+      font-weight: bold;
+      color: #2563eb;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 20px;
+      background: #fff7ed;
+      color: #c2410c;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .details {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .detail {
+      background: #f8fafc;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .items {
+      margin: 12px 0;
+      padding: 12px;
+      background: #f8fafc;
+      border-radius: 8px;
+    }
+
+    .item-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 5px 0;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .item-row:last-child {
+      border-bottom: none;
+    }
+
+    .payment {
+      background: #eff6ff;
+      padding: 12px;
+      border-radius: 8px;
+      margin: 12px 0;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 15px;
+    }
+
+    .actions button,
+    .actions select {
+      border: none;
+      padding: 10px 13px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .verify {
+      background: #16a34a;
+      color: white;
+    }
+
+    .token {
+      background: #7c3aed;
+      color: white;
+    }
+
+    .ready {
+      background: #ea580c;
+      color: white;
+    }
+
+    .complete {
+      background: #0f766e;
+      color: white;
+    }
+
+    .actions select {
+      background: #e2e8f0;
+      color: #172033;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 30px;
+      color: #64748b;
+    }
+
+    .stock-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .stock-item {
+      border: 1px solid #e2e8f0;
+      padding: 14px;
+      border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .stock-item button {
+      border: none;
+      padding: 7px 10px;
+      border-radius: 7px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .available {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .unavailable {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .announcement {
+      background: #fff7ed;
+      border-left: 5px solid #f97316;
+      padding: 14px;
+      border-radius: 8px;
+      margin-top: 10px;
+      display: none;
+    }
+
+    @media (max-width: 800px) {
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .stock-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 550px) {
+      .stats,
+      .details,
+      .stock-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .welcome h1 {
+        font-size: 23px;
+      }
+
+      .section {
+        padding: 16px;
+      }
+
+      .container {
+        width: 94%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div>
+    <div class="brand">⚡ NextTurn</div>
+    <div class="subtitle">College Canteen • Staff Dashboard</div>
+  </div>
+
+  <button class="logout" onclick="logout()">Logout</button>
+</header>
+
+<div class="container">
+
+  <div class="welcome">
+    <h1>Staff Dashboard</h1>
+    <p>Manage student orders, payments, tokens and food availability.</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <h3>Orders</h3>
+      <strong id="orderCount">0</strong>
+    </div>
+
+    <div class="stat">
+      <h3>Pending Payments</h3>
+      <strong id="pendingCount">0</strong>
+    </div>
+
+    <div class="stat">
+      <h3>Completed Orders</h3>
+      <strong id="completedCount">0</strong>
+    </div>
+
+    <div class="stat">
+      <h3>Total Revenue</h3>
+      <strong id="revenue">₹0</strong>
+    </div>
+  </div>
+
+  <div class="section">
+
+    <div class="section-header">
+      <h2>📦 Incoming Orders</h2>
+      <button class="refresh" onclick="loadOrders()">↻ Refresh</button>
+    </div>
+
+    <div id="ordersContainer"></div>
+
+  </div>
+
+  <div class="section">
+
+    <div class="section-header">
+      <h2>📢 Ready Token Announcement</h2>
+    </div>
+
+    <div id="announcement" class="announcement"></div>
+
+    <button class="ready"
+      style="border:none;color:white;padding:10px 14px;border-radius:8px;cursor:pointer;"
+      onclick="announceLatest()">
+      Announce Ready Token
+    </button>
+
+  </div>
+
+  <div class="section">
+
+    <div class="section-header">
+      <h2>🍔 Food Availability</h2>
+    </div>
+
+    <div id="stockGrid" class="stock-grid"></div>
+
+  </div>
+
+</div>
+
+<script src="menu.js"></script>
+
+<script>
+
+function getCurrentOrder() {
+  const data = localStorage.getItem("nextTurnCurrentOrder");
+
+  if (!data) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(data);
+  } catch (error) {
+    return null;
+  }
+}
+
+
+function saveCurrentOrder(order) {
+  localStorage.setItem(
+    "nextTurnCurrentOrder",
+    JSON.stringify(order)
+  );
+}
+
+
+function getHistory() {
+  try {
+    return JSON.parse(
+      localStorage.getItem("nextTurnOrderHistory")
+    ) || [];
+  } catch (error) {
+    return [];
+  }
+}
+
+
+function saveHistory(history) {
+  localStorage.setItem(
+    "nextTurnOrderHistory",
+    JSON.stringify(history)
+  );
+}
+
+
+function loadOrders() {
+
+  const container =
+    document.getElementById("ordersContainer");
+
+  const order = getCurrentOrder();
+
+  const history = getHistory();
+
+  let orders = [];
+
+  if (order) {
+    orders.push(order);
+  }
+
+  orders = orders.concat(history);
+
+  document.getElementById("orderCount").textContent =
+    orders.length;
+
+  const pending = orders.filter(
+    o => o.paymentStatus === "Pending Verification"
+  ).length;
+
+  document.getElementById("pendingCount").textContent =
+    pending;
+
+  const completed = orders.filter(
+    o => o.orderStatus === "Completed"
+  ).length;
+
+  document.getElementById("completedCount").textContent =
+    completed;
+
+  const revenue = orders
+    .filter(o =>
+      o.orderStatus === "Completed" ||
+      o.paymentStatus === "Verified"
+    )
+    .reduce((total, o) =>
+      total + Number(o.total || 0), 0
+    );
+
+  document.getElementById("revenue").textContent =
+    "₹" + revenue.toFixed(2);
+
+  if (orders.length === 0) {
+    container.innerHTML = `
+      <div class="empty">
+        <h3>No orders yet</h3>
+        <p>Student orders will appear here.</p>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = orders.map(
+    (o, index) => createOrderCard(o, index)
+  ).join("");
+}
+
+
+function createOrderCard(order, index) {
+
+  const items = order.items || [];
+
+  const itemHTML = items.map(item => `
+    <div class="item-row">
+      <span>
+        ${item.name} × ${item.quantity}
+      </span>
+
+      <strong>
+        ₹${Number(item.total || 0).toFixed(2)}
+      </strong>
+    </div>
+  `).join("");
+
+  const verified =
+    order.paymentStatus === "Verified";
+
+  const completed =
+    order.orderStatus === "Completed";
+
+  return `
+    <div class="order-card">
+
+      <div class="order-top">
+
+        <div>
+          <div class="order-id">
+            Order #${order.orderId || "NEXT-" + index}
+          </div>
+
+          ${
+            order.token
+              ? `<div style="margin-top:5px;">
+                  🎟 Token:
+                  <strong>${order.token}</strong>
+                </div>`
+              : ""
+          }
+        </div>
+
+        <span class="status">
+          ${order.orderStatus || "Payment Submitted"}
+        </span>
+
+      </div>
+
+      <div class="details">
+
+        <div class="detail">
+          <strong>Student:</strong><br>
+          ${order.studentName || "Not provided"}
+        </div>
+
+        <div class="detail">
+          <strong>Student ID:</strong><br>
+          ${order.studentId || "Not provided"}
+        </div>
+
+        <div class="detail">
+          <strong>Gmail:</strong><br>
+          ${order.email || "Not provided"}
+        </div>
+
+        <div class="detail">
+          <strong>Phone:</strong><br>
+          ${order.phone || "Not provided"}
+        </div>
+
+      </div>
+
+      <div class="items">
+
+        <strong>Ordered Food</strong>
+
+        ${itemHTML}
+
+        <div class="item-row">
+          <strong>Subtotal</strong>
+          <strong>₹${Number(order.subtotal || 0).toFixed(2)}</strong>
+        </div>
+
+        <div class="item-row">
+          <span>Service Charge</span>
+          <span>₹${Number(order.serviceCharge || 0).toFixed(2)}</span>
+        </div>
+
+        <div class="item-row">
+          <strong>Total</strong>
+          <strong>₹${Number(order.total || 0).toFixed(2)}</strong>
+        </div>
+
+      </div>
+
+      <div class="payment">
+
+        💳 <strong>Payment:</strong>
+        ${order.paymentStatus || "Pending Verification"}
+
+        <br><br>
+
+        📷 Payment proof:
+        <strong>
+          ${order.paymentProof ? "Submitted" : "Not submitted"}
+        </strong>
+
+      </div>
+
+      <div class="actions">
+
+        <button
+          class="verify"
+          onclick="verifyPayment()"
+          ${verified || completed ? "disabled" : ""}>
+          ✓ Verify Payment
+        </button>
+
+        <button
+          class="token"
+          onclick="generateToken()"
+          ${!verified || order.token || completed ? "disabled" : ""}>
+          🎟 Generate Token
+        </button>
+
+        <select
+          onchange="changeStatus(this.value)"
+          ${!order.token || completed ? "disabled" : ""}>
+
+          <option value="">
+            Change Status
+          </option>
+
+          <option value="Preparing">
+            Preparing
+          </option>
+
+          <option value="Ready">
+            Ready
+          </option>
+
+          <option value="Collected">
+            Collected
+          </option>
+
+          <option value="Completed">
+            Completed
+          </option>
+
+        </select>
+
+        <button
+          class="ready"
+          onclick="announceReady()"
+          ${!order.token || order.orderStatus !== "Ready"
+            ? "disabled"
+            : ""}>
+          📢 Announce Ready
+        </button>
+
+        <button
+          class="complete"
+          onclick="completeOrder()"
+          ${order.orderStatus !== "Collected"
+            ? "disabled"
+            : ""}>
+          ✓ Mark Completed
+        </button>
+
+      </div>
+
+    </div>
+  `;
+}
+
+
+function verifyPayment() {
+
+  const order = getCurrentOrder();
+
+  if (!order) {
+    alert("No active order found.");
+    return;
+  }
+
+  order.paymentStatus = "Verified";
+  order.orderStatus = "Payment Verified";
+
+  saveCurrentOrder(order);
+
+  alert("Payment verified successfully.");
+
+  loadOrders();
+}
+
+
+function generateToken() {
+
+  const order = getCurrentOrder();
+
+  if (!order) {
+    alert("No active order found.");
+    return;
+  }
+
+  if (order.paymentStatus !== "Verified") {
+    alert("Verify payment first.");
+    return;
+  }
+
+  let lastToken =
+    Number(localStorage.getItem("nextTurnLastToken")) || 5696;
+
+  lastToken++;
+
+  if (lastToken > 9999) {
+    lastToken = 1000;
+  }
+
+  localStorage.setItem(
+    "nextTurnLastToken",
+    lastToken
+  );
+
+  order.token = lastToken;
+  order.orderStatus = "Token Generated";
+
+  saveCurrentOrder(order);
+
+  alert("Token generated: " + lastToken);
+
+  loadOrders();
+}
+
+
+function changeStatus(newStatus) {
+
+  if (!newStatus) {
+    return;
+  }
+
+  const order = getCurrentOrder();
+
+  if (!order) {
+    return;
+  }
+
+  order.orderStatus = newStatus;
+
+  saveCurrentOrder(order);
+
+  if (newStatus === "Ready" && order.token) {
+    showAnnouncement(
+      "Token " + order.token + " is ready! Please collect your food from the canteen."
+    );
+  }
+
+  if (newStatus === "Completed") {
+    moveToHistory(order);
+  }
+
+  loadOrders();
+}
+
+
+function announceReady() {
+
+  const order = getCurrentOrder();
+
+  if (!order || !order.token) {
+    return;
+  }
+
+  showAnnouncement(
+    "Token " + order.token +
+    " food is ready! Please collect your order."
+  );
+}
+
+
+function announceLatest() {
+
+  const order = getCurrentOrder();
+
+  if (!order || !order.token) {
+    alert("No token available.");
+    return;
+  }
+
+  showAnnouncement(
+    "📢 Token " + order.token +
+    " food is ready! Please collect it from the canteen."
+  );
+
+  order.orderStatus = "Ready";
+
+  saveCurrentOrder(order);
+
+  loadOrders();
+}
+
+
+function showAnnouncement(message) {
+
+  const box =
+    document.getElementById("announcement");
+
+  box.style.display = "block";
+
+  box.textContent = message;
+
+  localStorage.setItem(
+    "nextTurnNotification",
+    message
+  );
+
+  localStorage.setItem(
+    "nextTurnReadyToken",
+    getCurrentOrder()?.token || ""
+  );
+}
+
+
+function completeOrder() {
+
+  const order = getCurrentOrder();
+
+  if (!order) {
+    return;
+  }
+
+  order.orderStatus = "Completed";
+
+  moveToHistory(order);
+
+  alert("Order marked as completed.");
+
+  loadOrders();
+}
+
+
+function moveToHistory(order) {
+
+  let history = getHistory();
+
+  const alreadyExists =
+    history.some(
+      item => item.orderId === order.orderId
+    );
+
+  if (!alreadyExists) {
+    history.push(order);
+  }
+
+  saveHistory(history);
+
+  localStorage.removeItem(
+    "nextTurnCurrentOrder"
+  );
+}
+
+
+function loadStock() {
+
+  const grid =
+    document.getElementById("stockGrid");
+
+  const savedStock =
+    JSON.parse(
+      localStorage.getItem("nextTurnStock") || "{}"
+    );
+
+  grid.innerHTML = menu.map(item => {
+
+    const available =
+      savedStock[item.id] !== undefined
+        ? savedStock[item.id]
+        : item.available;
+
+    return `
+      <div class="stock-item">
+
+        <div>
+          <strong>${item.name}</strong>
+          <br>
+          ₹${item.price}
+        </div>
+
+        <button
+          class="${available ? "available" : "unavailable"}"
+          onclick="toggleStock('${item.id}')">
+
+          ${available ? "Available" : "Out of Stock"}
+
+        </button>
+
+      </div>
+    `;
+
+  }).join("");
+}
+
+
+function toggleStock(id) {
+
+  let savedStock =
+    JSON.parse(
+      localStorage.getItem("nextTurnStock") || "{}"
+    );
+
+  const current =
+    savedStock[id] !== undefined
+      ? savedStock[id]
+      : menu.find(item => item.id === id).available;
+
+  savedStock[id] = !current;
+
+  localStorage.setItem(
+    "nextTurnStock",
+    JSON.stringify(savedStock)
+  );
+
+  loadStock();
+
+  alert(
+    savedStock[id]
+      ? "Item is now available."
+      : "Item marked as Out of Stock."
+  );
+}
+
+
+function logout() {
+  window.location.href = "login.html";
+}
+
+
+loadOrders();
+loadStock();
+
+</script>
+
+</body>
+  </html>
