@@ -1,557 +1,1071 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NextTurn - Order Food</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
+  <title>NextTurn - Order Food</title>
 
-        body {
-            background: #f4f7fb;
-            color: #172033;
-        }
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
 
-        header {
-            background: #123b70;
-            color: white;
-            padding: 18px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    body {
+      background: #f4f7fb;
+      color: #172033;
+    }
 
-        .logo {
-            font-size: 22px;
-            font-weight: bold;
-        }
+    header {
+      background: #172554;
+      color: white;
+      padding: 17px 6%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
 
-        .back-btn {
-            background: white;
-            color: #123b70;
-            border: none;
-            padding: 9px 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-        }
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+    }
 
-        .container {
-            max-width: 1100px;
-            margin: auto;
-            padding: 25px 18px 100px;
-        }
+    .subtitle {
+      font-size: 13px;
+      opacity: 0.85;
+      margin-top: 3px;
+    }
 
-        .page-title {
-            margin-bottom: 20px;
-        }
+    .back-btn {
+      background: white;
+      color: #172554;
+      border: none;
+      padding: 9px 16px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
 
-        .page-title h1 {
-            font-size: 28px;
-            margin-bottom: 6px;
-        }
+    .container {
+      width: 92%;
+      max-width: 1150px;
+      margin: 28px auto;
+    }
 
-        .page-title p {
-            color: #667085;
-        }
+    .page-title {
+      margin-bottom: 22px;
+    }
 
-        .categories {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            margin-bottom: 25px;
-            padding-bottom: 5px;
-        }
+    .page-title h1 {
+      font-size: 28px;
+      margin-bottom: 6px;
+    }
 
-        .category-btn {
-            border: none;
-            background: white;
-            color: #123b70;
-            padding: 10px 17px;
-            border-radius: 20px;
-            cursor: pointer;
-            white-space: nowrap;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
+    .page-title p {
+      color: #64748b;
+    }
 
-        .category-btn.active {
-            background: #123b70;
-            color: white;
-        }
+    /* Categories */
 
-        .menu-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 18px;
-        }
+    .categories {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 24px;
+    }
 
-        .food-card {
-            background: white;
-            border-radius: 14px;
-            padding: 18px;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-        }
+    .category-btn {
+      border: 1px solid #cbd5e1;
+      background: white;
+      color: #334155;
+      padding: 10px 17px;
+      border-radius: 25px;
+      cursor: pointer;
+      white-space: nowrap;
+      font-weight: bold;
+    }
 
-        .food-icon {
-            font-size: 40px;
-            margin-bottom: 10px;
-        }
+    .category-btn.active {
+      background: #172554;
+      color: white;
+      border-color: #172554;
+    }
 
-        .food-card h3 {
-            margin-bottom: 7px;
-        }
+    /* Layout */
 
-        .category-name {
-            font-size: 13px;
-            color: #667085;
-            margin-bottom: 12px;
-        }
+    .main-layout {
+      display: grid;
+      grid-template-columns: 1fr 350px;
+      gap: 24px;
+      align-items: start;
+    }
 
-        .price {
-            font-size: 19px;
-            font-weight: bold;
-            margin-bottom: 12px;
-        }
+    /* Menu */
 
-        .add-btn {
-            width: 100%;
-            border: none;
-            background: #123b70;
-            color: white;
-            padding: 11px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-        }
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
 
-        .add-btn:hover {
-            background: #0d2d55;
-        }
+    .food-card {
+      background: white;
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+      border: 1px solid transparent;
+    }
 
-        .add-btn:disabled {
-            background: #aab2bd;
-            cursor: not-allowed;
-        }
+    .food-card h3 {
+      margin-bottom: 7px;
+      font-size: 18px;
+    }
 
-        .stock {
-            font-size: 13px;
-            color: #198754;
-            margin-bottom: 10px;
-        }
+    .food-category {
+      color: #64748b;
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
 
-        .out-stock {
-            color: #d93025;
-            font-weight: bold;
-        }
+    .price {
+      font-size: 19px;
+      font-weight: bold;
+      color: #172554;
+      margin-bottom: 13px;
+    }
 
-        .cart {
-            margin-top: 30px;
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-        }
+    .available {
+      color: #15803d;
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
 
-        .cart h2 {
-            margin-bottom: 15px;
-        }
+    .unavailable {
+      color: #dc2626;
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
 
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #eee;
-            padding: 13px 0;
-            gap: 10px;
-        }
+    .add-btn {
+      width: 100%;
+      border: none;
+      background: #2563eb;
+      color: white;
+      padding: 10px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
 
-        .item-info {
-            flex: 1;
-        }
+    .add-btn:disabled {
+      background: #cbd5e1;
+      color: #64748b;
+      cursor: not-allowed;
+    }
 
-        .item-name {
-            font-weight: bold;
-        }
+    /* Cart */
 
-        .item-price {
-            font-size: 13px;
-            color: #667085;
-            margin-top: 4px;
-        }
+    .cart {
+      background: white;
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+      position: sticky;
+      top: 20px;
+    }
 
-        .quantity-controls {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+    .cart h2 {
+      margin-bottom: 18px;
+      font-size: 21px;
+    }
 
-        .quantity-controls button {
-            width: 30px;
-            height: 30px;
-            border: none;
-            background: #e8eef7;
-            color: #123b70;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-        }
+    .cart-empty {
+      background: #f8fafc;
+      padding: 18px;
+      text-align: center;
+      border-radius: 9px;
+      color: #64748b;
+      margin-bottom: 15px;
+    }
 
-        .summary {
-            margin-top: 20px;
-            border-top: 2px solid #eee;
-            padding-top: 15px;
-        }
+    .cart-item {
+      border-bottom: 1px solid #e2e8f0;
+      padding: 13px 0;
+    }
 
-        .summary-row {
-            display: flex;
-            justify-content: space-between;
-            margin: 9px 0;
-        }
+    .cart-item:last-child {
+      border-bottom: none;
+    }
 
-        .total {
-            font-size: 20px;
-            font-weight: bold;
-            color: #123b70;
-            margin-top: 12px;
-        }
+    .cart-item-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 9px;
+    }
 
-        .payment-btn {
-            width: 100%;
-            margin-top: 18px;
-            padding: 14px;
-            border: none;
-            border-radius: 9px;
-            background: #198754;
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+    .cart-item-name {
+      font-weight: bold;
+    }
 
-        .empty {
-            text-align: center;
-            color: #777;
-            padding: 20px 0;
-        }
+    .cart-item-price {
+      color: #172554;
+      font-weight: bold;
+    }
 
-        @media (max-width: 800px) {
-            .menu-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
+    .quantity-row {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
 
-        @media (max-width: 520px) {
-            .menu-grid {
-                grid-template-columns: 1fr;
-            }
+    .quantity-btn {
+      width: 30px;
+      height: 30px;
+      border: 1px solid #cbd5e1;
+      background: white;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
 
-            header {
-                padding: 15px;
-            }
+    .quantity {
+      min-width: 20px;
+      text-align: center;
+      font-weight: bold;
+    }
 
-            .page-title h1 {
-                font-size: 24px;
-            }
+    .remove-btn {
+      margin-left: auto;
+      border: none;
+      background: none;
+      color: #dc2626;
+      cursor: pointer;
+      font-size: 13px;
+    }
 
-            .cart-item {
-                flex-wrap: wrap;
-            }
-        }
-    </style>
+    .summary {
+      border-top: 1px solid #e2e8f0;
+      margin-top: 15px;
+      padding-top: 15px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      color: #475569;
+    }
+
+    .summary-row.total {
+      color: #172033;
+      font-size: 18px;
+      font-weight: bold;
+      padding-top: 8px;
+    }
+
+    .payment-btn {
+      width: 100%;
+      border: none;
+      background: #16a34a;
+      color: white;
+      padding: 12px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 12px;
+    }
+
+    .payment-btn:disabled {
+      background: #cbd5e1;
+      cursor: not-allowed;
+    }
+
+    .rule {
+      margin-top: 15px;
+      background: #eff6ff;
+      color: #1e3a8a;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    /* Mobile */
+
+    @media (max-width: 850px) {
+
+      .main-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .cart {
+        position: static;
+      }
+
+    }
+
+    @media (max-width: 550px) {
+
+      .container {
+        width: 94%;
+      }
+
+      .page-title h1 {
+        font-size: 23px;
+      }
+
+      .menu-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cart {
+        padding: 17px;
+      }
+
+    }
+  </style>
 </head>
 
 <body>
 
 <header>
+
+  <div>
     <div class="logo">⚡ NextTurn</div>
-    <button class="back-btn" onclick="goBack()">← Back</button>
+    <div class="subtitle">College Canteen • Order Food</div>
+  </div>
+
+  <button class="back-btn" onclick="goBack()">
+    ← Dashboard
+  </button>
+
 </header>
+
 
 <div class="container">
 
-    <div class="page-title">
-        <h1>🍴 College Canteen</h1>
-        <p>Choose your food and place your order.</p>
+  <div class="page-title">
+
+    <h1>🍔 College Canteen Menu</h1>
+
+    <p>
+      Choose your food and place your order from the classroom.
+    </p>
+
+  </div>
+
+
+  <!-- Categories -->
+
+  <div class="categories">
+
+    <button
+      class="category-btn active"
+      onclick="filterCategory('All', this)">
+      All
+    </button>
+
+    <button
+      class="category-btn"
+      onclick="filterCategory('Snacks', this)">
+      Snacks
+    </button>
+
+    <button
+      class="category-btn"
+      onclick="filterCategory('Fast Food', this)">
+      Fast Food
+    </button>
+
+    <button
+      class="category-btn"
+      onclick="filterCategory('Meals', this)">
+      Meals
+    </button>
+
+    <button
+      class="category-btn"
+      onclick="filterCategory('Drinks', this)">
+      Drinks
+    </button>
+
+  </div>
+
+
+  <div class="main-layout">
+
+    <!-- MENU -->
+
+    <div>
+
+      <div
+        id="menuGrid"
+        class="menu-grid">
+      </div>
+
     </div>
 
-    <div class="categories" id="categories"></div>
 
-    <div class="menu-grid" id="menuGrid"></div>
+    <!-- CART -->
 
     <div class="cart">
-        <h2>🛒 Your Cart</h2>
 
-        <div id="cartItems">
-            <div class="empty">Your cart is empty.</div>
+      <h2>🛒 Your Cart</h2>
+
+      <div id="cartContent"></div>
+
+      <div class="summary">
+
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <strong id="subtotal">₹0.00</strong>
         </div>
 
-        <div class="summary">
-
-            <div class="summary-row">
-                <span>Subtotal</span>
-                <span id="subtotal">₹0.00</span>
-            </div>
-
-            <div class="summary-row">
-                <span>Service Charge</span>
-                <span id="serviceCharge">₹0.00</span>
-            </div>
-
-            <div class="summary-row total">
-                <span>Total</span>
-                <span id="grandTotal">₹0.00</span>
-            </div>
-
-            <button class="payment-btn" onclick="proceedToPayment()">
-                Proceed to Payment →
-            </button>
-
+        <div class="summary-row">
+          <span>Service Charge</span>
+          <strong id="serviceCharge">₹0.00</strong>
         </div>
+
+        <div class="summary-row total">
+          <span>Total</span>
+          <strong id="grandTotal">₹0.00</strong>
+        </div>
+
+      </div>
+
+
+      <button
+        id="paymentBtn"
+        class="payment-btn"
+        onclick="proceedToPayment()"
+        disabled>
+        Proceed to Payment
+      </button>
+
+
+      <div class="rule">
+
+        <strong>Service Charge Rule</strong><br><br>
+
+        Food price ≤ ₹20 → ₹0.50 per item<br>
+
+        Food price &gt; ₹20 → ₹1.00 per item
+
+      </div>
+
     </div>
+
+  </div>
 
 </div>
 
+
+<!-- Load menu data -->
+
 <script src="menu.js"></script>
 
+
 <script>
-    let cart = JSON.parse(localStorage.getItem("nextTurnCart")) || [];
-    let selectedCategory = "All";
 
-    const categoryIcons = {
-        "All": "🍽️",
-        "Snacks": "🍟",
-        "Fast Food": "🍔",
-        "Meals": "🍛",
-        "Drinks": "🥤"
-    };
+  // ==========================================
+  // DATA
+  // ==========================================
 
-    function displayCategories() {
-        const categoriesDiv = document.getElementById("categories");
+  let selectedCategory = "All";
 
-        const categories = ["All", ...new Set(menu.map(item => item.category))];
+  let cart =
+    JSON.parse(
+      localStorage.getItem("nextTurnCart") || "[]"
+    );
 
-        categoriesDiv.innerHTML = categories.map(category => `
-            <button
-                class="category-btn ${category === selectedCategory ? "active" : ""}"
-                onclick="selectCategory('${category}')">
-                ${categoryIcons[category] || "🍴"} ${category}
-            </button>
-        `).join("");
+
+  // ==========================================
+  // STOCK DATA
+  // ==========================================
+  //
+  // Staff dashboard saves:
+  // nextTurnStock
+  //
+  // Example:
+  // {
+  //   "1": true,
+  //   "2": false
+  // }
+  //
+  // true = available
+  // false = out of stock
+  //
+
+  function getStockStatus(itemId) {
+
+    const stockData =
+      JSON.parse(
+        localStorage.getItem("nextTurnStock") || "{}"
+      );
+
+    // If staff has never changed the item,
+    // it is available by default.
+
+    if (
+      Object.prototype.hasOwnProperty.call(
+        stockData,
+        itemId
+      )
+    ) {
+      return stockData[itemId];
     }
 
-    function selectCategory(category) {
-        selectedCategory = category;
-        displayCategories();
-        displayMenu();
-    }
+    return true;
+  }
 
-    function displayMenu() {
-        const menuGrid = document.getElementById("menuGrid");
 
-        const filteredMenu = selectedCategory === "All"
-            ? menu
-            : menu.filter(item => item.category === selectedCategory);
+  // ==========================================
+  // SAVE CART
+  // ==========================================
 
-        menuGrid.innerHTML = filteredMenu.map(item => {
+  function saveCart() {
 
-            const cartItem = cart.find(cartItem => cartItem.id === item.id);
-            const quantity = cartItem ? cartItem.quantity : 0;
+    localStorage.setItem(
+      "nextTurnCart",
+      JSON.stringify(cart)
+    );
 
-            return `
-                <div class="food-card">
+  }
 
-                    <div class="food-icon">
-                        ${categoryIcons[item.category] || "🍴"}
-                    </div>
 
-                    <h3>${item.name}</h3>
+  // ==========================================
+  // DISPLAY MENU
+  // ==========================================
 
-                    <div class="category-name">
-                        ${item.category}
-                    </div>
+  function displayMenu() {
 
-                    <div class="price">
-                        ₹${item.price.toFixed(2)}
-                    </div>
+    const grid =
+      document.getElementById("menuGrid");
 
-                    <div class="stock ${!item.available ? "out-stock" : ""}">
-                        ${item.available ? "● Available" : "● Out of Stock"}
-                    </div>
+    grid.innerHTML = "";
 
-                    <button
-                        class="add-btn"
-                        onclick="addToCart(${item.id})"
-                        ${!item.available ? "disabled" : ""}>
-                        ${quantity > 0 ? "Added: " + quantity : "Add to Cart"}
-                    </button>
 
-                </div>
-            `;
-        }).join("");
-    }
-
-    function addToCart(id) {
-
-        const item = menu.find(item => item.id === id);
-
-        if (!item || !item.available) {
-            return;
-        }
-
-        const existingItem = cart.find(cartItem => cartItem.id === id);
-
-        if (existingItem) {
-            existingItem.quantity++;
-        } else {
-            cart.push({
-                id: item.id,
-                name: item.name,
-                price: item.price,
-                quantity: 1
-            });
-        }
-
-        saveCart();
-        displayMenu();
-        displayCart();
-    }
-
-    function changeQuantity(id, change) {
-
-        const item = cart.find(cartItem => cartItem.id === id);
-
-        if (!item) {
-            return;
-        }
-
-        item.quantity += change;
-
-        if (item.quantity <= 0) {
-            cart = cart.filter(cartItem => cartItem.id !== id);
-        }
-
-        saveCart();
-        displayMenu();
-        displayCart();
-    }
-
-    function calculateServiceCharge(item) {
-
-        // Exact NextTurn rule:
-        // ₹20 or less = ₹0.50 per quantity
-        // Above ₹20 = ₹1.00 per quantity
-
-        return item.price <= 20
-            ? 0.50 * item.quantity
-            : 1.00 * item.quantity;
-    }
-
-    function displayCart() {
-
-        const cartItemsDiv = document.getElementById("cartItems");
-
-        if (cart.length === 0) {
-
-            cartItemsDiv.innerHTML =
-                `<div class="empty">Your cart is empty.</div>`;
-
-            document.getElementById("subtotal").textContent = "₹0.00";
-            document.getElementById("serviceCharge").textContent = "₹0.00";
-            document.getElementById("grandTotal").textContent = "₹0.00";
-
-            return;
-        }
-
-        cartItemsDiv.innerHTML = cart.map(item => {
-
-            const itemTotal =
-                (item.price * item.quantity) +
-                calculateServiceCharge(item);
-
-            return `
-                <div class="cart-item">
-
-                    <div class="item-info">
-                        <div class="item-name">${item.name}</div>
-
-                        <div class="item-price">
-                            ₹${item.price.toFixed(2)} each
-                        </div>
-                    </div>
-
-                    <div class="quantity-controls">
-
-                        <button onclick="changeQuantity(${item.id}, -1)">
-                            −
-                        </button>
-
-                        <strong>${item.quantity}</strong>
-
-                        <button onclick="changeQuantity(${item.id}, 1)">
-                            +
-                        </button>
-
-                    </div>
-
-                    <strong>
-                        ₹${itemTotal.toFixed(2)}
-                    </strong>
-
-                </div>
-            `;
-        }).join("");
-
-        let subtotal = 0;
-        let serviceCharge = 0;
-
-        cart.forEach(item => {
-            subtotal += item.price * item.quantity;
-            serviceCharge += calculateServiceCharge(item);
-        });
-
-        const grandTotal = subtotal + serviceCharge;
-
-        document.getElementById("subtotal").textContent =
-            "₹" + subtotal.toFixed(2);
-
-        document.getElementById("serviceCharge").textContent =
-            "₹" + serviceCharge.toFixed(2);
-
-        document.getElementById("grandTotal").textContent =
-            "₹" + grandTotal.toFixed(2);
-    }
-
-    function saveCart() {
-        localStorage.setItem(
-            "nextTurnCart",
-            JSON.stringify(cart)
+    const filteredMenu =
+      selectedCategory === "All"
+      ? menu
+      : menu.filter(
+          item =>
+            item.category === selectedCategory
         );
-    }
 
-    function proceedToPayment() {
 
-        if (cart.length === 0) {
-            alert("Please add at least one food item.");
-            return;
-        }
+    filteredMenu.forEach(item => {
 
-        window.location.href = "payment.html";
-    }
+      const available =
+        getStockStatus(item.id);
 
-    function goBack() {
-        window.location.href = "student.html";
-    }
 
-    displayCategories();
+      const card =
+        document.createElement("div");
+
+      card.className =
+        "food-card";
+
+
+      card.innerHTML = `
+
+        <h3>${item.name}</h3>
+
+        <div class="food-category">
+          ${item.category}
+        </div>
+
+        <div class="price">
+          ₹${Number(item.price).toFixed(2)}
+        </div>
+
+        <div class="${available ? "available" : "unavailable"}">
+
+          ${available
+            ? "● Available"
+            : "● Out of Stock"}
+
+        </div>
+
+        <button
+          class="add-btn"
+          onclick="addToCart('${item.id}')"
+          ${available ? "" : "disabled"}>
+
+          ${available
+            ? "Add to Cart"
+            : "Currently Unavailable"}
+
+        </button>
+
+      `;
+
+
+      grid.appendChild(card);
+
+    });
+
+  }
+
+
+  // ==========================================
+  // CATEGORY FILTER
+  // ==========================================
+
+  function filterCategory(category, button) {
+
+    selectedCategory =
+      category;
+
+
+    document
+      .querySelectorAll(".category-btn")
+      .forEach(btn => {
+
+        btn.classList.remove("active");
+
+      });
+
+
+    button.classList.add("active");
+
+
     displayMenu();
-    displayCart();
+
+  }
+
+
+  // ==========================================
+  // ADD TO CART
+  // ==========================================
+
+  function addToCart(itemId) {
+
+    const item =
+      menu.find(
+        food =>
+          String(food.id) === String(itemId)
+      );
+
+
+    if (!item) {
+      return;
+    }
+
+
+    if (!getStockStatus(item.id)) {
+
+      alert(
+        item.name +
+        " is currently out of stock."
+      );
+
+      return;
+    }
+
+
+    const existing =
+      cart.find(
+        cartItem =>
+          String(cartItem.id) === String(item.id)
+      );
+
+
+    if (existing) {
+
+      existing.quantity += 1;
+
+    } else {
+
+      cart.push({
+
+        id: item.id,
+
+        name: item.name,
+
+        price: Number(item.price),
+
+        category: item.category,
+
+        quantity: 1
+
+      });
+
+    }
+
+
+    saveCart();
+
+    renderCart();
+
+  }
+
+
+  // ==========================================
+  // CHANGE QUANTITY
+  // ==========================================
+
+  function changeQuantity(itemId, change) {
+
+    const item =
+      cart.find(
+        cartItem =>
+          String(cartItem.id) === String(itemId)
+      );
+
+
+    if (!item) {
+      return;
+    }
+
+
+    // Don't allow adding more if staff
+    // has marked the food unavailable.
+
+    if (
+      change > 0 &&
+      !getStockStatus(item.id)
+    ) {
+
+      alert(
+        item.name +
+        " is now out of stock."
+      );
+
+      removeFromCart(item.id);
+
+      return;
+    }
+
+
+    item.quantity += change;
+
+
+    if (item.quantity <= 0) {
+
+      removeFromCart(item.id);
+
+      return;
+
+    }
+
+
+    saveCart();
+
+    renderCart();
+
+  }
+
+
+  // ==========================================
+  // REMOVE ITEM
+  // ==========================================
+
+  function removeFromCart(itemId) {
+
+    cart =
+      cart.filter(
+        item =>
+          String(item.id) !== String(itemId)
+      );
+
+
+    saveCart();
+
+    renderCart();
+
+  }
+
+
+  // ==========================================
+  // CALCULATE SERVICE CHARGE
+  // ==========================================
+
+  function calculateServiceCharge() {
+
+    let charge = 0;
+
+
+    cart.forEach(item => {
+
+      const itemCharge =
+        Number(
+          getServiceCharge(item.price)
+        );
+
+
+      charge +=
+        itemCharge * item.quantity;
+
+    });
+
+
+    return charge;
+
+  }
+
+
+  // ==========================================
+  // CALCULATE SUBTOTAL
+  // ==========================================
+
+  function calculateSubtotal() {
+
+    let subtotal = 0;
+
+
+    cart.forEach(item => {
+
+      subtotal +=
+        Number(item.price) *
+        Number(item.quantity);
+
+    });
+
+
+    return subtotal;
+
+  }
+
+
+  // ==========================================
+  // RENDER CART
+  // ==========================================
+
+  function renderCart() {
+
+    const content =
+      document.getElementById("cartContent");
+
+
+    // Remove items that became
+    // unavailable while in the cart.
+
+    cart =
+      cart.filter(
+        item =>
+          getStockStatus(item.id)
+      );
+
+
+    saveCart();
+
+
+    if (cart.length === 0) {
+
+      content.innerHTML = `
+
+        <div class="cart-empty">
+
+          Your cart is empty.
+
+          <br><br>
+
+          Add food items from the menu.
+
+        </div>
+
+      `;
+
+    } else {
+
+      content.innerHTML =
+        cart.map(item => `
+
+          <div class="cart-item">
+
+            <div class="cart-item-top">
+
+              <span class="cart-item-name">
+                ${item.name}
+              </span>
+
+              <span class="cart-item-price">
+                ₹${(
+                  Number(item.price) *
+                  Number(item.quantity)
+                ).toFixed(2)}
+              </span>
+
+            </div>
+
+
+            <div class="quantity-row">
+
+              <button
+                class="quantity-btn"
+                onclick="changeQuantity('${item.id}', -1)">
+                −
+              </button>
+
+
+              <span class="quantity">
+                ${item.quantity}
+              </span>
+
+
+              <button
+                class="quantity-btn"
+                onclick="changeQuantity('${item.id}', 1)">
+                +
+              </button>
+
+
+              <button
+                class="remove-btn"
+                onclick="removeFromCart('${item.id}')">
+                Remove
+              </button>
+
+            </div>
+
+          </div>
+
+        `).join("");
+
+    }
+
+
+    const subtotal =
+      calculateSubtotal();
+
+
+    const serviceCharge =
+      calculateServiceCharge();
+
+
+    const grandTotal =
+      subtotal + serviceCharge;
+
+
+    document.getElementById("subtotal").textContent =
+      "₹" + subtotal.toFixed(2);
+
+
+    document.getElementById("serviceCharge").textContent =
+      "₹" + serviceCharge.toFixed(2);
+
+
+    document.getElementById("grandTotal").textContent =
+      "₹" + grandTotal.toFixed(2);
+
+
+    document.getElementById("paymentBtn").disabled =
+      cart.length === 0;
+
+  }
+
+
+  // ==========================================
+  // PROCEED TO PAYMENT
+  // ==========================================
+
+  function proceedToPayment() {
+
+    if (cart.length === 0) {
+
+      alert(
+        "Please add at least one food item."
+      );
+
+      return;
+    }
+
+
+    // Final stock check before payment.
+
+    const unavailable =
+      cart.find(
+        item =>
+          !getStockStatus(item.id)
+      );
+
+
+    if (unavailable) {
+
+      alert(
+        unavailable.name +
+        " is currently out of stock. " +
+        "Please remove it from your cart."
+      );
+
+      renderCart();
+
+      return;
+    }
+
+
+    saveCart();
+
+    window.location.href =
+      "payment.html";
+
+  }
+
+
+  // ==========================================
+  // BACK TO DASHBOARD
+  // ==========================================
+
+  function goBack() {
+
+    window.location.href =
+      "student.html";
+
+  }
+
+
+  // ==========================================
+  // START
+  // ==========================================
+
+  displayMenu();
+
+  renderCart();
+
+
+  // Refresh stock automatically
+  // when the student returns to this tab.
+
+  window.addEventListener(
+    "storage",
+    function(event) {
+
+      if (
+        event.key === "nextTurnStock"
+      ) {
+
+        displayMenu();
+
+        renderCart();
+
+      }
+
+    }
+  );
+
+
+  window.addEventListener(
+    "focus",
+    function() {
+
+      displayMenu();
+
+      renderCart();
+
+    }
+  );
+
 </script>
 
 </body>
-  </html>
+    </html>
