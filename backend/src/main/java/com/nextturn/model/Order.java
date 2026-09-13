@@ -15,6 +15,7 @@ public class Order {
     private String studentName;
     private String studentId;
     private String studentEmail;
+    private String paymentProof;
 
     private String foodItems;
 
@@ -61,6 +62,14 @@ public class Order {
 
     public void setStudentEmail(String studentEmail) {
         this.studentEmail = studentEmail;
+    }
+
+    public String getPaymentProof() {
+        return paymentProof;
+    }
+
+    public void setPaymentProof(String paymentProof) {
+        this.paymentProof = paymentProof;
     }
 
     public String getFoodItems() {
@@ -122,4 +131,4 @@ public class Order {
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
-  }
+}
