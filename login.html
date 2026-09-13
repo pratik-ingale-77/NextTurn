@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>NextTurn Login</title>
+  <title>NextTurn - Login</title>
 
   <style>
     * {
@@ -16,7 +16,8 @@
 
     body {
       min-height: 100vh;
-      background: #f4f7fb;
+      background: linear-gradient(135deg, #eef4ff, #f8fafc);
+      color: #172033;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -25,129 +26,161 @@
 
     .container {
       width: 100%;
-      max-width: 480px;
+      max-width: 520px;
+    }
+
+    .brand {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .brand h1 {
+      font-size: 32px;
+      color: #14213d;
+      margin-bottom: 5px;
+    }
+
+    .brand p {
+      color: #64748b;
+      font-size: 14px;
+    }
+
+    .login-box {
       background: white;
-      padding: 35px;
-      border-radius: 20px;
-      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.10);
-    }
-
-    .logo {
-      text-align: center;
-      font-size: 30px;
-      font-weight: bold;
-      color: #102a43;
-      margin-bottom: 8px;
-    }
-
-    .subtitle {
-      text-align: center;
-      color: #66788a;
-      margin-bottom: 30px;
+      padding: 28px;
+      border-radius: 18px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
     }
 
     .role-buttons {
       display: grid;
-      gap: 15px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 25px;
     }
 
-    .role {
-      border: 2px solid #e1e8ef;
-      background: white;
-      padding: 18px;
-      border-radius: 14px;
+    .role-btn {
+      border: 1px solid #dbe3ef;
+      background: #f8fafc;
+      padding: 13px 8px;
+      border-radius: 10px;
       cursor: pointer;
-      text-align: left;
+      font-weight: bold;
+      color: #475569;
       transition: 0.2s;
     }
 
-    .role:hover {
-      border-color: #102a43;
-      transform: translateY(-2px);
+    .role-btn:hover {
+      border-color: #2563eb;
     }
 
-    .role h3 {
-      color: #102a43;
+    .role-btn.active {
+      background: #14213d;
+      color: white;
+      border-color: #14213d;
+    }
+
+    .role-icon {
+      display: block;
+      font-size: 21px;
+      margin-bottom: 4px;
+    }
+
+    .login-title {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .login-title h2 {
+      font-size: 22px;
       margin-bottom: 5px;
     }
 
-    .role p {
-      color: #718096;
-      font-size: 14px;
+    .login-title p {
+      color: #64748b;
+      font-size: 13px;
     }
 
-    .form {
-      display: none;
-      margin-top: 25px;
-    }
-
-    .form.active {
-      display: block;
-    }
-
-    .form h2 {
-      color: #102a43;
-      margin-bottom: 20px;
+    .form-group {
+      margin-bottom: 16px;
     }
 
     label {
       display: block;
-      margin: 12px 0 6px;
       font-size: 14px;
       font-weight: bold;
+      margin-bottom: 7px;
     }
 
     input {
       width: 100%;
       padding: 13px;
-      border: 1px solid #ccd6e0;
+      border: 1px solid #dbe3ef;
       border-radius: 9px;
       font-size: 15px;
+      outline: none;
     }
 
     input:focus {
-      outline: none;
-      border-color: #102a43;
+      border-color: #2563eb;
     }
 
-    .login-btn {
+    .login-button {
       width: 100%;
-      padding: 14px;
-      margin-top: 20px;
       border: none;
-      border-radius: 10px;
-      background: #102a43;
+      background: #2563eb;
       color: white;
+      padding: 14px;
+      border-radius: 9px;
       font-size: 16px;
+      font-weight: bold;
       cursor: pointer;
+      margin-top: 5px;
     }
 
-    .login-btn:hover {
-      background: #1f4e79;
-    }
-
-    .back {
-      margin-top: 15px;
-      width: 100%;
-      padding: 10px;
-      border: none;
-      background: transparent;
-      color: #52606d;
-      cursor: pointer;
+    .login-button:hover {
+      background: #1d4ed8;
     }
 
     .note {
-      margin-top: 18px;
-      padding: 12px;
-      background: #f0f4f8;
+      background: #f1f5f9;
+      padding: 11px;
       border-radius: 8px;
+      margin-top: 15px;
       font-size: 12px;
-      color: #52606d;
+      color: #64748b;
+      text-align: center;
     }
 
-    @media(max-width: 500px) {
-      .container {
-        padding: 25px;
+    .back {
+      display: block;
+      text-align: center;
+      margin-top: 18px;
+      color: #2563eb;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 500px) {
+      .login-box {
+        padding: 22px;
+      }
+
+      .role-buttons {
+        gap: 7px;
+      }
+
+      .role-btn {
+        font-size: 12px;
+      }
+
+      .brand h1 {
+        font-size: 28px;
       }
     }
   </style>
@@ -155,233 +188,451 @@
 
 <body>
 
-  <div class="container">
+<div class="container">
 
-    <div class="logo">⚡ NextTurn</div>
+  <div class="brand">
+    <h1>⚡ NextTurn</h1>
+    <p>College Canteen • Smart Ordering System</p>
+  </div>
 
-    <p class="subtitle">
-      College Canteen Digital Ordering
-    </p>
+  <div class="login-box">
 
     <!-- ROLE SELECTION -->
 
-    <div id="roles" class="role-buttons">
+    <div class="role-buttons">
 
-      <div class="role" onclick="showLogin('student')">
-        <h3>🎓 Student</h3>
-        <p>
-          Order food, make payment and track your token.
-        </p>
-      </div>
+      <button
+        class="role-btn active"
+        id="studentRole"
+        onclick="selectRole('student')">
 
-      <div class="role" onclick="showLogin('staff')">
-        <h3>👨‍🍳 Staff</h3>
-        <p>
-          Manage orders, payments, tokens and food availability.
-        </p>
-      </div>
+        <span class="role-icon">🎓</span>
+        Student
 
-      <div class="role" onclick="showLogin('partner')">
-        <h3>🤝 Partner</h3>
-        <p>
-          View canteen business and revenue information.
-        </p>
-      </div>
+      </button>
+
+      <button
+        class="role-btn"
+        id="staffRole"
+        onclick="selectRole('staff')">
+
+        <span class="role-icon">👨‍🍳</span>
+        Staff
+
+      </button>
+
+      <button
+        class="role-btn"
+        id="partnerRole"
+        onclick="selectRole('partner')">
+
+        <span class="role-icon">🤝</span>
+        Partner
+
+      </button>
 
     </div>
 
 
-    <!-- STUDENT LOGIN -->
+    <!-- LOGIN TITLE -->
 
-    <div id="studentForm" class="form">
+    <div class="login-title">
 
-      <h2>🎓 Student Login</h2>
+      <h2 id="loginHeading">
+        Student Login
+      </h2>
 
-      <label>College Gmail</label>
+      <p id="loginDescription">
+        Login to order food from your classroom.
+      </p>
 
-      <input
-        type="email"
-        id="studentEmail"
-        placeholder="yourname@gmail.com"
-      >
+    </div>
 
-      <label>Password</label>
 
-      <input
-        type="password"
-        id="studentPassword"
-        placeholder="Enter password"
-      >
+    <!-- STUDENT FORM -->
 
-      <button class="login-btn" onclick="studentLogin()">
+    <form id="studentForm">
+
+      <div class="form-group">
+
+        <label for="studentEmail">
+          College Gmail
+        </label>
+
+        <input
+          type="email"
+          id="studentEmail"
+          placeholder="example@gmail.com"
+          autocomplete="email">
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label for="studentPassword">
+          Password
+        </label>
+
+        <input
+          type="password"
+          id="studentPassword"
+          placeholder="Enter password"
+          autocomplete="current-password">
+
+      </div>
+
+
+      <button
+        type="submit"
+        class="login-button">
+
         Login as Student
+
       </button>
 
-      <button class="back" onclick="goBack()">
-        ← Back
-      </button>
-
-    </div>
+    </form>
 
 
-    <!-- STAFF LOGIN -->
+    <!-- STAFF FORM -->
 
-    <div id="staffForm" class="form">
+    <form
+      id="staffForm"
+      class="hidden">
 
-      <h2>👨‍🍳 Staff Login</h2>
+      <div class="form-group">
 
-      <label>Staff ID</label>
+        <label for="staffId">
+          Staff ID
+        </label>
 
-      <input
-        type="text"
-        id="staffId"
-        placeholder="Enter Staff ID"
-      >
+        <input
+          type="text"
+          id="staffId"
+          placeholder="Enter staff ID">
 
-      <label>Password</label>
-
-      <input
-        type="password"
-        id="staffPassword"
-        placeholder="Enter password"
-      >
-
-      <button class="login-btn" onclick="staffLogin()">
-        Login as Staff
-      </button>
-
-      <button class="back" onclick="goBack()">
-        ← Back
-      </button>
-
-    </div>
-
-
-    <!-- PARTNER LOGIN -->
-
-    <div id="partnerForm" class="form">
-
-      <h2>🤝 Partner Login</h2>
-
-      <label>Partner ID</label>
-
-      <input
-        type="text"
-        id="partnerId"
-        placeholder="Enter Partner ID"
-      >
-
-      <label>Password</label>
-
-      <input
-        type="password"
-        id="partnerPassword"
-        placeholder="Enter password"
-      >
-
-      <button class="login-btn" onclick="partnerLogin()">
-        Login as Partner
-      </button>
-
-      <button class="back" onclick="goBack()">
-        ← Back
-      </button>
-
-      <div class="note">
-        Partner accounts are private and are not visible to students.
       </div>
 
+
+      <div class="form-group">
+
+        <label for="staffPassword">
+          Password
+        </label>
+
+        <input
+          type="password"
+          id="staffPassword"
+          placeholder="Enter password">
+
+      </div>
+
+
+      <button
+        type="submit"
+        class="login-button">
+
+        Login as Staff
+
+      </button>
+
+    </form>
+
+
+    <!-- PARTNER FORM -->
+
+    <form
+      id="partnerForm"
+      class="hidden">
+
+      <div class="form-group">
+
+        <label for="partnerId">
+          Partner ID
+        </label>
+
+        <input
+          type="text"
+          id="partnerId"
+          placeholder="Enter partner ID">
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label for="partnerPassword">
+          Password
+        </label>
+
+        <input
+          type="password"
+          id="partnerPassword"
+          placeholder="Enter password">
+
+      </div>
+
+
+      <button
+        type="submit"
+        class="login-button">
+
+        Login as Partner
+
+      </button>
+
+    </form>
+
+
+    <div
+      class="note"
+      id="loginNote">
+
+      Student accounts use college Gmail.
+      Staff and partner accounts use their assigned IDs.
+
     </div>
+
+    <a
+      href="index.html"
+      class="back">
+
+      ← Back to Home
+
+    </a>
 
   </div>
 
+</div>
 
-  <script>
 
-    function showLogin(role) {
+<script>
 
-      document.getElementById("roles").style.display = "none";
+  let selectedRole = "student";
 
-      document.getElementById("studentForm")
-        .classList.remove("active");
 
-      document.getElementById("staffForm")
-        .classList.remove("active");
+  function selectRole(role) {
 
-      document.getElementById("partnerForm")
-        .classList.remove("active");
+    selectedRole = role;
 
-      document.getElementById(role + "Form")
-        .classList.add("active");
+    const studentRole =
+      document.getElementById("studentRole");
+
+    const staffRole =
+      document.getElementById("staffRole");
+
+    const partnerRole =
+      document.getElementById("partnerRole");
+
+    const studentForm =
+      document.getElementById("studentForm");
+
+    const staffForm =
+      document.getElementById("staffForm");
+
+    const partnerForm =
+      document.getElementById("partnerForm");
+
+    const heading =
+      document.getElementById("loginHeading");
+
+    const description =
+      document.getElementById("loginDescription");
+
+    const note =
+      document.getElementById("loginNote");
+
+
+    studentRole.classList.remove("active");
+    staffRole.classList.remove("active");
+    partnerRole.classList.remove("active");
+
+    studentForm.classList.add("hidden");
+    staffForm.classList.add("hidden");
+    partnerForm.classList.add("hidden");
+
+
+    if (role === "student") {
+
+      studentRole.classList.add("active");
+      studentForm.classList.remove("hidden");
+
+      heading.textContent =
+        "Student Login";
+
+      description.textContent =
+        "Login to order food from your classroom.";
+
+      note.textContent =
+        "Student accounts use college Gmail.";
+
     }
 
 
-    function goBack() {
+    else if (role === "staff") {
 
-      document.getElementById("roles").style.display = "grid";
+      staffRole.classList.add("active");
+      staffForm.classList.remove("hidden");
 
-      document.getElementById("studentForm")
-        .classList.remove("active");
+      heading.textContent =
+        "Staff Login";
 
-      document.getElementById("staffForm")
-        .classList.remove("active");
+      description.textContent =
+        "Manage orders, payments, tokens and food.";
 
-      document.getElementById("partnerForm")
-        .classList.remove("active");
+      note.textContent =
+        "Staff accounts use their assigned Staff ID.";
+
     }
 
 
-    function studentLogin() {
+    else if (role === "partner") {
+
+      partnerRole.classList.add("active");
+      partnerForm.classList.remove("hidden");
+
+      heading.textContent =
+        "Partner Login";
+
+      description.textContent =
+        "View canteen business and revenue information.";
+
+      note.textContent =
+        "Partner accounts are private and are not visible to students.";
+
+    }
+
+  }
+
+
+  // STUDENT LOGIN
+
+  document
+    .getElementById("studentForm")
+    .addEventListener("submit", function(event) {
+
+      event.preventDefault();
 
       const email =
-        document.getElementById("studentEmail").value;
+        document.getElementById("studentEmail").value.trim();
 
       const password =
-        document.getElementById("studentPassword").value;
+        document.getElementById("studentPassword").value.trim();
+
 
       if (!email || !password) {
+
         alert("Please enter Gmail and password.");
+
         return;
       }
 
-      alert("Student login will connect to the Student Dashboard next.");
-    }
+
+      if (!email.includes("@")) {
+
+        alert("Please enter a valid Gmail address.");
+
+        return;
+      }
 
 
-    function staffLogin() {
+      localStorage.setItem(
+        "nextTurnUserRole",
+        "student"
+      );
+
+      localStorage.setItem(
+        "nextTurnStudentEmail",
+        email
+      );
+
+
+      window.location.href =
+        "student.html";
+
+    });
+
+
+  // STAFF LOGIN
+
+  document
+    .getElementById("staffForm")
+    .addEventListener("submit", function(event) {
+
+      event.preventDefault();
 
       const id =
-        document.getElementById("staffId").value;
+        document.getElementById("staffId").value.trim();
 
       const password =
-        document.getElementById("staffPassword").value;
+        document.getElementById("staffPassword").value.trim();
+
 
       if (!id || !password) {
+
         alert("Please enter Staff ID and password.");
+
         return;
       }
 
-      alert("Staff login will connect to the Staff Dashboard next.");
-    }
+
+      localStorage.setItem(
+        "nextTurnUserRole",
+        "staff"
+      );
+
+      localStorage.setItem(
+        "nextTurnStaffId",
+        id
+      );
 
 
-    function partnerLogin() {
+      window.location.href =
+        "staff.html";
+
+    });
+
+
+  // PARTNER LOGIN
+
+  document
+    .getElementById("partnerForm")
+    .addEventListener("submit", function(event) {
+
+      event.preventDefault();
 
       const id =
-        document.getElementById("partnerId").value;
+        document.getElementById("partnerId").value.trim();
 
       const password =
-        document.getElementById("partnerPassword").value;
+        document.getElementById("partnerPassword").value.trim();
+
 
       if (!id || !password) {
+
         alert("Please enter Partner ID and password.");
+
         return;
       }
 
-      alert("Partner login will connect to the Partner Dashboard next.");
-    }
 
-  </script>
+      localStorage.setItem(
+        "nextTurnUserRole",
+        "partner"
+      );
+
+      localStorage.setItem(
+        "nextTurnPartnerId",
+        id
+      );
+
+
+      window.location.href =
+        "partner.html";
+
+    });
+
+</script>
 
 </body>
-</html>
+          </html>
