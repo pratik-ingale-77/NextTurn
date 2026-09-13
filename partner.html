@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NextTurn - Partner Dashboard</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f4f7fb;
+      color: #172033;
+    }
+
+    header {
+      background: #172554;
+      color: white;
+      padding: 18px 7%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      opacity: 0.85;
+      margin-top: 3px;
+    }
+
+    .logout {
+      background: white;
+      color: #172554;
+      border: none;
+      padding: 9px 16px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1100px;
+      margin: 30px auto;
+    }
+
+    .welcome {
+      margin-bottom: 25px;
+    }
+
+    .welcome h1 {
+      font-size: 28px;
+      margin-bottom: 7px;
+    }
+
+    .welcome p {
+      color: #64748b;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 25px;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 22px;
+      border-radius: 14px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    }
+
+    .stat-card p {
+      color: #64748b;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .stat-card h2 {
+      font-size: 25px;
+    }
+
+    .section {
+      background: white;
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 22px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    }
+
+    .section h2 {
+      margin-bottom: 18px;
+      font-size: 21px;
+    }
+
+    .partners {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+
+    .partner-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 18px;
+    }
+
+    .partner-card h3 {
+      margin-bottom: 7px;
+    }
+
+    .partner-card p {
+      color: #64748b;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .active {
+      display: inline-block;
+      background: #dcfce7;
+      color: #166534;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 13px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    th {
+      background: #f8fafc;
+    }
+
+    .info {
+      background: #eff6ff;
+      border-left: 4px solid #2563eb;
+      padding: 15px;
+      border-radius: 8px;
+      color: #1e3a8a;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 800px) {
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .partners {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .container {
+        width: 94%;
+      }
+
+      .welcome h1 {
+        font-size: 23px;
+      }
+
+      .section {
+        padding: 18px;
+        overflow-x: auto;
+      }
+
+      table {
+        min-width: 600px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div>
+    <div class="logo">⚡ NextTurn</div>
+    <div class="subtitle">College Canteen • Partner Dashboard</div>
+  </div>
+
+  <button class="logout" onclick="logout()">Logout</button>
+</header>
+
+<div class="container">
+
+  <div class="welcome">
+    <h1 id="welcomeTitle">Partner Dashboard</h1>
+    <p>Monitor the college canteen's overall business performance.</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat-card">
+      <p>Today's Revenue</p>
+      <h2 id="todayRevenue">₹0</h2>
+    </div>
+
+    <div class="stat-card">
+      <p>This Month</p>
+      <h2 id="monthlyRevenue">₹0</h2>
+    </div>
+
+    <div class="stat-card">
+      <p>Total Orders</p>
+      <h2 id="totalOrders">0</h2>
+    </div>
+
+    <div class="stat-card">
+      <p>Total Revenue</p>
+      <h2 id="totalRevenue">₹0</h2>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Canteen Partners</h2>
+
+    <div class="partners">
+
+      <div class="partner-card">
+        <h3>Principal</h3>
+        <p>College Canteen Partner</p>
+        <span class="active">Active</span>
+      </div>
+
+      <div class="partner-card">
+        <h3>Pratik</h3>
+        <p>College Canteen Partner</p>
+        <span class="active">Active</span>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Revenue Overview</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Period</th>
+          <th>Revenue</th>
+          <th>Orders</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td>Today</td>
+          <td id="tableTodayRevenue">₹0</td>
+          <td id="tableTodayOrders">0</td>
+        </tr>
+
+        <tr>
+          <td>This Month</td>
+          <td id="tableMonthRevenue">₹0</td>
+          <td id="tableMonthOrders">0</td>
+        </tr>
+
+        <tr>
+          <td>Total</td>
+          <td id="tableTotalRevenue">₹0</td>
+          <td id="tableTotalOrders">0</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2>Partner Access</h2>
+
+    <div class="info">
+      Partner accounts are private and are not visible to students.
+      Business and revenue information is available only to authorized
+      partner accounts. Partners cannot remove another partner.
+    </div>
+  </div>
+
+</div>
+
+<script>
+
+  // -----------------------------
+  // LOAD ORDERS
+  // -----------------------------
+
+  const history =
+    JSON.parse(localStorage.getItem("nextTurnOrderHistory") || "[]");
+
+  const current =
+    JSON.parse(localStorage.getItem("nextTurnCurrentOrder") || "null");
+
+  let orders = [...history];
+
+  if (
+    current &&
+    (current.orderStatus === "Completed" ||
+     current.orderStatus === "Collected")
+  ) {
+    orders.push(current);
+  }
+
+  // -----------------------------
+  // REVENUE CALCULATION
+  // -----------------------------
+
+  function getRevenue(order) {
+    return Number(order.total || order.grandTotal || 0);
+  }
+
+  function getOrderDate(order) {
+    if (order.createdAt) {
+      return new Date(order.createdAt);
+    }
+
+    return new Date();
+  }
+
+  const now = new Date();
+
+  let todayRevenue = 0;
+  let monthlyRevenue = 0;
+  let totalRevenue = 0;
+
+  let todayOrders = 0;
+  let monthlyOrders = 0;
+
+  orders.forEach(order => {
+
+    const revenue = getRevenue(order);
+    const date = getOrderDate(order);
+
+    totalRevenue += revenue;
+
+    if (
+      date.getDate() === now.getDate() &&
+      date.getMonth() === now.getMonth() &&
+      date.getFullYear() === now.getFullYear()
+    ) {
+      todayRevenue += revenue;
+      todayOrders++;
+    }
+
+    if (
+      date.getMonth() === now.getMonth() &&
+      date.getFullYear() === now.getFullYear()
+    ) {
+      monthlyRevenue += revenue;
+      monthlyOrders++;
+    }
+
+  });
+
+  // -----------------------------
+  // DISPLAY
+  // -----------------------------
+
+  document.getElementById("todayRevenue").textContent =
+    "₹" + todayRevenue.toFixed(2);
+
+  document.getElementById("monthlyRevenue").textContent =
+    "₹" + monthlyRevenue.toFixed(2);
+
+  document.getElementById("totalOrders").textContent =
+    orders.length;
+
+  document.getElementById("totalRevenue").textContent =
+    "₹" + totalRevenue.toFixed(2);
+
+  document.getElementById("tableTodayRevenue").textContent =
+    "₹" + todayRevenue.toFixed(2);
+
+  document.getElementById("tableTodayOrders").textContent =
+    todayOrders;
+
+  document.getElementById("tableMonthRevenue").textContent =
+    "₹" + monthlyRevenue.toFixed(2);
+
+  document.getElementById("tableMonthOrders").textContent =
+    monthlyOrders;
+
+  document.getElementById("tableTotalRevenue").textContent =
+    "₹" + totalRevenue.toFixed(2);
+
+  document.getElementById("tableTotalOrders").textContent =
+    orders.length;
+
+  // -----------------------------
+  // PARTNER NAME
+  // -----------------------------
+
+  const partnerId =
+    localStorage.getItem("nextTurnPartnerId");
+
+  if (partnerId) {
+    document.getElementById("welcomeTitle").textContent =
+      "Welcome, " + partnerId;
+  }
+
+  // -----------------------------
+  // LOGOUT
+  // -----------------------------
+
+  function logout() {
+    localStorage.removeItem("nextTurnUserRole");
+    localStorage.removeItem("nextTurnPartnerId");
+    window.location.href = "login.html";
+  }
+
+</script>
+
+</body>
+  </html>
