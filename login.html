@@ -142,6 +142,11 @@
       background: #1d4ed8;
     }
 
+    .login-button:disabled {
+      background: #94a3b8;
+      cursor: not-allowed;
+    }
+
     .note {
       background: #f1f5f9;
       padding: 11px;
@@ -202,6 +207,7 @@
     <div class="role-buttons">
 
       <button
+        type="button"
         class="role-btn active"
         id="studentRole"
         onclick="selectRole('student')">
@@ -212,6 +218,7 @@
       </button>
 
       <button
+        type="button"
         class="role-btn"
         id="staffRole"
         onclick="selectRole('staff')">
@@ -222,6 +229,7 @@
       </button>
 
       <button
+        type="button"
         class="role-btn"
         id="partnerRole"
         onclick="selectRole('partner')">
@@ -263,7 +271,8 @@
           type="email"
           id="studentEmail"
           placeholder="example@gmail.com"
-          autocomplete="email">
+          autocomplete="email"
+          required>
 
       </div>
 
@@ -277,13 +286,15 @@
           type="password"
           id="studentPassword"
           placeholder="Enter password"
-          autocomplete="current-password">
+          autocomplete="current-password"
+          required>
 
       </div>
 
       <button
         type="submit"
-        class="login-button">
+        class="login-button"
+        id="studentLoginButton">
 
         Login as Student
 
@@ -307,7 +318,8 @@
         <input
           type="text"
           id="staffId"
-          placeholder="Enter staff ID">
+          placeholder="Enter staff ID"
+          required>
 
       </div>
 
@@ -320,13 +332,16 @@
         <input
           type="password"
           id="staffPassword"
-          placeholder="Enter password">
+          placeholder="Enter password"
+          autocomplete="current-password"
+          required>
 
       </div>
 
       <button
         type="submit"
-        class="login-button">
+        class="login-button"
+        id="staffLoginButton">
 
         Login as Staff
 
@@ -350,7 +365,8 @@
         <input
           type="text"
           id="partnerId"
-          placeholder="Enter partner ID">
+          placeholder="Enter partner ID"
+          required>
 
       </div>
 
@@ -363,13 +379,16 @@
         <input
           type="password"
           id="partnerPassword"
-          placeholder="Enter partner password">
+          placeholder="Enter password"
+          autocomplete="current-password"
+          required>
 
       </div>
 
       <button
         type="submit"
-        class="login-button">
+        class="login-button"
+        id="partnerLoginButton">
 
         Login as Partner
 
@@ -401,6 +420,18 @@
 
 
 <script>
+
+  // ==========================================
+  // NEXTTURN BACKEND
+  // ==========================================
+
+  const API_BASE_URL =
+    "http://localhost:8080/api";
+
+
+  // ==========================================
+  // ROLE SELECTION
+  // ==========================================
 
   let selectedRole = "student";
 
@@ -500,113 +531,186 @@
 
 
   // ==========================================
+  // BUTTON LOADING STATE
+  // ==========================================
+
+  function setLoading(button, loading, text) {
+
+    if (loading) {
+
+      button.disabled = true;
+      button.textContent = "Logging in...";
+
+    } else {
+
+      button.disabled = false;
+      button.textContent = text;
+
+    }
+
+  }
+
+
+  // ==========================================
   // STUDENT LOGIN
   // ==========================================
 
   document
     .getElementById("studentForm")
-    .addEventListener("submit", async function(event) {
+    .addEventListener(
+      "submit",
+      async function(event) {
 
-      event.preventDefault();
+        event.preventDefault();
 
-      const email =
-        document.getElementById("studentEmail").value.trim();
+        const email =
+          document
+            .getElementById("studentEmail")
+            .value
+            .trim();
 
-      const password =
-        document.getElementById("studentPassword").value.trim();
+        const password =
+          document
+            .getElementById("studentPassword")
+            .value
+            .trim();
 
-
-      if (!email || !password) {
-
-        alert("Please enter Gmail and password.");
-
-        return;
-      }
-
-
-      if (!email.includes("@")) {
-
-        alert("Please enter a valid Gmail address.");
-
-        return;
-      }
+        const button =
+          document.getElementById(
+            "studentLoginButton"
+          );
 
 
-      try {
+        if (!email || !password) {
 
-        const response = await fetch(
-          "http://localhost:8080/api/student-login",
-          {
-            method: "POST",
+          alert(
+            "Please enter Gmail and password."
+          );
 
-            headers: {
-              "Content-Type": "application/json"
-            },
+          return;
+        }
 
-            body: JSON.stringify({
-              email: email,
-              password: password
-            })
+
+        if (!email.includes("@")) {
+
+          alert(
+            "Please enter a valid Gmail address."
+          );
+
+          return;
+        }
+
+
+        setLoading(
+          button,
+          true,
+          "Login as Student"
+        );
+
+
+        try {
+
+          const response =
+            await fetch(
+              `${API_BASE_URL}/student-login`,
+              {
+                method: "POST",
+
+                headers: {
+                  "Content-Type":
+                    "application/json"
+                },
+
+                body: JSON.stringify({
+                  email: email,
+                  password: password
+                })
+              }
+            );
+
+
+          if (response.status === 401) {
+
+            alert(
+              "Invalid Gmail or password."
+            );
+
+            setLoading(
+              button,
+              false,
+              "Login as Student"
+            );
+
+            return;
           }
-        );
 
 
-        if (response.status === 401) {
+          if (!response.ok) {
 
-          alert("Invalid Gmail or password.");
+            alert(
+              "Student login failed. Please try again."
+            );
 
-          return;
+            setLoading(
+              button,
+              false,
+              "Login as Student"
+            );
+
+            return;
+          }
+
+
+          const student =
+            await response.json();
+
+
+          localStorage.setItem(
+            "nextTurnUserRole",
+            "student"
+          );
+
+          localStorage.setItem(
+            "nextTurnStudentEmail",
+            student.email || email
+          );
+
+          localStorage.setItem(
+            "nextTurnStudentId",
+            student.studentId || ""
+          );
+
+          localStorage.setItem(
+            "nextTurnStudentName",
+            student.fullName || ""
+          );
+
+
+          window.location.href =
+            "student.html";
+
+
+        } catch (error) {
+
+          console.error(
+            "Student login error:",
+            error
+          );
+
+          alert(
+            "Cannot connect to NextTurn backend. Make sure Spring Boot is running on port 8080."
+          );
+
+          setLoading(
+            button,
+            false,
+            "Login as Student"
+          );
+
         }
-
-
-        if (!response.ok) {
-
-          alert("Student login failed. Please try again.");
-
-          return;
-        }
-
-
-        const student =
-          await response.json();
-
-
-        localStorage.setItem(
-          "nextTurnUserRole",
-          "student"
-        );
-
-        localStorage.setItem(
-          "nextTurnStudentEmail",
-          student.email
-        );
-
-        localStorage.setItem(
-          "nextTurnStudentId",
-          student.studentId
-        );
-
-        localStorage.setItem(
-          "nextTurnStudentName",
-          student.fullName
-        );
-
-
-        window.location.href =
-          "student.html";
-
-
-      } catch (error) {
-
-        console.error(error);
-
-        alert(
-          "Cannot connect to NextTurn backend. Make sure Spring Boot is running."
-        );
 
       }
-
-    });
+    );
 
 
   // ==========================================
@@ -615,95 +719,145 @@
 
   document
     .getElementById("staffForm")
-    .addEventListener("submit", async function(event) {
+    .addEventListener(
+      "submit",
+      async function(event) {
 
-      event.preventDefault();
+        event.preventDefault();
 
-      const id =
-        document.getElementById("staffId").value.trim();
+        const id =
+          document
+            .getElementById("staffId")
+            .value
+            .trim();
 
-      const password =
-        document.getElementById("staffPassword").value.trim();
+        const password =
+          document
+            .getElementById("staffPassword")
+            .value
+            .trim();
+
+        const button =
+          document.getElementById(
+            "staffLoginButton"
+          );
 
 
-      if (!id || !password) {
+        if (!id || !password) {
 
-        alert("Please enter Staff ID and password.");
+          alert(
+            "Please enter Staff ID and password."
+          );
 
-        return;
-      }
+          return;
+        }
 
 
-      try {
+        setLoading(
+          button,
+          true,
+          "Login as Staff"
+        );
 
-        const response = await fetch(
-          "http://localhost:8080/api/staff-login",
-          {
-            method: "POST",
 
-            headers: {
-              "Content-Type": "application/json"
-            },
+        try {
 
-            body: JSON.stringify({
-              staffId: id,
-              password: password
-            })
+          const response =
+            await fetch(
+              `${API_BASE_URL}/staff-login`,
+              {
+                method: "POST",
+
+                headers: {
+                  "Content-Type":
+                    "application/json"
+                },
+
+                body: JSON.stringify({
+                  staffId: id,
+                  password: password
+                })
+              }
+            );
+
+
+          if (response.status === 401) {
+
+            alert(
+              "Invalid Staff ID or password."
+            );
+
+            setLoading(
+              button,
+              false,
+              "Login as Staff"
+            );
+
+            return;
           }
-        );
 
 
-        if (response.status === 401) {
+          if (!response.ok) {
 
-          alert("Invalid Staff ID or password.");
+            alert(
+              "Staff login failed. Please try again."
+            );
 
-          return;
+            setLoading(
+              button,
+              false,
+              "Login as Staff"
+            );
+
+            return;
+          }
+
+
+          const staff =
+            await response.json();
+
+
+          localStorage.setItem(
+            "nextTurnUserRole",
+            "staff"
+          );
+
+          localStorage.setItem(
+            "nextTurnStaffId",
+            staff.staffId || id
+          );
+
+          localStorage.setItem(
+            "nextTurnStaffName",
+            staff.fullName || ""
+          );
+
+
+          window.location.href =
+            "staff.html";
+
+
+        } catch (error) {
+
+          console.error(
+            "Staff login error:",
+            error
+          );
+
+          alert(
+            "Cannot connect to NextTurn backend. Make sure Spring Boot is running on port 8080."
+          );
+
+          setLoading(
+            button,
+            false,
+            "Login as Staff"
+          );
+
         }
-
-
-        if (!response.ok) {
-
-          alert("Staff login failed. Please try again.");
-
-          return;
-        }
-
-
-        const staff =
-          await response.json();
-
-
-        localStorage.setItem(
-          "nextTurnUserRole",
-          "staff"
-        );
-
-        localStorage.setItem(
-          "nextTurnStaffId",
-          staff.staffId
-        );
-
-        localStorage.setItem(
-          "nextTurnStaffName",
-          staff.fullName
-        );
-
-
-        window.location.href =
-          "staff.html";
-
-
-      } catch (error) {
-
-        console.error(error);
-
-        alert(
-          "Cannot connect to NextTurn backend. Make sure Spring Boot is running."
-        );
 
       }
-
-    });
+    );
 
 
   // ==========================================
@@ -712,97 +866,147 @@
 
   document
     .getElementById("partnerForm")
-    .addEventListener("submit", async function(event) {
+    .addEventListener(
+      "submit",
+      async function(event) {
 
-      event.preventDefault();
+        event.preventDefault();
 
-      const id =
-        document.getElementById("partnerId").value.trim();
+        const id =
+          document
+            .getElementById("partnerId")
+            .value
+            .trim();
 
-      const password =
-        document.getElementById("partnerPassword").value.trim();
+        const password =
+          document
+            .getElementById("partnerPassword")
+            .value
+            .trim();
+
+        const button =
+          document.getElementById(
+            "partnerLoginButton"
+          );
 
 
-      if (!id || !password) {
+        if (!id || !password) {
 
-        alert("Please enter Partner ID and password.");
+          alert(
+            "Please enter Partner ID and password."
+          );
 
-        return;
-      }
+          return;
+        }
 
 
-      try {
+        setLoading(
+          button,
+          true,
+          "Login as Partner"
+        );
 
-        const response = await fetch(
-          "http://localhost:8080/api/partner-login",
-          {
-            method: "POST",
 
-            headers: {
-              "Content-Type": "application/json"
-            },
+        try {
 
-            body: JSON.stringify({
-              partnerId: id,
-              password: password
-            })
+          const response =
+            await fetch(
+              `${API_BASE_URL}/partner-login`,
+              {
+                method: "POST",
+
+                headers: {
+                  "Content-Type":
+                    "application/json"
+                },
+
+                body: JSON.stringify({
+                  partnerId: id,
+                  password: password
+                })
+              }
+            );
+
+
+          if (response.status === 401) {
+
+            alert(
+              "Invalid Partner ID or password."
+            );
+
+            setLoading(
+              button,
+              false,
+              "Login as Partner"
+            );
+
+            return;
           }
-        );
 
 
-        if (response.status === 401) {
+          if (!response.ok) {
 
-          alert("Invalid Partner ID or password.");
+            alert(
+              "Partner login failed. Please try again."
+            );
 
-          return;
+            setLoading(
+              button,
+              false,
+              "Login as Partner"
+            );
+
+            return;
+          }
+
+
+          const partner =
+            await response.json();
+
+
+          localStorage.setItem(
+            "nextTurnUserRole",
+            "partner"
+          );
+
+          localStorage.setItem(
+            "nextTurnPartnerId",
+            partner.partnerId || id
+          );
+
+          localStorage.setItem(
+            "nextTurnPartnerName",
+            partner.fullName || ""
+          );
+
+
+          window.location.href =
+            "partner.html";
+
+
+        } catch (error) {
+
+          console.error(
+            "Partner login error:",
+            error
+          );
+
+          alert(
+            "Cannot connect to NextTurn backend. Make sure Spring Boot is running on port 8080."
+          );
+
+          setLoading(
+            button,
+            false,
+            "Login as Partner"
+          );
+
         }
-
-
-        if (!response.ok) {
-
-          alert("Partner login failed. Please try again.");
-
-          return;
-        }
-
-
-        const partner =
-          await response.json();
-
-
-        localStorage.setItem(
-          "nextTurnUserRole",
-          "partner"
-        );
-
-        localStorage.setItem(
-          "nextTurnPartnerId",
-          partner.partnerId
-        );
-
-        localStorage.setItem(
-          "nextTurnPartnerName",
-          partner.fullName
-        );
-
-
-        window.location.href =
-          "partner.html";
-
-
-      } catch (error) {
-
-        console.error(error);
-
-        alert(
-          "Cannot connect to NextTurn backend. Make sure Spring Boot is running."
-        );
 
       }
-
-    });
+    );
 
 </script>
 
 </body>
-          </html>
+  </html>
