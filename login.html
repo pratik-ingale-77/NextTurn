@@ -1,1010 +1,444 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>NextTurn - Login</title>
+    <title>NextTurn - Login</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
 
-    body {
-      min-height: 100vh;
-      background: linear-gradient(135deg, #eef4ff, #f8fafc);
-      color: #172033;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #07152f, #0d2b5c);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
 
-    .container {
-      width: 100%;
-      max-width: 520px;
-    }
+        .login-container {
+            width: 100%;
+            max-width: 430px;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+        }
 
-    .brand {
-      text-align: center;
-      margin-bottom: 25px;
-    }
+        .logo {
+            text-align: center;
+            font-size: 30px;
+            font-weight: bold;
+            color: #0b2d63;
+            margin-bottom: 5px;
+        }
 
-    .brand h1 {
-      font-size: 32px;
-      color: #14213d;
-      margin-bottom: 5px;
-    }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 25px;
+        }
 
-    .brand p {
-      color: #64748b;
-      font-size: 14px;
-    }
+        .roles {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 25px;
+        }
 
-    .login-box {
-      background: white;
-      padding: 28px;
-      border-radius: 18px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-    }
+        .role-btn {
+            padding: 12px 5px;
+            border: 2px solid #d8dce5;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #333;
+        }
 
-    .role-buttons {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-bottom: 25px;
-    }
+        .role-btn.active {
+            background: #0b2d63;
+            color: white;
+            border-color: #0b2d63;
+        }
 
-    .role-btn {
-      border: 1px solid #dbe3ef;
-      background: #f8fafc;
-      padding: 13px 8px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: bold;
-      color: #475569;
-      transition: 0.2s;
-    }
+        .form-group {
+            margin-bottom: 17px;
+        }
 
-    .role-btn:hover {
-      border-color: #2563eb;
-    }
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+            color: #333;
+        }
 
-    .role-btn.active {
-      background: #14213d;
-      color: white;
-      border-color: #14213d;
-    }
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ccc;
+            border-radius: 9px;
+            font-size: 15px;
+            outline: none;
+        }
 
-    .role-icon {
-      display: block;
-      font-size: 21px;
-      margin-bottom: 4px;
-    }
+        input:focus {
+            border-color: #0b2d63;
+        }
 
-    .login-title {
-      text-align: center;
-      margin-bottom: 20px;
-    }
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: #0b2d63;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 5px;
+        }
 
-    .login-title h2 {
-      font-size: 22px;
-      margin-bottom: 5px;
-    }
+        .login-btn:hover {
+            background: #061d43;
+        }
 
-    .login-title p {
-      color: #64748b;
-      font-size: 13px;
-    }
+        .login-btn:disabled {
+            background: #888;
+            cursor: not-allowed;
+        }
 
-    .form-group {
-      margin-bottom: 16px;
-    }
+        .message {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            display: none;
+            text-align: center;
+            font-size: 14px;
+        }
 
-    label {
-      display: block;
-      font-size: 14px;
-      font-weight: bold;
-      margin-bottom: 7px;
-    }
+        .success {
+            display: block;
+            background: #e8f7ee;
+            color: #176b36;
+        }
 
-    input {
-      width: 100%;
-      padding: 13px;
-      border: 1px solid #dbe3ef;
-      border-radius: 9px;
-      font-size: 15px;
-      outline: none;
-    }
+        .error {
+            display: block;
+            background: #fdeaea;
+            color: #a32020;
+        }
 
-    input:focus {
-      border-color: #2563eb;
-    }
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #0b2d63;
+            text-decoration: none;
+            font-weight: bold;
+        }
 
-    .login-button {
-      width: 100%;
-      border: none;
-      background: #2563eb;
-      color: white;
-      padding: 14px;
-      border-radius: 9px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 5px;
-    }
+        @media (max-width: 450px) {
+            .login-container {
+                padding: 22px;
+            }
 
-    .login-button:hover {
-      background: #1d4ed8;
-    }
-
-    .login-button:disabled {
-      background: #94a3b8;
-      cursor: not-allowed;
-    }
-
-    .note {
-      background: #f1f5f9;
-      padding: 11px;
-      border-radius: 8px;
-      margin-top: 15px;
-      font-size: 12px;
-      color: #64748b;
-      text-align: center;
-    }
-
-    .back {
-      display: block;
-      text-align: center;
-      margin-top: 18px;
-      color: #2563eb;
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: bold;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    @media (max-width: 500px) {
-      .login-box {
-        padding: 22px;
-      }
-
-      .role-buttons {
-        gap: 7px;
-      }
-
-      .role-btn {
-        font-size: 12px;
-      }
-
-      .brand h1 {
-        font-size: 28px;
-      }
-    }
-  </style>
+            .roles {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="login-container">
 
-  <div class="brand">
-    <h1>⚡ NextTurn</h1>
-    <p>College Canteen • Smart Ordering System</p>
-  </div>
+    <div class="logo">⚡ NextTurn</div>
 
-  <div class="login-box">
-
-    <!-- ROLE SELECTION -->
-
-    <div class="role-buttons">
-
-      <button
-        type="button"
-        class="role-btn active"
-        id="studentRole"
-        onclick="selectRole('student')">
-
-        <span class="role-icon">🎓</span>
-        Student
-
-      </button>
-
-      <button
-        type="button"
-        class="role-btn"
-        id="staffRole"
-        onclick="selectRole('staff')">
-
-        <span class="role-icon">👨‍🍳</span>
-        Staff
-
-      </button>
-
-      <button
-        type="button"
-        class="role-btn"
-        id="partnerRole"
-        onclick="selectRole('partner')">
-
-        <span class="role-icon">🤝</span>
-        Partner
-
-      </button>
-
+    <div class="subtitle">
+        College Canteen Digital Ordering
     </div>
 
+    <div class="roles">
+        <button class="role-btn active" onclick="selectRole('student', this)">
+            Student
+        </button>
 
-    <!-- LOGIN TITLE -->
+        <button class="role-btn" onclick="selectRole('staff', this)">
+            Staff
+        </button>
 
-    <div class="login-title">
-
-      <h2 id="loginHeading">
-        Student Login
-      </h2>
-
-      <p id="loginDescription">
-        Login to order food from your classroom.
-      </p>
-
+        <button class="role-btn" onclick="selectRole('partner', this)">
+            Partner
+        </button>
     </div>
 
+    <form id="loginForm">
 
-    <!-- STUDENT FORM -->
+        <div class="form-group">
+            <label id="emailLabel">Gmail</label>
 
-    <form id="studentForm">
+            <input
+                type="email"
+                id="email"
+                placeholder="Enter your Gmail"
+                required
+            >
+        </div>
 
-      <div class="form-group">
+        <div class="form-group">
+            <label>Password</label>
 
-        <label for="studentEmail">
-          College Gmail
-        </label>
+            <input
+                type="password"
+                id="password"
+                placeholder="Enter password"
+                required
+            >
+        </div>
 
-        <input
-          type="email"
-          id="studentEmail"
-          placeholder="example@gmail.com"
-          autocomplete="email"
-          required>
-
-      </div>
-
-      <div class="form-group">
-
-        <label for="studentPassword">
-          Password
-        </label>
-
-        <input
-          type="password"
-          id="studentPassword"
-          placeholder="Enter password"
-          autocomplete="current-password"
-          required>
-
-      </div>
-
-      <button
-        type="submit"
-        class="login-button"
-        id="studentLoginButton">
-
-        Login as Student
-
-      </button>
+        <button
+            type="submit"
+            class="login-btn"
+            id="loginBtn"
+        >
+            Login as Student
+        </button>
 
     </form>
 
+    <div id="message" class="message"></div>
 
-    <!-- STAFF FORM -->
-
-    <form
-      id="staffForm"
-      class="hidden">
-
-      <div class="form-group">
-
-        <label for="staffId">
-          Staff ID
-        </label>
-
-        <input
-          type="text"
-          id="staffId"
-          placeholder="Enter staff ID"
-          required>
-
-      </div>
-
-      <div class="form-group">
-
-        <label for="staffPassword">
-          Password
-        </label>
-
-        <input
-          type="password"
-          id="staffPassword"
-          placeholder="Enter password"
-          autocomplete="current-password"
-          required>
-
-      </div>
-
-      <button
-        type="submit"
-        class="login-button"
-        id="staffLoginButton">
-
-        Login as Staff
-
-      </button>
-
-    </form>
-
-
-    <!-- PARTNER FORM -->
-
-    <form
-      id="partnerForm"
-      class="hidden">
-
-      <div class="form-group">
-
-        <label for="partnerId">
-          Partner ID
-        </label>
-
-        <input
-          type="text"
-          id="partnerId"
-          placeholder="Enter partner ID"
-          required>
-
-      </div>
-
-      <div class="form-group">
-
-        <label for="partnerPassword">
-          Password
-        </label>
-
-        <input
-          type="password"
-          id="partnerPassword"
-          placeholder="Enter password"
-          autocomplete="current-password"
-          required>
-
-      </div>
-
-      <button
-        type="submit"
-        class="login-button"
-        id="partnerLoginButton">
-
-        Login as Partner
-
-      </button>
-
-    </form>
-
-
-    <div
-      class="note"
-      id="loginNote">
-
-      Student accounts use college Gmail.
-      Staff and partner accounts use their assigned IDs.
-
-    </div>
-
-    <a
-      href="index.html"
-      class="back">
-
-      ← Back to Home
-
+    <a href="index.html" class="back">
+        ← Back to Home
     </a>
-
-  </div>
 
 </div>
 
-
 <script>
 
-  // ==========================================
-  // NEXTTURN BACKEND
-  // ==========================================
+    // LIVE JAVA SPRING BOOT BACKEND
+    const API_BASE_URL = "https://nextturn-mgbf.onrender.com";
 
-  const API_BASE_URL =
-    "http://localhost:8080/api";
+    let selectedRole = "student";
 
+    function selectRole(role, button) {
 
-  // ==========================================
-  // ROLE SELECTION
-  // ==========================================
+        selectedRole = role;
 
-  let selectedRole = "student";
+        document.querySelectorAll(".role-btn").forEach(btn => {
+            btn.classList.remove("active");
+        });
 
+        button.classList.add("active");
 
-  function selectRole(role) {
+        const emailLabel = document.getElementById("emailLabel");
+        const emailInput = document.getElementById("email");
+        const loginBtn = document.getElementById("loginBtn");
 
-    selectedRole = role;
+        if (role === "student") {
 
-    const studentRole =
-      document.getElementById("studentRole");
+            emailLabel.textContent = "Gmail";
+            emailInput.placeholder = "Enter your Gmail";
+            loginBtn.textContent = "Login as Student";
 
-    const staffRole =
-      document.getElementById("staffRole");
+        } else if (role === "staff") {
 
-    const partnerRole =
-      document.getElementById("partnerRole");
+            emailLabel.textContent = "Staff ID";
+            emailInput.placeholder = "Enter Staff ID";
+            loginBtn.textContent = "Login as Staff";
 
-    const studentForm =
-      document.getElementById("studentForm");
+        } else {
 
-    const staffForm =
-      document.getElementById("staffForm");
+            emailLabel.textContent = "Partner ID";
+            emailInput.placeholder = "Enter Partner ID";
+            loginBtn.textContent = "Login as Partner";
+        }
 
-    const partnerForm =
-      document.getElementById("partnerForm");
-
-    const heading =
-      document.getElementById("loginHeading");
-
-    const description =
-      document.getElementById("loginDescription");
-
-    const note =
-      document.getElementById("loginNote");
-
-
-    studentRole.classList.remove("active");
-    staffRole.classList.remove("active");
-    partnerRole.classList.remove("active");
-
-    studentForm.classList.add("hidden");
-    staffForm.classList.add("hidden");
-    partnerForm.classList.add("hidden");
-
-
-    if (role === "student") {
-
-      studentRole.classList.add("active");
-      studentForm.classList.remove("hidden");
-
-      heading.textContent =
-        "Student Login";
-
-      description.textContent =
-        "Login to order food from your classroom.";
-
-      note.textContent =
-        "Student accounts use college Gmail.";
-
+        hideMessage();
     }
 
 
-    else if (role === "staff") {
-
-      staffRole.classList.add("active");
-      staffForm.classList.remove("hidden");
-
-      heading.textContent =
-        "Staff Login";
-
-      description.textContent =
-        "Manage orders, payments, tokens and food.";
-
-      note.textContent =
-        "Staff accounts use their assigned Staff ID.";
-
-    }
-
-
-    else if (role === "partner") {
-
-      partnerRole.classList.add("active");
-      partnerForm.classList.remove("hidden");
-
-      heading.textContent =
-        "Partner Login";
-
-      description.textContent =
-        "View canteen business and revenue information.";
-
-      note.textContent =
-        "Partner accounts are private and are not visible to students.";
-
-    }
-
-  }
-
-
-  // ==========================================
-  // BUTTON LOADING STATE
-  // ==========================================
-
-  function setLoading(button, loading, text) {
-
-    if (loading) {
-
-      button.disabled = true;
-      button.textContent = "Logging in...";
-
-    } else {
-
-      button.disabled = false;
-      button.textContent = text;
-
-    }
-
-  }
-
-
-  // ==========================================
-  // STUDENT LOGIN
-  // ==========================================
-
-  document
-    .getElementById("studentForm")
-    .addEventListener(
-      "submit",
-      async function(event) {
+    document.getElementById("loginForm").addEventListener("submit", async function(event) {
 
         event.preventDefault();
 
-        const email =
-          document
-            .getElementById("studentEmail")
-            .value
-            .trim();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
 
-        const password =
-          document
-            .getElementById("studentPassword")
-            .value
-            .trim();
+        const loginBtn = document.getElementById("loginBtn");
 
-        const button =
-          document.getElementById(
-            "studentLoginButton"
-          );
-
+        hideMessage();
 
         if (!email || !password) {
 
-          alert(
-            "Please enter Gmail and password."
-          );
+            showMessage(
+                "Please enter your login details.",
+                "error"
+            );
 
-          return;
+            return;
+        }
+
+        let endpoint = "";
+
+        if (selectedRole === "student") {
+
+            endpoint = "/api/student-login";
+
+        } else if (selectedRole === "staff") {
+
+            endpoint = "/api/staff-login";
+
+        } else {
+
+            endpoint = "/api/partner-login";
         }
 
 
-        if (!email.includes("@")) {
-
-          alert(
-            "Please enter a valid Gmail address."
-          );
-
-          return;
-        }
-
-
-        setLoading(
-          button,
-          true,
-          "Login as Student"
-        );
+        loginBtn.disabled = true;
+        loginBtn.textContent = "Logging in...";
 
 
         try {
 
-          const response =
-            await fetch(
-              `${API_BASE_URL}/student-login`,
-              {
-                method: "POST",
+            const response = await fetch(
+                API_BASE_URL + endpoint,
+                {
+                    method: "POST",
 
-                headers: {
-                  "Content-Type":
-                    "application/json"
-                },
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
 
-                body: JSON.stringify({
-                  email: email,
-                  password: password
-                })
-              }
+                    body: JSON.stringify({
+                        email: email,
+                        password: password
+                    })
+                }
             );
 
 
-          if (response.status === 401) {
+            let data = {};
 
-            alert(
-              "Invalid Gmail or password."
+            try {
+                data = await response.json();
+            } catch {
+                data = {};
+            }
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.message ||
+                    data.error ||
+                    "Invalid login details."
+                );
+            }
+
+
+            // Save session information
+            localStorage.setItem(
+                "nextTurnRole",
+                selectedRole
             );
 
-            setLoading(
-              button,
-              false,
-              "Login as Student"
+            localStorage.setItem(
+                "nextTurnUser",
+                JSON.stringify(data)
             );
 
-            return;
-          }
 
-
-          if (!response.ok) {
-
-            alert(
-              "Student login failed. Please try again."
+            showMessage(
+                "Login successful! Redirecting...",
+                "success"
             );
 
-            setLoading(
-              button,
-              false,
-              "Login as Student"
-            );
 
-            return;
-          }
+            setTimeout(function() {
 
+                if (selectedRole === "student") {
 
-          const student =
-            await response.json();
+                    window.location.href = "student.html";
 
+                } else if (selectedRole === "staff") {
 
-          localStorage.setItem(
-            "nextTurnUserRole",
-            "student"
-          );
+                    window.location.href = "staff.html";
 
-          localStorage.setItem(
-            "nextTurnStudentEmail",
-            student.email || email
-          );
+                } else {
 
-          localStorage.setItem(
-            "nextTurnStudentId",
-            student.studentId || ""
-          );
+                    window.location.href = "partner.html";
+                }
 
-          localStorage.setItem(
-            "nextTurnStudentName",
-            student.fullName || ""
-          );
-
-
-          window.location.href =
-            "student.html";
+            }, 700);
 
 
         } catch (error) {
 
-          console.error(
-            "Student login error:",
-            error
-          );
+            console.error("Login error:", error);
 
-          alert(
-            "Cannot connect to NextTurn backend. Make sure Spring Boot is running on port 8080."
-          );
+            if (
+                error instanceof TypeError ||
+                error.message.includes("Failed to fetch")
+            ) {
 
-          setLoading(
-            button,
-            false,
-            "Login as Student"
-          );
+                showMessage(
+                    "Cannot connect to NextTurn server. Please try again.",
+                    "error"
+                );
 
+            } else {
+
+                showMessage(
+                    error.message,
+                    "error"
+                );
+            }
+
+        } finally {
+
+            loginBtn.disabled = false;
+
+            if (selectedRole === "student") {
+                loginBtn.textContent = "Login as Student";
+            } else if (selectedRole === "staff") {
+                loginBtn.textContent = "Login as Staff";
+            } else {
+                loginBtn.textContent = "Login as Partner";
+            }
         }
 
-      }
-    );
+    });
 
 
-  // ==========================================
-  // STAFF LOGIN
-  // ==========================================
+    function showMessage(text, type) {
 
-  document
-    .getElementById("staffForm")
-    .addEventListener(
-      "submit",
-      async function(event) {
+        const message = document.getElementById("message");
 
-        event.preventDefault();
+        message.textContent = text;
 
-        const id =
-          document
-            .getElementById("staffId")
-            .value
-            .trim();
+        message.className =
+            "message " + type;
+    }
 
-        const password =
-          document
-            .getElementById("staffPassword")
-            .value
-            .trim();
 
-        const button =
-          document.getElementById(
-            "staffLoginButton"
-          );
+    function hideMessage() {
 
+        const message = document.getElementById("message");
 
-        if (!id || !password) {
+        message.textContent = "";
 
-          alert(
-            "Please enter Staff ID and password."
-          );
-
-          return;
-        }
-
-
-        setLoading(
-          button,
-          true,
-          "Login as Staff"
-        );
-
-
-        try {
-
-          const response =
-            await fetch(
-              `${API_BASE_URL}/staff-login`,
-              {
-                method: "POST",
-
-                headers: {
-                  "Content-Type":
-                    "application/json"
-                },
-
-                body: JSON.stringify({
-                  staffId: id,
-                  password: password
-                })
-              }
-            );
-
-
-          if (response.status === 401) {
-
-            alert(
-              "Invalid Staff ID or password."
-            );
-
-            setLoading(
-              button,
-              false,
-              "Login as Staff"
-            );
-
-            return;
-          }
-
-
-          if (!response.ok) {
-
-            alert(
-              "Staff login failed. Please try again."
-            );
-
-            setLoading(
-              button,
-              false,
-              "Login as Staff"
-            );
-
-            return;
-          }
-
-
-          const staff =
-            await response.json();
-
-
-          localStorage.setItem(
-            "nextTurnUserRole",
-            "staff"
-          );
-
-          localStorage.setItem(
-            "nextTurnStaffId",
-            staff.staffId || id
-          );
-
-          localStorage.setItem(
-            "nextTurnStaffName",
-            staff.fullName || ""
-          );
-
-
-          window.location.href =
-            "staff.html";
-
-
-        } catch (error) {
-
-          console.error(
-            "Staff login error:",
-            error
-          );
-
-          alert(
-            "Cannot connect to NextTurn backend. Make sure Spring Boot is running on port 8080."
-          );
-
-          setLoading(
-            button,
-            false,
-            "Login as Staff"
-          );
-
-        }
-
-      }
-    );
-
-
-  // ==========================================
-  // PARTNER LOGIN
-  // ==========================================
-
-  document
-    .getElementById("partnerForm")
-    .addEventListener(
-      "submit",
-      async function(event) {
-
-        event.preventDefault();
-
-        const id =
-          document
-            .getElementById("partnerId")
-            .value
-            .trim();
-
-        const password =
-          document
-            .getElementById("partnerPassword")
-            .value
-            .trim();
-
-        const button =
-          document.getElementById(
-            "partnerLoginButton"
-          );
-
-
-        if (!id || !password) {
-
-          alert(
-            "Please enter Partner ID and password."
-          );
-
-          return;
-        }
-
-
-        setLoading(
-          button,
-          true,
-          "Login as Partner"
-        );
-
-
-        try {
-
-          const response =
-            await fetch(
-              `${API_BASE_URL}/partner-login`,
-              {
-                method: "POST",
-
-                headers: {
-                  "Content-Type":
-                    "application/json"
-                },
-
-                body: JSON.stringify({
-                  partnerId: id,
-                  password: password
-                })
-              }
-            );
-
-
-          if (response.status === 401) {
-
-            alert(
-              "Invalid Partner ID or password."
-            );
-
-            setLoading(
-              button,
-              false,
-              "Login as Partner"
-            );
-
-            return;
-          }
-
-
-          if (!response.ok) {
-
-            alert(
-              "Partner login failed. Please try again."
-            );
-
-            setLoading(
-              button,
-              false,
-              "Login as Partner"
-            );
-
-            return;
-          }
-
-
-          const partner =
-            await response.json();
-
-
-          localStorage.setItem(
-            "nextTurnUserRole",
-            "partner"
-          );
-
-          localStorage.setItem(
-            "nextTurnPartnerId",
-            partner.partnerId || id
-          );
-
-          localStorage.setItem(
-            "nextTurnPartnerName",
-            partner.fullName || ""
-          );
-
-
-          window.location.href =
-            "partner.html";
-
-
-        } catch (error) {
-
-          console.error(
-            "Partner login error:",
-            error
-          );
-
-          alert(
-            "Cannot connect to NextTurn backend. Make sure Spring Boot is running on port 8080."
-          );
-
-          setLoading(
-            button,
-            false,
-            "Login as Partner"
-          );
-
-        }
-
-      }
-    );
+        message.className = "message";
+    }
 
 </script>
 
