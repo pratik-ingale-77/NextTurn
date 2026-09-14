@@ -267,7 +267,6 @@
 
       </div>
 
-
       <div class="form-group">
 
         <label for="studentPassword">
@@ -281,7 +280,6 @@
           autocomplete="current-password">
 
       </div>
-
 
       <button
         type="submit"
@@ -313,7 +311,6 @@
 
       </div>
 
-
       <div class="form-group">
 
         <label for="staffPassword">
@@ -326,7 +323,6 @@
           placeholder="Enter password">
 
       </div>
-
 
       <button
         type="submit"
@@ -358,7 +354,6 @@
 
       </div>
 
-
       <div class="form-group">
 
         <label for="partnerPassword">
@@ -368,10 +363,9 @@
         <input
           type="password"
           id="partnerPassword"
-          placeholder="Enter password">
+          placeholder="Enter partner password">
 
       </div>
-
 
       <button
         type="submit"
@@ -505,11 +499,13 @@
   }
 
 
+  // ==========================================
   // STUDENT LOGIN
+  // ==========================================
 
   document
     .getElementById("studentForm")
-    .addEventListener("submit", function(event) {
+    .addEventListener("submit", async function(event) {
 
       event.preventDefault();
 
@@ -536,28 +532,90 @@
       }
 
 
-      localStorage.setItem(
-        "nextTurnUserRole",
-        "student"
-      );
+      try {
 
-      localStorage.setItem(
-        "nextTurnStudentEmail",
-        email
-      );
+        const response = await fetch(
+          "http://localhost:8080/api/student-login",
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+              email: email,
+              password: password
+            })
+          }
+        );
 
 
-      window.location.href =
-        "student.html";
+        if (response.status === 401) {
+
+          alert("Invalid Gmail or password.");
+
+          return;
+        }
+
+
+        if (!response.ok) {
+
+          alert("Student login failed. Please try again.");
+
+          return;
+        }
+
+
+        const student =
+          await response.json();
+
+
+        localStorage.setItem(
+          "nextTurnUserRole",
+          "student"
+        );
+
+        localStorage.setItem(
+          "nextTurnStudentEmail",
+          student.email
+        );
+
+        localStorage.setItem(
+          "nextTurnStudentId",
+          student.studentId
+        );
+
+        localStorage.setItem(
+          "nextTurnStudentName",
+          student.fullName
+        );
+
+
+        window.location.href =
+          "student.html";
+
+
+      } catch (error) {
+
+        console.error(error);
+
+        alert(
+          "Cannot connect to NextTurn backend. Make sure Spring Boot is running."
+        );
+
+      }
 
     });
 
 
+  // ==========================================
   // STAFF LOGIN
+  // ==========================================
 
   document
     .getElementById("staffForm")
-    .addEventListener("submit", function(event) {
+    .addEventListener("submit", async function(event) {
 
       event.preventDefault();
 
@@ -576,28 +634,85 @@
       }
 
 
-      localStorage.setItem(
-        "nextTurnUserRole",
-        "staff"
-      );
+      try {
 
-      localStorage.setItem(
-        "nextTurnStaffId",
-        id
-      );
+        const response = await fetch(
+          "http://localhost:8080/api/staff-login",
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+              staffId: id,
+              password: password
+            })
+          }
+        );
 
 
-      window.location.href =
-        "staff.html";
+        if (response.status === 401) {
+
+          alert("Invalid Staff ID or password.");
+
+          return;
+        }
+
+
+        if (!response.ok) {
+
+          alert("Staff login failed. Please try again.");
+
+          return;
+        }
+
+
+        const staff =
+          await response.json();
+
+
+        localStorage.setItem(
+          "nextTurnUserRole",
+          "staff"
+        );
+
+        localStorage.setItem(
+          "nextTurnStaffId",
+          staff.staffId
+        );
+
+        localStorage.setItem(
+          "nextTurnStaffName",
+          staff.fullName
+        );
+
+
+        window.location.href =
+          "staff.html";
+
+
+      } catch (error) {
+
+        console.error(error);
+
+        alert(
+          "Cannot connect to NextTurn backend. Make sure Spring Boot is running."
+        );
+
+      }
 
     });
 
 
+  // ==========================================
   // PARTNER LOGIN
+  // ==========================================
 
   document
     .getElementById("partnerForm")
-    .addEventListener("submit", function(event) {
+    .addEventListener("submit", async function(event) {
 
       event.preventDefault();
 
@@ -616,19 +731,74 @@
       }
 
 
-      localStorage.setItem(
-        "nextTurnUserRole",
-        "partner"
-      );
+      try {
 
-      localStorage.setItem(
-        "nextTurnPartnerId",
-        id
-      );
+        const response = await fetch(
+          "http://localhost:8080/api/partner-login",
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+              partnerId: id,
+              password: password
+            })
+          }
+        );
 
 
-      window.location.href =
-        "partner.html";
+        if (response.status === 401) {
+
+          alert("Invalid Partner ID or password.");
+
+          return;
+        }
+
+
+        if (!response.ok) {
+
+          alert("Partner login failed. Please try again.");
+
+          return;
+        }
+
+
+        const partner =
+          await response.json();
+
+
+        localStorage.setItem(
+          "nextTurnUserRole",
+          "partner"
+        );
+
+        localStorage.setItem(
+          "nextTurnPartnerId",
+          partner.partnerId
+        );
+
+        localStorage.setItem(
+          "nextTurnPartnerName",
+          partner.fullName
+        );
+
+
+        window.location.href =
+          "partner.html";
+
+
+      } catch (error) {
+
+        console.error(error);
+
+        alert(
+          "Cannot connect to NextTurn backend. Make sure Spring Boot is running."
+        );
+
+      }
 
     });
 
