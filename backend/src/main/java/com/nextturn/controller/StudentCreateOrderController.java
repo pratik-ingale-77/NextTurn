@@ -20,11 +20,16 @@ public class StudentCreateOrderController {
     public ResponseEntity<Order> createOrder(
             @RequestBody Order order) {
 
+        // Set initial order status
         order.setPaymentStatus("Pending Verification");
         order.setOrderStatus("Payment Submitted");
 
-        return ResponseEntity.ok(
-                orderRepository.save(order)
-        );
+        // Token is generated only after staff verifies payment
+        order.setTokenNumber(null);
+
+        // Save order to MySQL
+        Order savedOrder = orderRepository.save(order);
+
+        return ResponseEntity.ok(savedOrder);
     }
 }
