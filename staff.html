@@ -81,7 +81,7 @@
 
         .stats {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             gap: 15px;
             margin-bottom: 25px;
         }
@@ -252,6 +252,11 @@
             color: white;
         }
 
+        .ready-btn {
+            background: #16a34a;
+            color: white;
+        }
+
         .complete {
             background: #7c3aed;
             color: white;
@@ -274,6 +279,77 @@
             font-weight: bold;
         }
 
+        /* FOOD / STOCK */
+
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .food-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 15px;
+            background: #ffffff;
+        }
+
+        .food-name {
+            font-size: 17px;
+            font-weight: bold;
+            color: #0b1f3a;
+            margin-bottom: 5px;
+        }
+
+        .food-category {
+            color: #64748b;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .food-price {
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .availability {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .available {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .unavailable {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .stock-btn {
+            width: 100%;
+            border: none;
+            padding: 10px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .stock-btn.out {
+            background: #ef4444;
+            color: white;
+        }
+
+        .stock-btn.in {
+            background: #16a34a;
+            color: white;
+        }
+
         .empty {
             text-align: center;
             padding: 30px;
@@ -293,6 +369,16 @@
             padding: 14px;
             border-radius: 8px;
             margin-bottom: 15px;
+        }
+
+        @media (max-width: 1000px) {
+            .stats {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .food-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         @media (max-width: 800px) {
@@ -322,6 +408,10 @@
             .stat-card strong {
                 font-size: 23px;
             }
+
+            .food-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -342,10 +432,12 @@
     <div class="top-bar">
         <h2>Staff Dashboard</h2>
 
-        <button class="refresh-btn" onclick="loadOrders()">
-            🔄 Refresh Orders
+        <button class="refresh-btn" onclick="refreshEverything()">
+            🔄 Refresh
         </button>
     </div>
+
+    <!-- STATS -->
 
     <div class="stats">
 
@@ -365,6 +457,11 @@
         </div>
 
         <div class="stat-card">
+            <h3>Ready</h3>
+            <strong id="readyOrders">0</strong>
+        </div>
+
+        <div class="stat-card">
             <h3>Completed</h3>
             <strong id="completedOrders">0</strong>
         </div>
@@ -372,6 +469,22 @@
     </div>
 
     <div id="message"></div>
+
+    <!-- MENU & STOCK -->
+
+    <div class="section">
+
+        <h2>🍔 Menu & Stock</h2>
+
+        <div id="foodContainer">
+            <div class="loading">
+                Loading menu...
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ORDERS -->
 
     <div class="section">
 
@@ -385,12 +498,27 @@
 
     </div>
 
-  </div>
-  <script>
+</div>
+
+<script>
 
 const API_BASE_URL =
     "https://nextturn-mgbf.onrender.com";
 
+
+/* =========================
+   LOAD EVERYTHING
+========================= */
+
+function refreshEverything() {
+    loadOrders();
+    loadFoodItems();
+}
+
+
+/* =========================
+   ORDERS
+========================= */
 
 async function loadOrders() {
 
@@ -403,7 +531,12 @@ async function loadOrders() {
     try {
 
         const response = await fetch(
-            API_BASE_URL + "/api/staff/orders"
+            API_BASE_URL +
+            "/api/staff/orders?t=" +
+            Date.now(),
+            {
+                cache: "no-store"
+            }
         );
 
         if (!response.ok) {
@@ -430,6 +563,10 @@ async function loadOrders() {
 }
 
 
+/* =========================
+   STATS
+========================= */
+
 function updateStats(orders) {
 
     document.getElementById("totalOrders").textContent =
@@ -448,6 +585,12 @@ function updateStats(orders) {
                 order.orderStatus === "Preparing"
         ).length;
 
+    document.getElementById("readyOrders").textContent =
+        orders.filter(
+            order =>
+                order.orderStatus === "Ready"
+        ).length;
+
     document.getElementById("completedOrders").textContent =
         orders.filter(
             order =>
@@ -455,6 +598,10 @@ function updateStats(orders) {
         ).length;
 }
 
+
+/* =========================
+   DISPLAY ORDERS
+========================= */
 
 function displayOrders(orders) {
 
@@ -491,6 +638,12 @@ function createOrderCard(order) {
     const tokenGenerated =
         order.tokenNumber !== null &&
         order.tokenNumber !== undefined;
+
+    const preparing =
+        order.orderStatus === "Preparing";
+
+    const ready =
+        order.orderStatus === "Ready";
 
     const completed =
         order.orderStatus === "Completed";
@@ -622,7 +775,22 @@ function createOrderCard(order) {
                 }
 
                 ${
-                    tokenGenerated && !completed
+                    tokenGenerated && preparing
+                    ?
+                    `
+                    <button
+                        class="action ready-btn"
+                        onclick="markAsReady(${order.id})"
+                    >
+                        🍔 Mark as Ready
+                    </button>
+                    `
+                    :
+                    ""
+                }
+
+                ${
+                    tokenGenerated && ready
                     ?
                     `
                     <button
@@ -636,6 +804,21 @@ function createOrderCard(order) {
                     ""
                 }
 
+                ${
+                    completed
+                    ?
+                    `
+                    <button
+                        class="action complete disabled"
+                        disabled
+                    >
+                        ✓ Completed
+                    </button>
+                    `
+                    :
+                    ""
+                }
+
             </div>
 
         </div>
@@ -643,9 +826,428 @@ function createOrderCard(order) {
 }
 
 
+/* =========================
+   FOOD ITEMS
+========================= */
+
+async function loadFoodItems() {
+
+    const container =
+        document.getElementById("foodContainer");
+
+    container.innerHTML =
+        '<div class="loading">Loading menu...</div>';
+
+    try {
+
+        const response = await fetch(
+            API_BASE_URL +
+            "/api/staff/food?t=" +
+            Date.now(),
+            {
+                cache: "no-store"
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("Unable to load food items");
+        }
+
+        const foodItems =
+            await response.json();
+
+        displayFoodItems(foodItems);
+
+    } catch (error) {
+
+        console.error(error);
+
+        container.innerHTML = `
+            <div class="error">
+                Unable to load menu items.
+            </div>
+        `;
+    }
+}
+
+
+function displayFoodItems(foodItems) {
+
+    const container =
+        document.getElementById("foodContainer");
+
+    if (!foodItems || foodItems.length === 0) {
+
+        container.innerHTML = `
+            <div class="empty">
+                No food items found.
+            </div>
+        `;
+
+        return;
+    }
+
+    container.innerHTML = `
+        <div class="food-grid">
+
+            ${
+                foodItems.map(item => {
+
+                    const available =
+                        item.available === true;
+
+                    return `
+                        <div class="food-card">
+
+                            <div class="food-name">
+                                ${escapeHTML(
+                                    item.name ||
+                                    "Food Item"
+                                )}
+                            </div>
+
+                            <div class="food-category">
+                                ${escapeHTML(
+                                    item.category ||
+                                    "Menu"
+                                )}
+                            </div>
+
+                            <div class="food-price">
+                                ₹${Number(
+                                    item.price || 0
+                                ).toFixed(2)}
+                            </div>
+
+                            <div class="
+                                availability
+                                ${
+                                    available
+                                    ? "available"
+                                    : "unavailable"
+                                }
+                            ">
+                                ${
+                                    available
+                                    ? "● Available"
+                                    : "● Out of Stock"
+                                }
+                            </div>
+
+                            <button
+                                class="stock-btn
+                                ${
+                                    available
+                                    ? "out"
+                                    : "in"
+                                }"
+                                onclick="
+                                    toggleAvailability(
+                                        ${item.id},
+                                        ${available}
+                                    )
+                                "
+                            >
+                                ${
+                                    available
+                                    ? "Mark Out of Stock"
+                                    : "Mark Available"
+                                }
+                            </button>
+
+                        </div>
+                    `;
+
+                }).join("")
+            }
+
+        </div>
+    `;
+}
+
+
+/* =========================
+   TOGGLE STOCK
+========================= */
+
+async function toggleAvailability(
+    id,
+    currentlyAvailable
+) {
+
+    const action =
+        currentlyAvailable
+        ? "mark this item as Out of Stock?"
+        : "make this item Available?";
+
+    if (!confirm("Do you want to " + action)) {
+        return;
+    }
+
+    const endpoint =
+        currentlyAvailable
+        ?
+        "/api/staff/food/" +
+        id +
+        "/unavailable"
+        :
+        "/api/staff/food/" +
+        id +
+        "/available";
+
+    try {
+
+        const response = await fetch(
+            API_BASE_URL + endpoint,
+            {
+                method: "PUT"
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error(
+                "Availability update failed"
+            );
+        }
+
+        await response.json();
+
+        showMessage(
+            currentlyAvailable
+            ? "Food item marked as Out of Stock."
+            : "Food item is now Available."
+        );
+
+        await loadFoodItems();
+
+    } catch (error) {
+
+        console.error(error);
+
+        showError(
+            "Unable to update food availability."
+        );
+    }
+}
+
+
+/* =========================
+   VERIFY PAYMENT
+========================= */
+
+async function verifyPayment(id) {
+
+    if (!confirm(
+        "Verify payment for Order #" + id + "?"
+    )) {
+        return;
+    }
+
+    try {
+
+        const response = await fetch(
+            API_BASE_URL +
+            "/api/staff/payments/" +
+            id +
+            "/verify",
+            {
+                method: "PUT"
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error(
+                "Payment verification failed"
+            );
+        }
+
+        await response.json();
+
+        showMessage(
+            "Payment verified successfully for Order #" +
+            id
+        );
+
+        await loadOrders();
+
+    } catch (error) {
+
+        console.error(error);
+
+        showError(
+            "Unable to verify payment."
+        );
+    }
+}
+
+
+/* =========================
+   GENERATE TOKEN
+========================= */
+
+async function generateToken(id) {
+
+    if (!confirm(
+        "Generate a token for Order #" + id + "?"
+    )) {
+        return;
+    }
+
+    try {
+
+        const response = await fetch(
+            API_BASE_URL +
+            "/api/staff/tokens/" +
+            id +
+            "/generate",
+            {
+                method: "PUT"
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error(
+                "Token generation failed"
+            );
+        }
+
+        const updatedOrder =
+            await response.json();
+
+        showMessage(
+            "Token " +
+            updatedOrder.tokenNumber +
+            " generated for Order #" +
+            id +
+            ". Order is now Preparing."
+        );
+
+        await loadOrders();
+
+    } catch (error) {
+
+        console.error(error);
+
+        showError(
+            "Unable to generate token. Make sure payment is verified first."
+        );
+    }
+}
+
+
+/* =========================
+   MARK READY
+========================= */
+
+async function markAsReady(id) {
+
+    if (!confirm(
+        "Mark Order #" +
+        id +
+        " as Ready?"
+    )) {
+        return;
+    }
+
+    try {
+
+        const response = await fetch(
+            API_BASE_URL +
+            "/api/staff/ready/" +
+            id,
+            {
+                method: "PUT"
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error(
+                "Could not mark order as ready"
+            );
+        }
+
+        await response.json();
+
+        showMessage(
+            "🍔 Order #" +
+            id +
+            " is now Ready for collection."
+        );
+
+        await loadOrders();
+
+    } catch (error) {
+
+        console.error(error);
+
+        showError(
+            "Unable to mark this order as Ready."
+        );
+    }
+}
+
+
+/* =========================
+   COMPLETE ORDER
+========================= */
+
+async function completeOrder(id) {
+
+    if (!confirm(
+        "Mark Order #" +
+        id +
+        " as completed?"
+    )) {
+        return;
+    }
+
+    try {
+
+        const response = await fetch(
+            API_BASE_URL +
+            "/api/staff/orders/" +
+            id +
+            "/complete",
+            {
+                method: "PUT"
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error(
+                "Could not complete order"
+            );
+        }
+
+        await response.json();
+
+        showMessage(
+            "Order #" +
+            id +
+            " marked as completed."
+        );
+
+        await loadOrders();
+
+    } catch (error) {
+
+        console.error(error);
+
+        showError(
+            "Unable to complete this order."
+        );
+    }
+}
+
+
+/* =========================
+   FOOD ITEMS HTML
+========================= */
+
 function getItemsHTML(foodItems) {
 
     if (!foodItems) {
+
         return `
             <div class="items">
                 <strong>Food Items</strong>
@@ -662,12 +1264,15 @@ function getItemsHTML(foodItems) {
                 : foodItems;
 
         if (!Array.isArray(items)) {
+
             return `
                 <div class="items">
                     <strong>Food Items</strong>
-                    <div>${escapeHTML(
-                        String(foodItems)
-                    )}</div>
+                    <div>
+                        ${escapeHTML(
+                            String(foodItems)
+                        )}
+                    </div>
                 </div>
             `;
         }
@@ -719,147 +1324,9 @@ function getItemsHTML(foodItems) {
 }
 
 
-async function verifyPayment(id) {
-
-    if (!confirm(
-        "Verify payment for Order #" + id + "?"
-    )) {
-        return;
-    }
-
-    try {
-
-        const response = await fetch(
-            API_BASE_URL +
-            "/api/staff/payments/" +
-            id +
-            "/verify",
-            {
-                method: "PUT"
-            }
-        );
-
-        if (!response.ok) {
-            throw new Error(
-                "Payment verification failed"
-            );
-        }
-
-        await response.json();
-
-        showMessage(
-            "Payment verified successfully for Order #" +
-            id
-        );
-
-        await loadOrders();
-
-    } catch (error) {
-
-        console.error(error);
-
-        showError(
-            "Unable to verify payment."
-        );
-    }
-}
-
-
-async function generateToken(id) {
-
-    if (!confirm(
-        "Generate a token for Order #" + id + "?"
-    )) {
-        return;
-    }
-
-    try {
-
-        const response = await fetch(
-            API_BASE_URL +
-            "/api/staff/tokens/" +
-            id +
-            "/generate",
-            {
-                method: "PUT"
-            }
-        );
-
-        if (!response.ok) {
-            throw new Error(
-                "Token generation failed"
-            );
-        }
-
-        const updatedOrder =
-            await response.json();
-
-        showMessage(
-            "Token " +
-            updatedOrder.tokenNumber +
-            " generated for Order #" +
-            id
-        );
-
-        await loadOrders();
-
-    } catch (error) {
-
-        console.error(error);
-
-        showError(
-            "Unable to generate token. Make sure payment is verified first."
-        );
-    }
-}
-
-
-async function completeOrder(id) {
-
-    if (!confirm(
-        "Mark Order #" + id + " as completed?"
-    )) {
-        return;
-    }
-
-    try {
-
-        const response = await fetch(
-            API_BASE_URL +
-            "/api/staff/orders/" +
-            id +
-            "/complete",
-            {
-                method: "PUT"
-            }
-        );
-
-        if (!response.ok) {
-            throw new Error(
-                "Could not complete order"
-            );
-        }
-
-        await response.json();
-
-        showMessage(
-            "Order #" +
-            id +
-            " marked as completed."
-        );
-
-        await loadOrders();
-
-    } catch (error) {
-
-        console.error(error);
-
-        showError(
-            "Unable to complete this order."
-        );
-    }
-}
-
+/* =========================
+   STATUS CLASS
+========================= */
 
 function getStatusClass(status) {
 
@@ -886,6 +1353,10 @@ function getStatusClass(status) {
     return "pending";
 }
 
+
+/* =========================
+   MESSAGES
+========================= */
 
 function showMessage(text) {
 
@@ -917,6 +1388,10 @@ function showError(text) {
 }
 
 
+/* =========================
+   SECURITY
+========================= */
+
 function escapeHTML(value) {
 
     const div =
@@ -928,21 +1403,29 @@ function escapeHTML(value) {
 }
 
 
+/* =========================
+   LOGOUT
+========================= */
+
 function logout() {
 
     localStorage.removeItem("nextTurnUser");
     localStorage.removeItem("nextTurnRole");
+    localStorage.removeItem("nextTurnCurrentOrder");
 
     window.location.href =
         "login.html";
 }
 
 
-// Load real MySQL orders
+/* =========================
+   INITIAL LOAD
+========================= */
+
 loadOrders();
+loadFoodItems();
 
 </script>
 
 </body>
-  </html>
-  
+</html>
