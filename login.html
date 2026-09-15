@@ -168,33 +168,52 @@
     </div>
 
     <div class="roles">
-        <button class="role-btn active" onclick="selectRole('student', this)">
+
+        <button
+            type="button"
+            class="role-btn active"
+            onclick="selectRole('student', this)"
+        >
             Student
         </button>
 
-        <button class="role-btn" onclick="selectRole('staff', this)">
+        <button
+            type="button"
+            class="role-btn"
+            onclick="selectRole('staff', this)"
+        >
             Staff
         </button>
 
-        <button class="role-btn" onclick="selectRole('partner', this)">
+        <button
+            type="button"
+            class="role-btn"
+            onclick="selectRole('partner', this)"
+        >
             Partner
         </button>
+
     </div>
 
     <form id="loginForm">
 
         <div class="form-group">
+
             <label id="emailLabel">Gmail</label>
 
+            <!-- TEXT instead of EMAIL so Staff ID works -->
             <input
-                type="email"
+                type="text"
                 id="email"
                 placeholder="Enter your Gmail"
                 required
+                autocomplete="username"
             >
+
         </div>
 
         <div class="form-group">
+
             <label>Password</label>
 
             <input
@@ -202,7 +221,9 @@
                 id="password"
                 placeholder="Enter password"
                 required
+                autocomplete="current-password"
             >
+
         </div>
 
         <button
@@ -230,199 +251,305 @@
 
     let selectedRole = "student";
 
+
     function selectRole(role, button) {
 
         selectedRole = role;
 
-        document.querySelectorAll(".role-btn").forEach(btn => {
+        document.querySelectorAll(".role-btn").forEach(function(btn) {
             btn.classList.remove("active");
         });
 
         button.classList.add("active");
 
-        const emailLabel = document.getElementById("emailLabel");
-        const emailInput = document.getElementById("email");
-        const loginBtn = document.getElementById("loginBtn");
+        const emailLabel =
+            document.getElementById("emailLabel");
+
+        const emailInput =
+            document.getElementById("email");
+
+        const loginBtn =
+            document.getElementById("loginBtn");
+
 
         if (role === "student") {
 
             emailLabel.textContent = "Gmail";
-            emailInput.placeholder = "Enter your Gmail";
-            loginBtn.textContent = "Login as Student";
 
-        } else if (role === "staff") {
+            emailInput.placeholder =
+                "Enter your Gmail";
+
+            loginBtn.textContent =
+                "Login as Student";
+
+        }
+
+        else if (role === "staff") {
 
             emailLabel.textContent = "Staff ID";
-            emailInput.placeholder = "Enter Staff ID";
-            loginBtn.textContent = "Login as Staff";
 
-        } else {
+            emailInput.placeholder =
+                "Enter Staff ID";
+
+            loginBtn.textContent =
+                "Login as Staff";
+
+        }
+
+        else {
 
             emailLabel.textContent = "Partner ID";
-            emailInput.placeholder = "Enter Partner ID";
-            loginBtn.textContent = "Login as Partner";
+
+            emailInput.placeholder =
+                "Enter Partner ID";
+
+            loginBtn.textContent =
+                "Login as Partner";
         }
+
+
+        // Clear previous input when changing role
+        emailInput.value = "";
+
+        document.getElementById("password").value = "";
 
         hideMessage();
     }
 
 
-    document.getElementById("loginForm").addEventListener("submit", async function(event) {
+    document
+        .getElementById("loginForm")
+        .addEventListener("submit", async function(event) {
 
-        event.preventDefault();
-
-        const email = document.getElementById("email").value.trim();
-        const password = document.getElementById("password").value;
-
-        const loginBtn = document.getElementById("loginBtn");
-
-        hideMessage();
-
-        if (!email || !password) {
-
-            showMessage(
-                "Please enter your login details.",
-                "error"
-            );
-
-            return;
-        }
-
-        let endpoint = "";
-
-        if (selectedRole === "student") {
-
-            endpoint = "/api/student-login";
-
-        } else if (selectedRole === "staff") {
-
-            endpoint = "/api/staff-login";
-
-        } else {
-
-            endpoint = "/api/partner-login";
-        }
+            event.preventDefault();
 
 
-        loginBtn.disabled = true;
-        loginBtn.textContent = "Logging in...";
+            const loginValue =
+                document.getElementById("email").value.trim();
+
+            const password =
+                document.getElementById("password").value;
 
 
-        try {
-
-            const response = await fetch(
-                API_BASE_URL + endpoint,
-                {
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-
-                    body: JSON.stringify({
-                        email: email,
-                        password: password
-                    })
-                }
-            );
+            const loginBtn =
+                document.getElementById("loginBtn");
 
 
-            let data = {};
+            hideMessage();
+
+
+            if (!loginValue || !password) {
+
+                showMessage(
+                    "Please enter your login details.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            let endpoint = "";
+
+            let requestBody = {};
+
+
+            // STUDENT LOGIN
+            if (selectedRole === "student") {
+
+                endpoint = "/api/student-login";
+
+                requestBody = {
+                    email: loginValue,
+                    password: password
+                };
+
+            }
+
+
+            // STAFF LOGIN
+            else if (selectedRole === "staff") {
+
+                endpoint = "/api/staff-login";
+
+                requestBody = {
+                    staffId: loginValue,
+                    password: password
+                };
+
+            }
+
+
+            // PARTNER LOGIN
+            else {
+
+                endpoint = "/api/partner-login";
+
+                requestBody = {
+                    partnerId: loginValue,
+                    password: password
+                };
+            }
+
+
+            loginBtn.disabled = true;
+
+            loginBtn.textContent =
+                "Logging in...";
+
 
             try {
-                data = await response.json();
-            } catch {
-                data = {};
-            }
 
+                const response = await fetch(
+                    API_BASE_URL + endpoint,
+                    {
+                        method: "POST",
 
-            if (!response.ok) {
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
 
-                throw new Error(
-                    data.message ||
-                    data.error ||
-                    "Invalid login details."
+                        body: JSON.stringify(requestBody)
+                    }
                 );
+
+
+                let data = {};
+
+
+                try {
+
+                    data = await response.json();
+
+                } catch {
+
+                    data = {};
+                }
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        data.message ||
+                        data.error ||
+                        "Invalid login details."
+                    );
+                }
+
+
+                // Save role
+                localStorage.setItem(
+                    "nextTurnRole",
+                    selectedRole
+                );
+
+
+                // Save user information
+                localStorage.setItem(
+                    "nextTurnUser",
+                    JSON.stringify(data)
+                );
+
+
+                showMessage(
+                    "Login successful! Redirecting...",
+                    "success"
+                );
+
+
+                setTimeout(function() {
+
+                    if (selectedRole === "student") {
+
+                        window.location.href =
+                            "student.html";
+
+                    }
+
+                    else if (selectedRole === "staff") {
+
+                        window.location.href =
+                            "staff.html";
+
+                    }
+
+                    else {
+
+                        window.location.href =
+                            "partner.html";
+                    }
+
+                }, 700);
+
+
             }
 
 
-            // Save session information
-            localStorage.setItem(
-                "nextTurnRole",
-                selectedRole
-            );
+            catch (error) {
 
-            localStorage.setItem(
-                "nextTurnUser",
-                JSON.stringify(data)
-            );
+                console.error(
+                    "Login error:",
+                    error
+                );
 
 
-            showMessage(
-                "Login successful! Redirecting...",
-                "success"
-            );
+                if (
+                    error instanceof TypeError ||
+                    error.message.includes("Failed to fetch")
+                ) {
+
+                    showMessage(
+                        "Cannot connect to NextTurn server. Please try again.",
+                        "error"
+                    );
+
+                }
+
+                else {
+
+                    showMessage(
+                        error.message,
+                        "error"
+                    );
+                }
+
+            }
 
 
-            setTimeout(function() {
+            finally {
+
+                loginBtn.disabled = false;
+
 
                 if (selectedRole === "student") {
 
-                    window.location.href = "student.html";
+                    loginBtn.textContent =
+                        "Login as Student";
 
-                } else if (selectedRole === "staff") {
-
-                    window.location.href = "staff.html";
-
-                } else {
-
-                    window.location.href = "partner.html";
                 }
 
-            }, 700);
+                else if (selectedRole === "staff") {
 
+                    loginBtn.textContent =
+                        "Login as Staff";
 
-        } catch (error) {
+                }
 
-            console.error("Login error:", error);
+                else {
 
-            if (
-                error instanceof TypeError ||
-                error.message.includes("Failed to fetch")
-            ) {
+                    loginBtn.textContent =
+                        "Login as Partner";
+                }
 
-                showMessage(
-                    "Cannot connect to NextTurn server. Please try again.",
-                    "error"
-                );
-
-            } else {
-
-                showMessage(
-                    error.message,
-                    "error"
-                );
             }
 
-        } finally {
-
-            loginBtn.disabled = false;
-
-            if (selectedRole === "student") {
-                loginBtn.textContent = "Login as Student";
-            } else if (selectedRole === "staff") {
-                loginBtn.textContent = "Login as Staff";
-            } else {
-                loginBtn.textContent = "Login as Partner";
-            }
-        }
-
-    });
+        });
 
 
     function showMessage(text, type) {
 
-        const message = document.getElementById("message");
+        const message =
+            document.getElementById("message");
 
         message.textContent = text;
 
@@ -433,7 +560,8 @@
 
     function hideMessage() {
 
-        const message = document.getElementById("message");
+        const message =
+            document.getElementById("message");
 
         message.textContent = "";
 
@@ -443,4 +571,4 @@
 </script>
 
 </body>
-  </html>
+    </html>
