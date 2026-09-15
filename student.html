@@ -1,1049 +1,577 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NextTurn - Student Dashboard</title>
 
-  <title>NextTurn - Student Dashboard</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
+        body {
+            background: #f4f7fb;
+            color: #172033;
+        }
 
-    body {
-      background: #f4f7fb;
-      color: #172033;
-    }
+        header {
+            background: #0b1f3a;
+            color: white;
+            padding: 18px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-    header {
-      background: #172554;
-      color: white;
-      padding: 17px 6%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
+        .logo {
+            font-size: 23px;
+            font-weight: bold;
+        }
 
-    .logo {
-      font-size: 24px;
-      font-weight: bold;
-    }
+        .logout {
+            background: #e53935;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
 
-    .subtitle {
-      font-size: 13px;
-      opacity: 0.85;
-      margin-top: 3px;
-    }
+        .container {
+            max-width: 1100px;
+            margin: 25px auto;
+            padding: 0 18px;
+        }
 
-    .logout {
-      background: white;
-      color: #172554;
-      border: none;
-      padding: 9px 16px;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+        .welcome {
+            margin-bottom: 22px;
+        }
 
-    .container {
-      width: 90%;
-      max-width: 1100px;
-      margin: 30px auto;
-    }
+        .welcome h1 {
+            font-size: 28px;
+            margin-bottom: 6px;
+        }
 
-    .welcome {
-      margin-bottom: 22px;
-    }
+        .welcome p {
+            color: #667085;
+        }
 
-    .welcome h1 {
-      font-size: 28px;
-      margin-bottom: 6px;
-    }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
 
-    .welcome p {
-      color: #64748b;
-    }
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 22px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.07);
+        }
 
-    .notification {
-      background: #eff6ff;
-      border-left: 5px solid #2563eb;
-      padding: 15px 18px;
-      border-radius: 10px;
-      margin-bottom: 24px;
-      line-height: 1.5;
-    }
+        .card h3 {
+            margin-bottom: 8px;
+        }
 
-    .notification strong {
-      color: #1e3a8a;
-    }
+        .card p {
+            color: #667085;
+            line-height: 1.5;
+        }
 
-    .current-order {
-      background: white;
-      border-radius: 15px;
-      padding: 22px;
-      margin-bottom: 25px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-    }
+        .primary {
+            display: inline-block;
+            margin-top: 15px;
+            background: #1769e0;
+            color: white;
+            text-decoration: none;
+            padding: 11px 17px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
 
-    .current-order h2 {
-      margin-bottom: 18px;
-      font-size: 21px;
-    }
+        .section-title {
+            margin: 25px 0 12px;
+            font-size: 21px;
+        }
 
-    .order-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 15px;
-    }
+        .current-order {
+            background: white;
+            border-radius: 14px;
+            padding: 25px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.07);
+        }
 
-    .order-box {
-      background: #f8fafc;
-      border-radius: 10px;
-      padding: 15px;
-    }
+        .no-order {
+            color: #667085;
+            padding: 15px 0;
+        }
 
-    .order-box small {
-      display: block;
-      color: #64748b;
-      margin-bottom: 7px;
-    }
+        .token {
+            font-size: 42px;
+            font-weight: bold;
+            color: #1769e0;
+            margin: 12px 0;
+        }
 
-    .order-box strong {
-      font-size: 18px;
-    }
+        .status {
+            display: inline-block;
+            padding: 8px 13px;
+            border-radius: 20px;
+            background: #eef4ff;
+            color: #1769e0;
+            font-weight: bold;
+            margin-top: 8px;
+        }
 
-    .token {
-      font-size: 30px !important;
-      color: #2563eb;
-    }
+        .details {
+            margin-top: 18px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
 
-    .status {
-      display: inline-block;
-      padding: 6px 10px;
-      border-radius: 20px;
-      background: #fef3c7;
-      color: #92400e;
-      font-size: 13px;
-      font-weight: bold;
-    }
+        .detail {
+            background: #f7f9fc;
+            padding: 13px;
+            border-radius: 8px;
+        }
 
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-      margin-bottom: 25px;
-    }
+        .detail small {
+            display: block;
+            color: #667085;
+            margin-bottom: 5px;
+        }
 
-    .dashboard-card {
-      background: white;
-      border-radius: 14px;
-      padding: 22px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-      cursor: pointer;
-      transition: 0.2s;
-    }
+        .notifications {
+            margin-top: 25px;
+        }
 
-    .dashboard-card:hover {
-      transform: translateY(-3px);
-    }
+        .notification {
+            background: white;
+            padding: 16px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
 
-    .icon {
-      font-size: 30px;
-      margin-bottom: 12px;
-    }
+        .loading {
+            color: #667085;
+            padding: 15px 0;
+        }
 
-    .dashboard-card h3 {
-      margin-bottom: 7px;
-    }
+        .error {
+            color: #c62828;
+            background: #fff0f0;
+            padding: 15px;
+            border-radius: 8px;
+        }
 
-    .dashboard-card p {
-      color: #64748b;
-      font-size: 14px;
-      line-height: 1.5;
-    }
+        @media (max-width: 750px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
 
-    .section {
-      background: white;
-      border-radius: 14px;
-      padding: 23px;
-      margin-bottom: 22px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-    }
+            .details {
+                grid-template-columns: 1fr;
+            }
 
-    .section h2 {
-      margin-bottom: 17px;
-      font-size: 21px;
-    }
+            .welcome h1 {
+                font-size: 23px;
+            }
 
-    .hidden {
-      display: none;
-    }
-
-    .history-item {
-      border: 1px solid #e2e8f0;
-      border-radius: 10px;
-      padding: 15px;
-      margin-bottom: 12px;
-    }
-
-    .history-item:last-child {
-      margin-bottom: 0;
-    }
-
-    .history-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 8px;
-    }
-
-    .history-item p {
-      color: #64748b;
-      font-size: 14px;
-      margin-top: 5px;
-    }
-
-    .profile-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 13px 0;
-      border-bottom: 1px solid #e2e8f0;
-      gap: 15px;
-    }
-
-    .profile-row:last-child {
-      border-bottom: none;
-    }
-
-    .profile-label {
-      color: #64748b;
-    }
-
-    .empty {
-      color: #64748b;
-      text-align: center;
-      padding: 20px;
-      background: #f8fafc;
-      border-radius: 10px;
-    }
-
-    .loading {
-      color: #64748b;
-      padding: 15px 0;
-    }
-
-    .error {
-      color: #b91c1c;
-      background: #fef2f2;
-      padding: 12px;
-      border-radius: 8px;
-    }
-
-    @media (max-width: 850px) {
-      .order-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .dashboard-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (max-width: 550px) {
-      .container {
-        width: 94%;
-        margin-top: 22px;
-      }
-
-      .welcome h1 {
-        font-size: 23px;
-      }
-
-      .order-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .dashboard-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .current-order,
-      .section {
-        padding: 17px;
-      }
-
-      .history-top {
-        flex-direction: column;
-      }
-
-      .profile-row {
-        flex-direction: column;
-        gap: 5px;
-      }
-    }
-  </style>
+            .token {
+                font-size: 36px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
 <header>
-
-  <div>
     <div class="logo">⚡ NextTurn</div>
-    <div class="subtitle">College Canteen • Student</div>
-  </div>
-
-  <button class="logout" onclick="logout()">Logout</button>
-
+    <button class="logout" onclick="logout()">Logout</button>
 </header>
 
 <div class="container">
 
-  <div class="welcome">
-    <h1 id="welcomeText">Welcome, Student 👋</h1>
-
-    <p>
-      Order your food from the classroom and track your canteen order.
-    </p>
-  </div>
-
-  <div class="notification">
-
-    <strong>🔔 Notification</strong>
-
-    <div id="notificationText">
-      Welcome to NextTurn. Your canteen orders will appear here.
+    <div class="welcome">
+        <h1 id="welcomeText">Welcome, Student 👋</h1>
+        <p>Manage your canteen orders without standing in the queue.</p>
     </div>
 
-  </div>
+    <div class="grid">
 
-  <div class="current-order">
+        <div class="card">
+            <h3>🍔 Order Food</h3>
+            <p>Choose currently available food items and place your canteen order.</p>
+            <a href="order.html" class="primary">Order Now</a>
+        </div>
 
-    <h2>🎟️ Current Order</h2>
+        <div class="card">
+            <h3>📦 Track Order</h3>
+            <p>Track your token and order status after payment verification.</p>
+            <a href="#currentOrder" class="primary">Track Order</a>
+        </div>
 
-    <div class="order-grid">
-
-      <div class="order-box">
-        <small>Your Token</small>
-        <strong class="token" id="currentToken">—</strong>
-      </div>
-
-      <div class="order-box">
-        <small>Order Status</small>
-
-        <span class="status" id="orderStatus">
-          No Active Order
-        </span>
-      </div>
-
-      <div class="order-box">
-        <small>Current Token Being Served</small>
-        <strong id="servingToken">—</strong>
-      </div>
-
-      <div class="order-box">
-        <small>Orders Before You</small>
-        <strong id="ordersBefore">—</strong>
-      </div>
+        <div class="card">
+            <h3>👤 My Profile</h3>
+            <p id="profileInfo">Loading profile...</p>
+        </div>
 
     </div>
 
-  </div>
+    <h2 class="section-title" id="currentOrder">
+        Current Order
+    </h2>
 
-  <div class="dashboard-grid">
-
-    <div class="dashboard-card" onclick="orderFood()">
-      <div class="icon">🍔</div>
-      <h3>Order Food</h3>
-      <p>Browse the canteen menu and place your order.</p>
+    <div class="current-order" id="currentOrderContainer">
+        <div class="loading">
+            Checking your current order...
+        </div>
     </div>
 
-    <div class="dashboard-card" onclick="trackOrder()">
-      <div class="icon">🎟️</div>
-      <h3>Track My Order</h3>
-      <p>Check your token, queue position and order status.</p>
+    <h2 class="section-title">
+        Notifications
+    </h2>
+
+    <div class="notifications" id="notificationsContainer">
+        <div class="notification">
+            🔔 Your order notifications will appear here.
+        </div>
     </div>
-
-    <div class="dashboard-card" onclick="showOrderHistory()">
-      <div class="icon">📋</div>
-      <h3>Order History</h3>
-      <p>View your previous canteen orders.</p>
-    </div>
-
-    <div class="dashboard-card" onclick="showPaymentHistory()">
-      <div class="icon">💳</div>
-      <h3>Payment History</h3>
-      <p>View payment and verification status.</p>
-    </div>
-
-    <div class="dashboard-card" onclick="showNotifications()">
-      <div class="icon">🔔</div>
-      <h3>Notifications</h3>
-      <p>See updates about your order and token.</p>
-    </div>
-
-    <div class="dashboard-card" onclick="showProfile()">
-      <div class="icon">👤</div>
-      <h3>My Profile</h3>
-      <p>View your student account information.</p>
-    </div>
-
-  </div>
-
-  <div id="trackSection" class="section hidden">
-    <h2>🎟️ Track My Order</h2>
-    <div id="trackContent"></div>
-  </div>
-
-  <div id="historySection" class="section hidden">
-    <h2>📋 Order History</h2>
-    <div id="historyContent"></div>
-  </div>
-
-  <div id="paymentSection" class="section hidden">
-    <h2>💳 Payment History</h2>
-    <div id="paymentContent"></div>
-  </div>
-
-  <div id="notificationSection" class="section hidden">
-    <h2>🔔 Notifications</h2>
-    <div id="notificationsContent"></div>
-  </div>
-
-  <div id="profileSection" class="section hidden">
-
-    <h2>👤 My Profile</h2>
-
-    <div id="profileContent">
-      <div class="loading">
-        Loading your profile...
-      </div>
-    </div>
-
-  </div>
 
 </div>
 
 <script>
 
-const API_BASE_URL = "https://nextturn-mgbf.onrender.com";
+const API_BASE_URL =
+    "https://nextturn-mgbf.onrender.com";
 
+let studentId = "STU001";
 
-// ==========================================
-// GET CURRENT ORDER
-// ==========================================
+function getStudentSession() {
 
-function getCurrentOrder() {
+    try {
 
-  return JSON.parse(
-    localStorage.getItem("nextTurnCurrentOrder") || "null"
-  );
+        const user =
+            JSON.parse(
+                localStorage.getItem("nextTurnUser") || "{}"
+            );
 
+        if (user.studentId) {
+            studentId = user.studentId;
+        }
+
+        if (user.fullName) {
+            document.getElementById("welcomeText").textContent =
+                "Welcome, " + user.fullName + " 👋";
+        }
+
+        document.getElementById("profileInfo").innerHTML =
+            `
+            <strong>${escapeHTML(user.fullName || "Student")}</strong><br>
+            ${escapeHTML(user.studentId || studentId)}<br>
+            ${escapeHTML(user.email || "")}
+            `;
+
+    } catch (error) {
+
+        console.error("Session error:", error);
+
+    }
 }
 
 
-// ==========================================
-// STUDENT SESSION
-// ==========================================
+/*
+    IMPORTANT:
+    This function ONLY gets the current order
+    from the backend.
 
-const studentId =
-  localStorage.getItem("nextTurnStudentId") || "STU001";
+    It does NOT fall back to old localStorage data.
+*/
+async function loadCurrentOrder() {
 
-const studentEmail =
-  localStorage.getItem("nextTurnStudentEmail") || "student@gmail.com";
+    const container =
+        document.getElementById("currentOrderContainer");
+
+    try {
+
+        const response = await fetch(
+            API_BASE_URL +
+            "/api/student/orders/current/" +
+            encodeURIComponent(studentId) +
+            "?t=" +
+            Date.now(),
+            {
+                cache: "no-store"
+            }
+        );
+
+        /*
+            404 means there is no active order.
+            This is NOT an error.
+        */
+        if (response.status === 404) {
+
+            showNoCurrentOrder();
+
+            return;
+        }
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Server returned HTTP " +
+                response.status
+            );
+        }
+
+        const order =
+            await response.json();
+
+        displayCurrentOrder(order);
+
+    } catch (error) {
+
+        console.error(
+            "Current order error:",
+            error
+        );
+
+        container.innerHTML =
+            `
+            <div class="error">
+                Unable to load your current order.
+                Please try again in a moment.
+            </div>
+            `;
+    }
+}
 
 
-// ==========================================
-// REAL STUDENT PROFILE
-// ==========================================
+function displayCurrentOrder(order) {
 
-let studentProfile = null;
+    const container =
+        document.getElementById("currentOrderContainer");
 
+    const token =
+        order.tokenNumber;
 
-async function loadStudentProfile() {
+    const orderStatus =
+        order.orderStatus || "Unknown";
 
-  try {
+    const paymentStatus =
+        order.paymentStatus || "Unknown";
 
-    const response = await fetch(
-      API_BASE_URL +
-      "/api/student/profile/" +
-      encodeURIComponent(studentId)
-    );
+    let tokenHTML = "";
 
-    if (!response.ok) {
-      throw new Error("Profile could not be loaded");
+    if (
+        token !== null &&
+        token !== undefined
+    ) {
+
+        tokenHTML =
+            `
+            <div>
+                <small>Your Token</small>
+                <div class="token">
+                    ${escapeHTML(String(token))}
+                </div>
+            </div>
+            `;
+
+    } else {
+
+        tokenHTML =
+            `
+            <div class="status">
+                Token Pending
+            </div>
+            `;
     }
 
-    studentProfile = await response.json();
 
-    document.getElementById("welcomeText").textContent =
-      "Welcome, " +
-      studentProfile.fullName +
-      " 👋";
+    let notificationMessage =
+        "Your order has been submitted.";
 
-  } catch (error) {
+    if (orderStatus === "Payment Submitted") {
 
-    console.error("Profile error:", error);
+        notificationMessage =
+            "💳 Payment submitted. Waiting for staff verification.";
 
-    document.getElementById("welcomeText").textContent =
-      "Welcome, " +
-      studentEmail.split("@")[0] +
-      " 👋";
+    } else if (orderStatus === "Payment Verified") {
 
-  }
+        notificationMessage =
+            "✅ Payment verified. Your token will be generated shortly.";
 
-}
+    } else if (orderStatus === "Preparing") {
 
+        notificationMessage =
+            "👨‍🍳 Your food is being prepared.";
 
-// ==========================================
-// CURRENT ORDER
-// ==========================================
+    } else if (orderStatus === "Ready") {
 
-function updateCurrentOrder() {
+        notificationMessage =
+            "🎉 Your food is ready for collection!";
 
-  const order = getCurrentOrder();
+    }
 
-  if (!order) {
 
-    document.getElementById("currentToken").textContent = "—";
+    container.innerHTML =
+        `
+        <h3>Order #${escapeHTML(String(order.id))}</h3>
 
-    document.getElementById("orderStatus").textContent =
-      "No Active Order";
+        ${tokenHTML}
 
-    document.getElementById("servingToken").textContent = "—";
+        <div class="details">
 
-    document.getElementById("ordersBefore").textContent = "—";
+            <div class="detail">
+                <small>Order Status</small>
+                <strong>
+                    ${escapeHTML(orderStatus)}
+                </strong>
+            </div>
 
-    return;
-  }
+            <div class="detail">
+                <small>Payment Status</small>
+                <strong>
+                    ${escapeHTML(paymentStatus)}
+                </strong>
+            </div>
 
-  const token = order.token || "Pending";
+            <div class="detail">
+                <small>Total Amount</small>
+                <strong>
+                    ₹${Number(order.totalAmount || 0).toFixed(2)}
+                </strong>
+            </div>
 
-  document.getElementById("currentToken").textContent =
-    token;
-
-  document.getElementById("orderStatus").textContent =
-    order.orderStatus || "Payment Submitted";
-
-  const servingToken =
-    localStorage.getItem("nextTurnServingToken");
-
-  document.getElementById("servingToken").textContent =
-    servingToken || "—";
-
-  if (token !== "Pending" && servingToken) {
-
-    const difference =
-      Number(token) - Number(servingToken);
-
-    document.getElementById("ordersBefore").textContent =
-      difference > 0 ? difference : 0;
-
-  } else {
-
-    document.getElementById("ordersBefore").textContent =
-      "Waiting";
-
-  }
-
-}
-
-
-// ==========================================
-// NOTIFICATION
-// ==========================================
-
-function updateNotification() {
-
-  const notification =
-    localStorage.getItem("nextTurnNotification");
-
-  const readyToken =
-    localStorage.getItem("nextTurnReadyToken");
-
-  if (notification) {
-
-    document.getElementById("notificationText").textContent =
-      notification;
-
-  }
-
-  if (readyToken) {
-
-    document.getElementById("notificationText").textContent =
-      "🎉 Your food with token " +
-      readyToken +
-      " is ready for collection!";
-
-  }
-
-}
-
-
-// ==========================================
-// ORDER FOOD
-// ==========================================
-
-function orderFood() {
-
-  window.location.href = "order.html";
-
-}
-
-
-// ==========================================
-// TRACK ORDER
-// ==========================================
-
-function trackOrder() {
-
-  hideAllSections();
-
-  const section =
-    document.getElementById("trackSection");
-
-  section.classList.remove("hidden");
-
-  const order = getCurrentOrder();
-
-  const content =
-    document.getElementById("trackContent");
-
-  if (!order) {
-
-    content.innerHTML = `
-      <div class="empty">
-        You don't have an active order yet.
-        <br><br>
-        Go to <b>Order Food</b> to place your first order.
-      </div>
-    `;
-
-    section.scrollIntoView({
-      behavior: "smooth"
-    });
-
-    return;
-  }
-
-  const token =
-    order.token || "Not Generated Yet";
-
-  const status =
-    order.orderStatus || "Payment Submitted";
-
-  const payment =
-    order.paymentStatus || "Pending Verification";
-
-  content.innerHTML = `
-
-    <div class="order-grid">
-
-      <div class="order-box">
-        <small>Order ID</small>
-        <strong>${order.orderId || "—"}</strong>
-      </div>
-
-      <div class="order-box">
-        <small>Token</small>
-        <strong class="token">${token}</strong>
-      </div>
-
-      <div class="order-box">
-        <small>Payment</small>
-        <strong>${payment}</strong>
-      </div>
-
-      <div class="order-box">
-        <small>Status</small>
-        <strong>${status}</strong>
-      </div>
-
-    </div>
-
-  `;
-
-  section.scrollIntoView({
-    behavior: "smooth"
-  });
-
-}
-
-
-// ==========================================
-// ORDER HISTORY
-// ==========================================
-
-function showOrderHistory() {
-
-  hideAllSections();
-
-  const section =
-    document.getElementById("historySection");
-
-  section.classList.remove("hidden");
-
-  const history =
-    JSON.parse(
-      localStorage.getItem("nextTurnOrderHistory") || "[]"
-    );
-
-  const content =
-    document.getElementById("historyContent");
-
-  if (history.length === 0) {
-
-    content.innerHTML = `
-      <div class="empty">
-        No completed orders yet.
-      </div>
-    `;
-
-  } else {
-
-    content.innerHTML = history.map((order, index) => {
-
-      const date =
-        order.createdAt
-        ? new Date(order.createdAt).toLocaleString()
-        : "Date unavailable";
-
-      return `
-
-        <div class="history-item">
-
-          <div class="history-top">
-
-            <strong>
-              Order ${order.orderId || "#" + (index + 1)}
-            </strong>
-
-            <strong>
-              ₹${Number(order.total || 0).toFixed(2)}
-            </strong>
-
-          </div>
-
-          <p>
-            Token:
-            ${order.token || "—"}
-          </p>
-
-          <p>
-            Status:
-            ${order.orderStatus || "Completed"}
-          </p>
-
-          <p>
-            ${date}
-          </p>
+            <div class="detail">
+                <small>Student ID</small>
+                <strong>
+                    ${escapeHTML(order.studentId || studentId)}
+                </strong>
+            </div>
 
         </div>
+        `;
 
-      `;
 
-    }).join("");
-
-  }
-
-  section.scrollIntoView({
-    behavior: "smooth"
-  });
-
+    document.getElementById(
+        "notificationsContainer"
+    ).innerHTML =
+        `
+        <div class="notification">
+            ${notificationMessage}
+        </div>
+        `;
 }
 
 
-// ==========================================
-// PAYMENT HISTORY
-// ==========================================
+function showNoCurrentOrder() {
 
-function showPaymentHistory() {
+    const container =
+        document.getElementById("currentOrderContainer");
 
-  hideAllSections();
+    container.innerHTML =
+        `
+        <div class="no-order">
 
-  const section =
-    document.getElementById("paymentSection");
+            <h3>No active order</h3>
 
-  section.classList.remove("hidden");
+            <p style="margin-top:8px;">
+                You currently don't have an active canteen order.
+            </p>
 
-  const current =
-    getCurrentOrder();
-
-  const history =
-    JSON.parse(
-      localStorage.getItem("nextTurnOrderHistory") || "[]"
-    );
-
-  const payments = [];
-
-  if (current) {
-    payments.push(current);
-  }
-
-  history.forEach(order => {
-    payments.push(order);
-  });
-
-  const content =
-    document.getElementById("paymentContent");
-
-  if (payments.length === 0) {
-
-    content.innerHTML = `
-      <div class="empty">
-        No payment records found.
-      </div>
-    `;
-
-  } else {
-
-    content.innerHTML = payments.map(order => {
-
-      return `
-
-        <div class="history-item">
-
-          <div class="history-top">
-
-            <strong>
-              ${order.orderId || "Order"}
-            </strong>
-
-            <strong>
-              ₹${Number(order.total || 0).toFixed(2)}
-            </strong>
-
-          </div>
-
-          <p>
-            Payment:
-            ${order.paymentStatus || "Pending Verification"}
-          </p>
-
-          <p>
-            Payment Proof:
-            Submitted
-          </p>
+            <a href="order.html" class="primary">
+                Order Food
+            </a>
 
         </div>
+        `;
 
-      `;
-
-    }).join("");
-
-  }
-
-  section.scrollIntoView({
-    behavior: "smooth"
-  });
-
+    document.getElementById(
+        "notificationsContainer"
+    ).innerHTML =
+        `
+        <div class="notification">
+            🍽️ You don't have an active order right now.
+        </div>
+        `;
 }
 
 
-// ==========================================
-// NOTIFICATIONS
-// ==========================================
+function escapeHTML(value) {
 
-function showNotifications() {
+    const div =
+        document.createElement("div");
 
-  hideAllSections();
+    div.textContent =
+        value == null ? "" : String(value);
 
-  const section =
-    document.getElementById("notificationSection");
-
-  section.classList.remove("hidden");
-
-  const content =
-    document.getElementById("notificationsContent");
-
-  const notification =
-    localStorage.getItem("nextTurnNotification");
-
-  const readyToken =
-    localStorage.getItem("nextTurnReadyToken");
-
-  let messages = [];
-
-  if (notification) {
-    messages.push(notification);
-  }
-
-  if (readyToken) {
-
-    messages.push(
-      "🎉 Your food with token " +
-      readyToken +
-      " is ready for collection."
-    );
-
-  }
-
-  if (messages.length === 0) {
-
-    messages.push(
-      "No new notifications."
-    );
-
-  }
-
-  content.innerHTML =
-    messages.map(message => `
-
-      <div class="history-item">
-        🔔 ${message}
-      </div>
-
-    `).join("");
-
-  section.scrollIntoView({
-    behavior: "smooth"
-  });
-
+    return div.innerHTML;
 }
 
-
-// ==========================================
-// PROFILE
-// ==========================================
-
-async function showProfile() {
-
-  hideAllSections();
-
-  const section =
-    document.getElementById("profileSection");
-
-  section.classList.remove("hidden");
-
-  const content =
-    document.getElementById("profileContent");
-
-  content.innerHTML = `
-    <div class="loading">
-      Loading profile...
-    </div>
-  `;
-
-  try {
-
-    if (!studentProfile) {
-      await loadStudentProfile();
-    }
-
-    if (!studentProfile) {
-      throw new Error("Profile unavailable");
-    }
-
-    content.innerHTML = `
-
-      <div class="profile-row">
-        <span class="profile-label">
-          Full Name
-        </span>
-
-        <strong>
-          ${studentProfile.fullName || "Not provided"}
-        </strong>
-      </div>
-
-      <div class="profile-row">
-        <span class="profile-label">
-          Student ID
-        </span>
-
-        <strong>
-          ${studentProfile.studentId || "Not provided"}
-        </strong>
-      </div>
-
-      <div class="profile-row">
-        <span class="profile-label">
-          College Gmail
-        </span>
-
-        <strong>
-          ${studentProfile.email || studentEmail}
-        </strong>
-      </div>
-
-      <div class="profile-row">
-        <span class="profile-label">
-          Phone
-        </span>
-
-        <strong>
-          Not provided
-        </strong>
-      </div>
-
-    `;
-
-  } catch (error) {
-
-    content.innerHTML = `
-      <div class="error">
-        Unable to load your profile from the server.
-      </div>
-    `;
-
-  }
-
-  section.scrollIntoView({
-    behavior: "smooth"
-  });
-
-}
-
-
-// ==========================================
-// HIDE SECTIONS
-// ==========================================
-
-function hideAllSections() {
-
-  document
-    .querySelectorAll(".section")
-    .forEach(section => {
-
-      section.classList.add("hidden");
-
-    });
-
-}
-
-
-// ==========================================
-// LOGOUT
-// ==========================================
 
 function logout() {
 
-  localStorage.removeItem("nextTurnUserRole");
-  localStorage.removeItem("nextTurnStudentEmail");
-  localStorage.removeItem("nextTurnStudentId");
-  localStorage.removeItem("nextTurnUser");
+    /*
+        Remove login session.
 
-  window.location.href =
-    "login.html";
+        We intentionally do NOT use
+        nextTurnCurrentOrder anywhere.
+    */
 
+    localStorage.removeItem(
+        "nextTurnUser"
+    );
+
+    localStorage.removeItem(
+        "nextTurnRole"
+    );
+
+    localStorage.removeItem(
+        "nextTurnCurrentOrder"
+    );
+
+    localStorage.removeItem(
+        "nextTurnCart"
+    );
+
+    window.location.href =
+        "login.html";
 }
 
 
-// ==========================================
-// START
-// ==========================================
+/* Start page */
 
-loadStudentProfile();
-updateCurrentOrder();
-updateNotification();
+getStudentSession();
+
+loadCurrentOrder();
+
+
+/*
+    Refresh every 5 seconds so that:
+
+    Staff verifies payment
+          ↓
+    Staff generates token
+          ↓
+    Student page automatically sees token
+*/
+
+setInterval(
+    loadCurrentOrder,
+    5000
+);
 
 </script>
 
 </body>
-        </html>
+  </html>
