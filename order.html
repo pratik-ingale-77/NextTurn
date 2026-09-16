@@ -1,1071 +1,1245 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>NextTurn - Order Food</title>
+    <title>NextTurn - Order Food</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
+    <style>
 
-    body {
-      background: #f4f7fb;
-      color: #172033;
-    }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
 
-    header {
-      background: #172554;
-      color: white;
-      padding: 17px 6%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
+        body {
+            background: #f4f7fb;
+            color: #172033;
+        }
 
-    .logo {
-      font-size: 24px;
-      font-weight: bold;
-    }
+        /* HEADER */
 
-    .subtitle {
-      font-size: 13px;
-      opacity: 0.85;
-      margin-top: 3px;
-    }
+        header {
+            background: #082b5c;
+            color: white;
+            padding: 16px 22px;
 
-    .back-btn {
-      background: white;
-      color: #172554;
-      border: none;
-      padding: 9px 16px;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
 
-    .container {
-      width: 92%;
-      max-width: 1150px;
-      margin: 28px auto;
-    }
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
 
-    .page-title {
-      margin-bottom: 22px;
-    }
+        header h1 {
+            font-size: 23px;
+        }
 
-    .page-title h1 {
-      font-size: 28px;
-      margin-bottom: 6px;
-    }
+        header p {
+            font-size: 12px;
+            opacity: .85;
+            margin-top: 3px;
+        }
 
-    .page-title p {
-      color: #64748b;
-    }
+        .header-buttons {
+            display: flex;
+            gap: 8px;
+        }
 
-    /* Categories */
+        .header-btn {
+            background: white;
+            color: #082b5c;
+            border: none;
 
-    .categories {
-      display: flex;
-      gap: 10px;
-      overflow-x: auto;
-      padding-bottom: 8px;
-      margin-bottom: 24px;
-    }
+            padding: 9px 13px;
 
-    .category-btn {
-      border: 1px solid #cbd5e1;
-      background: white;
-      color: #334155;
-      padding: 10px 17px;
-      border-radius: 25px;
-      cursor: pointer;
-      white-space: nowrap;
-      font-weight: bold;
-    }
+            border-radius: 8px;
 
-    .category-btn.active {
-      background: #172554;
-      color: white;
-      border-color: #172554;
-    }
+            cursor: pointer;
 
-    /* Layout */
+            font-weight: bold;
+        }
 
-    .main-layout {
-      display: grid;
-      grid-template-columns: 1fr 350px;
-      gap: 24px;
-      align-items: start;
-    }
+        .cart-button {
+            position: relative;
+        }
 
-    /* Menu */
+        .cart-count {
+            position: absolute;
 
-    .menu-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-    }
+            top: -7px;
+            right: -7px;
 
-    .food-card {
-      background: white;
-      border-radius: 14px;
-      padding: 18px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-      border: 1px solid transparent;
-    }
+            background: #e53935;
+            color: white;
 
-    .food-card h3 {
-      margin-bottom: 7px;
-      font-size: 18px;
-    }
+            min-width: 20px;
+            height: 20px;
 
-    .food-category {
-      color: #64748b;
-      font-size: 13px;
-      margin-bottom: 12px;
-    }
+            border-radius: 50%;
 
-    .price {
-      font-size: 19px;
-      font-weight: bold;
-      color: #172554;
-      margin-bottom: 13px;
-    }
+            font-size: 11px;
 
-    .available {
-      color: #15803d;
-      font-size: 13px;
-      font-weight: bold;
-      margin-bottom: 12px;
-    }
+            display: none;
 
-    .unavailable {
-      color: #dc2626;
-      font-size: 13px;
-      font-weight: bold;
-      margin-bottom: 12px;
-    }
+            align-items: center;
+            justify-content: center;
+        }
 
-    .add-btn {
-      width: 100%;
-      border: none;
-      background: #2563eb;
-      color: white;
-      padding: 10px;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-    }
 
-    .add-btn:disabled {
-      background: #cbd5e1;
-      color: #64748b;
-      cursor: not-allowed;
-    }
+        /* MAIN */
 
-    /* Cart */
+        .container {
+            max-width: 1150px;
+            margin: auto;
+            padding: 25px 20px;
+        }
 
-    .cart {
-      background: white;
-      border-radius: 14px;
-      padding: 20px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.07);
-      position: sticky;
-      top: 20px;
-    }
+        .page-title {
+            margin-bottom: 20px;
+        }
 
-    .cart h2 {
-      margin-bottom: 18px;
-      font-size: 21px;
-    }
+        .page-title h2 {
+            color: #082b5c;
+            margin-bottom: 5px;
+        }
 
-    .cart-empty {
-      background: #f8fafc;
-      padding: 18px;
-      text-align: center;
-      border-radius: 9px;
-      color: #64748b;
-      margin-bottom: 15px;
-    }
+        .page-title p {
+            color: #777;
+        }
 
-    .cart-item {
-      border-bottom: 1px solid #e2e8f0;
-      padding: 13px 0;
-    }
 
-    .cart-item:last-child {
-      border-bottom: none;
-    }
+        /* CATEGORY */
 
-    .cart-item-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 8px;
-      margin-bottom: 9px;
-    }
+        .categories {
+            display: flex;
+            gap: 10px;
 
-    .cart-item-name {
-      font-weight: bold;
-    }
+            overflow-x: auto;
 
-    .cart-item-price {
-      color: #172554;
-      font-weight: bold;
-    }
+            padding-bottom: 12px;
 
-    .quantity-row {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-    }
+            margin-bottom: 20px;
+        }
 
-    .quantity-btn {
-      width: 30px;
-      height: 30px;
-      border: 1px solid #cbd5e1;
-      background: white;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-    }
+        .category-btn {
+            flex-shrink: 0;
 
-    .quantity {
-      min-width: 20px;
-      text-align: center;
-      font-weight: bold;
-    }
+            background: white;
+            color: #082b5c;
 
-    .remove-btn {
-      margin-left: auto;
-      border: none;
-      background: none;
-      color: #dc2626;
-      cursor: pointer;
-      font-size: 13px;
-    }
+            border: 1px solid #ccd5e0;
 
-    .summary {
-      border-top: 1px solid #e2e8f0;
-      margin-top: 15px;
-      padding-top: 15px;
-    }
+            padding: 9px 15px;
 
-    .summary-row {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 10px;
-      color: #475569;
-    }
+            border-radius: 20px;
 
-    .summary-row.total {
-      color: #172033;
-      font-size: 18px;
-      font-weight: bold;
-      padding-top: 8px;
-    }
+            cursor: pointer;
 
-    .payment-btn {
-      width: 100%;
-      border: none;
-      background: #16a34a;
-      color: white;
-      padding: 12px;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 12px;
-    }
+            font-weight: bold;
+        }
 
-    .payment-btn:disabled {
-      background: #cbd5e1;
-      cursor: not-allowed;
-    }
+        .category-btn.active {
+            background: #082b5c;
+            color: white;
+            border-color: #082b5c;
+        }
 
-    .rule {
-      margin-top: 15px;
-      background: #eff6ff;
-      color: #1e3a8a;
-      padding: 12px;
-      border-radius: 8px;
-      font-size: 12px;
-      line-height: 1.5;
-    }
 
-    /* Mobile */
+        /* FOOD GRID */
 
-    @media (max-width: 850px) {
+        .food-grid {
+            display: grid;
 
-      .main-layout {
-        grid-template-columns: 1fr;
-      }
+            grid-template-columns:
+                repeat(3, 1fr);
 
-      .cart {
-        position: static;
-      }
+            gap: 18px;
+        }
 
-    }
 
-    @media (max-width: 550px) {
+        /* FOOD CARD */
 
-      .container {
-        width: 94%;
-      }
+        .food-card {
+            background: white;
 
-      .page-title h1 {
-        font-size: 23px;
-      }
+            border-radius: 14px;
 
-      .menu-grid {
-        grid-template-columns: 1fr;
-      }
+            padding: 18px;
 
-      .cart {
-        padding: 17px;
-      }
+            box-shadow:
+                0 3px 12px rgba(0,0,0,.07);
 
-    }
-  </style>
+            display: flex;
+            flex-direction: column;
+
+            min-height: 220px;
+
+            transition: .2s;
+        }
+
+        .food-card:hover {
+            transform: translateY(-2px);
+            box-shadow:
+                0 7px 18px rgba(0,0,0,.10);
+        }
+
+        .food-icon {
+            width: 55px;
+            height: 55px;
+
+            border-radius: 12px;
+
+            background: #eef4fb;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 30px;
+
+            margin-bottom: 12px;
+        }
+
+        .food-card h3 {
+            color: #082b5c;
+            margin-bottom: 5px;
+        }
+
+        .category {
+            color: #888;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .price {
+            font-size: 19px;
+            font-weight: bold;
+            color: #172033;
+
+            margin-bottom: 4px;
+        }
+
+        .service {
+            font-size: 11px;
+            color: #888;
+
+            margin-bottom: 14px;
+        }
+
+        .food-bottom {
+            margin-top: auto;
+        }
+
+
+        /* ADD BUTTON */
+
+        .add-btn {
+            width: 100%;
+
+            background: #082b5c;
+            color: white;
+
+            border: none;
+
+            padding: 11px;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+        }
+
+        .add-btn:hover {
+            background: #0b3978;
+        }
+
+        .add-btn:disabled {
+            background: #aaa;
+            cursor: not-allowed;
+        }
+
+
+        /* ADDED */
+
+        .added {
+            background: #2e7d32 !important;
+        }
+
+
+        /* OUT OF STOCK */
+
+        .out-stock {
+            background: #fbe9e7;
+
+            color: #c62828;
+
+            padding: 9px;
+
+            text-align: center;
+
+            border-radius: 8px;
+
+            font-size: 13px;
+
+            font-weight: bold;
+        }
+
+
+        /* MOBILE */
+
+        @media(max-width: 900px) {
+
+            .food-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+
+        @media(max-width: 600px) {
+
+            header {
+                padding: 13px 14px;
+            }
+
+            header h1 {
+                font-size: 19px;
+            }
+
+            .container {
+                padding: 18px 12px;
+            }
+
+            .food-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header-btn {
+                padding: 8px 10px;
+                font-size: 12px;
+            }
+
+        }
+
+    </style>
 </head>
+
 
 <body>
 
+
+<!-- HEADER -->
+
 <header>
 
-  <div>
-    <div class="logo">⚡ NextTurn</div>
-    <div class="subtitle">College Canteen • Order Food</div>
-  </div>
+    <div>
 
-  <button class="back-btn" onclick="goBack()">
-    ← Dashboard
-  </button>
+        <h1>⚡ NextTurn</h1>
+
+        <p>
+            🍔 Order Food • College Canteen
+        </p>
+
+    </div>
+
+
+    <div class="header-buttons">
+
+        <button
+            class="header-btn"
+            onclick="goDashboard()">
+
+            ← Dashboard
+
+        </button>
+
+
+        <button
+            class="header-btn cart-button"
+            onclick="goCart()">
+
+            🛒 Cart
+
+            <span
+                id="cartCount"
+                class="cart-count">
+
+                0
+
+            </span>
+
+        </button>
+
+    </div>
 
 </header>
 
 
+<!-- MAIN -->
+
 <div class="container">
 
-  <div class="page-title">
 
-    <h1>🍔 College Canteen Menu</h1>
+    <div class="page-title">
 
-    <p>
-      Choose your food and place your order from the classroom.
-    </p>
+        <h2>
+            🍔 Order Food
+        </h2>
 
-  </div>
-
-
-  <!-- Categories -->
-
-  <div class="categories">
-
-    <button
-      class="category-btn active"
-      onclick="filterCategory('All', this)">
-      All
-    </button>
-
-    <button
-      class="category-btn"
-      onclick="filterCategory('Snacks', this)">
-      Snacks
-    </button>
-
-    <button
-      class="category-btn"
-      onclick="filterCategory('Fast Food', this)">
-      Fast Food
-    </button>
-
-    <button
-      class="category-btn"
-      onclick="filterCategory('Meals', this)">
-      Meals
-    </button>
-
-    <button
-      class="category-btn"
-      onclick="filterCategory('Drinks', this)">
-      Drinks
-    </button>
-
-  </div>
-
-
-  <div class="main-layout">
-
-    <!-- MENU -->
-
-    <div>
-
-      <div
-        id="menuGrid"
-        class="menu-grid">
-      </div>
+        <p>
+            Select your food and add it to your cart.
+            Your cart is available separately from the dashboard.
+        </p>
 
     </div>
 
 
-    <!-- CART -->
+    <!-- CATEGORIES -->
 
-    <div class="cart">
-
-      <h2>🛒 Your Cart</h2>
-
-      <div id="cartContent"></div>
-
-      <div class="summary">
-
-        <div class="summary-row">
-          <span>Subtotal</span>
-          <strong id="subtotal">₹0.00</strong>
-        </div>
-
-        <div class="summary-row">
-          <span>Service Charge</span>
-          <strong id="serviceCharge">₹0.00</strong>
-        </div>
-
-        <div class="summary-row total">
-          <span>Total</span>
-          <strong id="grandTotal">₹0.00</strong>
-        </div>
-
-      </div>
-
-
-      <button
-        id="paymentBtn"
-        class="payment-btn"
-        onclick="proceedToPayment()"
-        disabled>
-        Proceed to Payment
-      </button>
-
-
-      <div class="rule">
-
-        <strong>Service Charge Rule</strong><br><br>
-
-        Food price ≤ ₹20 → ₹0.50 per item<br>
-
-        Food price &gt; ₹20 → ₹1.00 per item
-
-      </div>
+    <div
+        id="categories"
+        class="categories">
 
     </div>
 
-  </div>
+
+    <!-- FOOD -->
+
+    <div
+        id="foodGrid"
+        class="food-grid">
+
+    </div>
+
 
 </div>
 
 
-<!-- Load menu data -->
-
-<script src="menu.js"></script>
-
-
 <script>
 
-  // ==========================================
-  // DATA
-  // ==========================================
+/* =====================================================
+   MENU
+===================================================== */
 
-  let selectedCategory = "All";
+const menu = [
 
-  let cart =
-    JSON.parse(
-      localStorage.getItem("nextTurnCart") || "[]"
-    );
+    {
+        id: 1,
+        name: "Chips",
+        category: "Snacks",
+        price: 10
+    },
+
+    {
+        id: 2,
+        name: "Kurkure",
+        category: "Snacks",
+        price: 10
+    },
+
+    {
+        id: 3,
+        name: "Samosa",
+        category: "Snacks",
+        price: 15
+    },
+
+    {
+        id: 4,
+        name: "Vada Pav",
+        category: "Snacks",
+        price: 20
+    },
 
 
-  // ==========================================
-  // STOCK DATA
-  // ==========================================
-  //
-  // Staff dashboard saves:
-  // nextTurnStock
-  //
-  // Example:
-  // {
-  //   "1": true,
-  //   "2": false
-  // }
-  //
-  // true = available
-  // false = out of stock
-  //
+    {
+        id: 5,
+        name: "Veg Sandwich",
+        category: "Fast Food",
+        price: 40
+    },
 
-  function getStockStatus(itemId) {
+    {
+        id: 6,
+        name: "Cheese Sandwich",
+        category: "Fast Food",
+        price: 50
+    },
 
-    const stockData =
-      JSON.parse(
-        localStorage.getItem("nextTurnStock") || "{}"
-      );
+    {
+        id: 7,
+        name: "Veg Burger",
+        category: "Fast Food",
+        price: 60
+    },
 
-    // If staff has never changed the item,
-    // it is available by default.
+    {
+        id: 8,
+        name: "French Fries",
+        category: "Fast Food",
+        price: 50
+    },
 
-    if (
-      Object.prototype.hasOwnProperty.call(
-        stockData,
-        itemId
-      )
-    ) {
-      return stockData[itemId];
+    {
+        id: 9,
+        name: "Veg Roll",
+        category: "Fast Food",
+        price: 45
+    },
+
+
+    {
+        id: 10,
+        name: "Veg Biryani",
+        category: "Meals",
+        price: 80
+    },
+
+    {
+        id: 11,
+        name: "Veg Thali",
+        category: "Meals",
+        price: 90
+    },
+
+    {
+        id: 12,
+        name: "Misal Pav",
+        category: "Meals",
+        price: 45
+    },
+
+
+    {
+        id: 13,
+        name: "Frooti",
+        category: "Drinks",
+        price: 20
+    },
+
+    {
+        id: 14,
+        name: "Masala Chai",
+        category: "Drinks",
+        price: 15
+    },
+
+    {
+        id: 15,
+        name: "Cold Coffee",
+        category: "Drinks",
+        price: 40
+    },
+
+    {
+        id: 16,
+        name: "Lemon Juice",
+        category: "Drinks",
+        price: 25
+    },
+
+    {
+        id: 17,
+        name: "Soft Drink",
+        category: "Drinks",
+        price: 30
     }
 
-    return true;
-  }
+];
 
 
-  // ==========================================
-  // SAVE CART
-  // ==========================================
+/* =====================================================
+   CART
+===================================================== */
 
-  function saveCart() {
+let cart = [];
 
-    localStorage.setItem(
-      "nextTurnCart",
-      JSON.stringify(cart)
+
+try {
+
+    cart =
+        JSON.parse(
+            localStorage.getItem(
+                "nextTurnCart"
+            ) || "[]"
+        );
+
+} catch (error) {
+
+    cart = [];
+
+}
+
+
+/* =====================================================
+   CATEGORY
+===================================================== */
+
+let currentCategory = "All";
+
+
+const categoryList = [
+    "All",
+    "Snacks",
+    "Fast Food",
+    "Meals",
+    "Drinks"
+];
+
+
+function renderCategories() {
+
+    const container =
+        document.getElementById(
+            "categories"
+        );
+
+
+    container.innerHTML = "";
+
+
+    categoryList.forEach(
+        category => {
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+
+            button.className =
+                "category-btn" +
+                (
+                    currentCategory === category
+                        ? " active"
+                        : ""
+                );
+
+
+            button.textContent =
+                category;
+
+
+            button.onclick =
+                function() {
+
+                    currentCategory =
+                        category;
+
+                    renderCategories();
+
+                    renderFood();
+
+                };
+
+
+            container.appendChild(
+                button
+            );
+
+        }
     );
 
-  }
+}
 
 
-  // ==========================================
-  // DISPLAY MENU
-  // ==========================================
+/* =====================================================
+   FOOD ICON
+===================================================== */
 
-  function displayMenu() {
+function getFoodIcon(name) {
+
+    const lower =
+        name.toLowerCase();
+
+
+    if (
+        lower.includes("chips") ||
+        lower.includes("kurkure")
+    ) {
+        return "🥔";
+    }
+
+
+    if (
+        lower.includes("samosa")
+    ) {
+        return "🥟";
+    }
+
+
+    if (
+        lower.includes("vada")
+    ) {
+        return "🍔";
+    }
+
+
+    if (
+        lower.includes("sandwich")
+    ) {
+        return "🥪";
+    }
+
+
+    if (
+        lower.includes("burger")
+    ) {
+        return "🍔";
+    }
+
+
+    if (
+        lower.includes("fries")
+    ) {
+        return "🍟";
+    }
+
+
+    if (
+        lower.includes("roll")
+    ) {
+        return "🌯";
+    }
+
+
+    if (
+        lower.includes("biryani")
+    ) {
+        return "🍛";
+    }
+
+
+    if (
+        lower.includes("thali")
+    ) {
+        return "🍱";
+    }
+
+
+    if (
+        lower.includes("misal")
+    ) {
+        return "🍲";
+    }
+
+
+    if (
+        lower.includes("chai")
+    ) {
+        return "☕";
+    }
+
+
+    if (
+        lower.includes("coffee")
+    ) {
+        return "🥤";
+    }
+
+
+    if (
+        lower.includes("juice")
+    ) {
+        return "🧃";
+    }
+
+
+    if (
+        lower.includes("frooti") ||
+        lower.includes("drink")
+    ) {
+        return "🥤";
+    }
+
+
+    return "🍽️";
+}
+
+
+/* =====================================================
+   SERVICE CHARGE
+===================================================== */
+
+function getServiceCharge(price) {
+
+    return Number(price) <= 20
+        ? 0.50
+        : 1.00;
+
+}
+
+
+/* =====================================================
+   FOOD AVAILABLE
+===================================================== */
+
+function isItemAvailable(id) {
+
+    /*
+       Keep compatibility with the current
+       local stock system.
+
+       If staff has marked an item unavailable,
+       it is stored here.
+    */
+
+    const unavailable =
+        JSON.parse(
+            localStorage.getItem(
+                "nextTurnUnavailableItems"
+            ) || "[]"
+        );
+
+
+    return !unavailable.includes(
+        Number(id)
+    );
+
+}
+
+
+/* =====================================================
+   RENDER FOOD
+===================================================== */
+
+function renderFood() {
 
     const grid =
-      document.getElementById("menuGrid");
+        document.getElementById(
+            "foodGrid"
+        );
+
 
     grid.innerHTML = "";
 
 
-    const filteredMenu =
-      selectedCategory === "All"
-      ? menu
-      : menu.filter(
-          item =>
-            item.category === selectedCategory
+    const filtered =
+        currentCategory === "All"
+
+            ? menu
+
+            : menu.filter(
+                item =>
+                    item.category ===
+                    currentCategory
+            );
+
+
+    filtered.forEach(
+        item => {
+
+            const available =
+                isItemAvailable(
+                    item.id
+                );
+
+
+            const existing =
+                cart.find(
+                    cartItem =>
+                        Number(
+                            cartItem.id
+                        ) ===
+                        Number(item.id)
+                );
+
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.className =
+                "food-card";
+
+
+            card.innerHTML = `
+
+                <div class="food-icon">
+
+                    ${getFoodIcon(item.name)}
+
+                </div>
+
+
+                <h3>
+
+                    ${escapeHTML(item.name)}
+
+                </h3>
+
+
+                <div class="category">
+
+                    ${escapeHTML(item.category)}
+
+                </div>
+
+
+                <div class="price">
+
+                    ₹${Number(
+                        item.price
+                    ).toFixed(2)}
+
+                </div>
+
+
+                <div class="service">
+
+                    + ₹${getServiceCharge(
+                        item.price
+                    ).toFixed(2)}
+                    service charge / quantity
+
+                </div>
+
+
+                <div class="food-bottom">
+
+                    ${
+                        !available
+
+                        ?
+
+                        `
+
+                        <div class="out-stock">
+
+                            ❌ Out of Stock
+
+                        </div>
+
+                        `
+
+                        :
+
+                        `
+
+                        <button
+                            class="add-btn ${
+                                existing
+                                    ? "added"
+                                    : ""
+                            }"
+                            onclick="
+                                addToCart(${item.id})
+                            ">
+
+                            ${
+                                existing
+                                    ? "✓ Added to Cart"
+                                    : "🛒 Add to Cart"
+                            }
+
+                        </button>
+
+                        `
+                    }
+
+                </div>
+
+            `;
+
+
+            grid.appendChild(
+                card
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   ADD TO CART
+===================================================== */
+
+function addToCart(id) {
+
+    const item =
+        menu.find(
+            food =>
+                Number(food.id) ===
+                Number(id)
         );
 
 
-    filteredMenu.forEach(item => {
-
-      const available =
-        getStockStatus(item.id);
-
-
-      const card =
-        document.createElement("div");
-
-      card.className =
-        "food-card";
-
-
-      card.innerHTML = `
-
-        <h3>${item.name}</h3>
-
-        <div class="food-category">
-          ${item.category}
-        </div>
-
-        <div class="price">
-          ₹${Number(item.price).toFixed(2)}
-        </div>
-
-        <div class="${available ? "available" : "unavailable"}">
-
-          ${available
-            ? "● Available"
-            : "● Out of Stock"}
-
-        </div>
-
-        <button
-          class="add-btn"
-          onclick="addToCart('${item.id}')"
-          ${available ? "" : "disabled"}>
-
-          ${available
-            ? "Add to Cart"
-            : "Currently Unavailable"}
-
-        </button>
-
-      `;
-
-
-      grid.appendChild(card);
-
-    });
-
-  }
-
-
-  // ==========================================
-  // CATEGORY FILTER
-  // ==========================================
-
-  function filterCategory(category, button) {
-
-    selectedCategory =
-      category;
-
-
-    document
-      .querySelectorAll(".category-btn")
-      .forEach(btn => {
-
-        btn.classList.remove("active");
-
-      });
-
-
-    button.classList.add("active");
-
-
-    displayMenu();
-
-  }
-
-
-  // ==========================================
-  // ADD TO CART
-  // ==========================================
-
-  function addToCart(itemId) {
-
-    const item =
-      menu.find(
-        food =>
-          String(food.id) === String(itemId)
-      );
-
-
     if (!item) {
-      return;
+        return;
     }
 
 
-    if (!getStockStatus(item.id)) {
+    if (
+        !isItemAvailable(
+            item.id
+        )
+    ) {
 
-      alert(
-        item.name +
-        " is currently out of stock."
-      );
+        alert(
+            item.name +
+            " is currently out of stock."
+        );
 
-      return;
+        return;
     }
 
 
     const existing =
-      cart.find(
-        cartItem =>
-          String(cartItem.id) === String(item.id)
-      );
+        cart.find(
+            cartItem =>
+                Number(
+                    cartItem.id
+                ) ===
+                Number(item.id)
+        );
 
 
     if (existing) {
 
-      existing.quantity += 1;
+        existing.quantity =
+            Number(
+                existing.quantity || 1
+            ) + 1;
 
     } else {
 
-      cart.push({
+        cart.push({
 
-        id: item.id,
+            id: item.id,
 
-        name: item.name,
+            name: item.name,
 
-        price: Number(item.price),
+            category: item.category,
 
-        category: item.category,
+            price: item.price,
 
-        quantity: 1
+            quantity: 1
 
-      });
-
-    }
-
-
-    saveCart();
-
-    renderCart();
-
-  }
-
-
-  // ==========================================
-  // CHANGE QUANTITY
-  // ==========================================
-
-  function changeQuantity(itemId, change) {
-
-    const item =
-      cart.find(
-        cartItem =>
-          String(cartItem.id) === String(itemId)
-      );
-
-
-    if (!item) {
-      return;
-    }
-
-
-    // Don't allow adding more if staff
-    // has marked the food unavailable.
-
-    if (
-      change > 0 &&
-      !getStockStatus(item.id)
-    ) {
-
-      alert(
-        item.name +
-        " is now out of stock."
-      );
-
-      removeFromCart(item.id);
-
-      return;
-    }
-
-
-    item.quantity += change;
-
-
-    if (item.quantity <= 0) {
-
-      removeFromCart(item.id);
-
-      return;
+        });
 
     }
 
 
     saveCart();
 
-    renderCart();
+    updateCartCount();
 
-  }
-
-
-  // ==========================================
-  // REMOVE ITEM
-  // ==========================================
-
-  function removeFromCart(itemId) {
-
-    cart =
-      cart.filter(
-        item =>
-          String(item.id) !== String(itemId)
-      );
+    renderFood();
 
 
-    saveCart();
+    /*
+       Small confirmation.
+    */
 
-    renderCart();
+    showAddedMessage(
+        item.name
+    );
 
-  }
-
-
-  // ==========================================
-  // CALCULATE SERVICE CHARGE
-  // ==========================================
-
-  function calculateServiceCharge() {
-
-    let charge = 0;
+}
 
 
-    cart.forEach(item => {
+/* =====================================================
+   SAVE
+===================================================== */
 
-      const itemCharge =
-        Number(
-          getServiceCharge(item.price)
+function saveCart() {
+
+    localStorage.setItem(
+        "nextTurnCart",
+        JSON.stringify(cart)
+    );
+
+}
+
+
+/* =====================================================
+   CART COUNT
+===================================================== */
+
+function updateCartCount() {
+
+    const count =
+        cart.reduce(
+            (total, item) => {
+
+                return total +
+                    Number(
+                        item.quantity || 1
+                    );
+
+            },
+            0
         );
 
 
-      charge +=
-        itemCharge * item.quantity;
-
-    });
-
-
-    return charge;
-
-  }
+    const badge =
+        document.getElementById(
+            "cartCount"
+        );
 
 
-  // ==========================================
-  // CALCULATE SUBTOTAL
-  // ==========================================
+    if (count > 0) {
 
-  function calculateSubtotal() {
+        badge.textContent =
+            count;
 
-    let subtotal = 0;
-
-
-    cart.forEach(item => {
-
-      subtotal +=
-        Number(item.price) *
-        Number(item.quantity);
-
-    });
-
-
-    return subtotal;
-
-  }
-
-
-  // ==========================================
-  // RENDER CART
-  // ==========================================
-
-  function renderCart() {
-
-    const content =
-      document.getElementById("cartContent");
-
-
-    // Remove items that became
-    // unavailable while in the cart.
-
-    cart =
-      cart.filter(
-        item =>
-          getStockStatus(item.id)
-      );
-
-
-    saveCart();
-
-
-    if (cart.length === 0) {
-
-      content.innerHTML = `
-
-        <div class="cart-empty">
-
-          Your cart is empty.
-
-          <br><br>
-
-          Add food items from the menu.
-
-        </div>
-
-      `;
+        badge.style.display =
+            "flex";
 
     } else {
 
-      content.innerHTML =
-        cart.map(item => `
-
-          <div class="cart-item">
-
-            <div class="cart-item-top">
-
-              <span class="cart-item-name">
-                ${item.name}
-              </span>
-
-              <span class="cart-item-price">
-                ₹${(
-                  Number(item.price) *
-                  Number(item.quantity)
-                ).toFixed(2)}
-              </span>
-
-            </div>
-
-
-            <div class="quantity-row">
-
-              <button
-                class="quantity-btn"
-                onclick="changeQuantity('${item.id}', -1)">
-                −
-              </button>
-
-
-              <span class="quantity">
-                ${item.quantity}
-              </span>
-
-
-              <button
-                class="quantity-btn"
-                onclick="changeQuantity('${item.id}', 1)">
-                +
-              </button>
-
-
-              <button
-                class="remove-btn"
-                onclick="removeFromCart('${item.id}')">
-                Remove
-              </button>
-
-            </div>
-
-          </div>
-
-        `).join("");
+        badge.style.display =
+            "none";
 
     }
 
-
-    const subtotal =
-      calculateSubtotal();
+}
 
 
-    const serviceCharge =
-      calculateServiceCharge();
+/* =====================================================
+   ADDED MESSAGE
+===================================================== */
+
+function showAddedMessage(name) {
+
+    const message =
+        document.createElement(
+            "div"
+        );
 
 
-    const grandTotal =
-      subtotal + serviceCharge;
+    message.textContent =
+        "✓ " +
+        name +
+        " added to cart";
 
 
-    document.getElementById("subtotal").textContent =
-      "₹" + subtotal.toFixed(2);
+    message.style.position =
+        "fixed";
+
+    message.style.bottom =
+        "25px";
+
+    message.style.left =
+        "50%";
+
+    message.style.transform =
+        "translateX(-50%)";
+
+    message.style.background =
+        "#2e7d32";
+
+    message.style.color =
+        "white";
+
+    message.style.padding =
+        "12px 18px";
+
+    message.style.borderRadius =
+        "9px";
+
+    message.style.zIndex =
+        "9999";
+
+    message.style.fontWeight =
+        "bold";
+
+    document.body.appendChild(
+        message
+    );
 
 
-    document.getElementById("serviceCharge").textContent =
-      "₹" + serviceCharge.toFixed(2);
+    setTimeout(
+        () => {
+
+            message.remove();
+
+        },
+        1500
+    );
+
+}
 
 
-    document.getElementById("grandTotal").textContent =
-      "₹" + grandTotal.toFixed(2);
+/* =====================================================
+   NAVIGATION
+===================================================== */
 
-
-    document.getElementById("paymentBtn").disabled =
-      cart.length === 0;
-
-  }
-
-
-  // ==========================================
-  // PROCEED TO PAYMENT
-  // ==========================================
-
-  function proceedToPayment() {
-
-    if (cart.length === 0) {
-
-      alert(
-        "Please add at least one food item."
-      );
-
-      return;
-    }
-
-
-    // Final stock check before payment.
-
-    const unavailable =
-      cart.find(
-        item =>
-          !getStockStatus(item.id)
-      );
-
-
-    if (unavailable) {
-
-      alert(
-        unavailable.name +
-        " is currently out of stock. " +
-        "Please remove it from your cart."
-      );
-
-      renderCart();
-
-      return;
-    }
-
-
-    saveCart();
+function goCart() {
 
     window.location.href =
-      "payment.html";
+        "cart.html";
 
-  }
+}
 
 
-  // ==========================================
-  // BACK TO DASHBOARD
-  // ==========================================
-
-  function goBack() {
+function goDashboard() {
 
     window.location.href =
-      "student.html";
+        "student.html";
 
-  }
-
-
-  // ==========================================
-  // START
-  // ==========================================
-
-  displayMenu();
-
-  renderCart();
+}
 
 
-  // Refresh stock automatically
-  // when the student returns to this tab.
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
 
-  window.addEventListener(
-    "storage",
-    function(event) {
+function escapeHTML(value) {
 
-      if (
-        event.key === "nextTurnStock"
-      ) {
+    return String(value)
 
-        displayMenu();
+        .replace(
+            /&/g,
+            "&amp;"
+        )
 
-        renderCart();
+        .replace(
+            /</g,
+            "&lt;"
+        )
 
-      }
+        .replace(
+            />/g,
+            "&gt;"
+        )
 
-    }
-  );
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
 
 
-  window.addEventListener(
-    "focus",
-    function() {
+/* =====================================================
+   START
+===================================================== */
 
-      displayMenu();
+renderCategories();
 
-      renderCart();
+renderFood();
 
-    }
-  );
+updateCartCount();
 
 </script>
 
 </body>
-    </html>
+  </html>
