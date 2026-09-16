@@ -1,308 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
     <title>NextTurn - Student Dashboard</title>
 
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
+    <link rel="stylesheet" href="styles.css">
 
-        body {
-            background: #f4f7fb;
-            color: #172033;
-        }
-
-        header {
-            background: #082b5c;
-            color: white;
-            padding: 18px 22px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        header h1 {
-            font-size: 23px;
-        }
-
-        header p {
-            font-size: 13px;
-            opacity: .85;
-            margin-top: 3px;
-        }
-
-        .logout {
-            background: #e53935;
-            color: white;
-            border: none;
-            padding: 9px 14px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .container {
-            max-width: 1150px;
-            margin: auto;
-            padding: 22px;
-        }
-
-        .welcome {
-            margin-bottom: 20px;
-        }
-
-        .welcome h2 {
-            color: #082b5c;
-            margin-bottom: 5px;
-        }
-
-        .welcome p {
-            color: #666;
-        }
-
-        /* DASHBOARD OPTIONS */
-
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-
-        .dashboard-card {
-            background: white;
-            border: 2px solid #e2e8f0;
-            border-radius: 14px;
-            padding: 20px;
-            cursor: pointer;
-            transition: .2s;
-            position: relative;
-        }
-
-        .dashboard-card:hover {
-            transform: translateY(-2px);
-            border-color: #082b5c;
-            box-shadow: 0 5px 15px rgba(0,0,0,.08);
-        }
-
-        .dashboard-card .icon {
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-
-        .dashboard-card h3 {
-            color: #082b5c;
-            margin-bottom: 5px;
-        }
-
-        .dashboard-card p {
-            font-size: 12px;
-            color: #777;
-        }
-
-        .cart-badge {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background: #e53935;
-            color: white;
-            min-width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        /* ACTIVE ORDER */
-
-        .active-order {
-            background: white;
-            border-radius: 14px;
-            padding: 20px;
-            box-shadow: 0 3px 12px rgba(0,0,0,.07);
-            margin-bottom: 20px;
-        }
-
-        .active-order h2 {
-            color: #082b5c;
-            margin-bottom: 15px;
-        }
-
-        .order-box {
-            background: #f7f9fc;
-            padding: 16px;
-            border-radius: 10px;
-        }
-
-        .order-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        .order-row:last-child {
-            border-bottom: none;
-        }
-
-        .order-row span:first-child {
-            color: #777;
-        }
-
-        .status {
-            display: inline-block;
-            padding: 6px 11px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .preparing {
-            background: #e3f2fd;
-            color: #1565c0;
-        }
-
-        .ready {
-            background: #e8f5e9;
-            color: #2e7d32;
-        }
-
-        .pending {
-            background: #fff3cd;
-            color: #856404;
-        }
-
-        .ready-alert {
-            background: #e8f5e9;
-            border: 2px solid #66bb6a;
-            color: #1b5e20;
-            border-radius: 12px;
-            padding: 17px;
-            margin-bottom: 15px;
-            font-weight: bold;
-        }
-
-        .ready-alert .big {
-            font-size: 20px;
-            margin-bottom: 5px;
-        }
-
-        .token {
-            text-align: center;
-            background: #fff8e1;
-            border: 2px dashed #e0a800;
-            border-radius: 10px;
-            padding: 15px;
-            margin-top: 15px;
-        }
-
-        .token strong {
-            display: block;
-            font-size: 30px;
-            color: #8a6500;
-            margin-top: 5px;
-        }
-
-        /* QUICK INFO */
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-        }
-
-        .info-card {
-            background: white;
-            padding: 18px;
-            border-radius: 12px;
-            box-shadow: 0 3px 12px rgba(0,0,0,.06);
-        }
-
-        .info-card h3 {
-            color: #082b5c;
-            margin-bottom: 7px;
-        }
-
-        .info-card p {
-            color: #666;
-            font-size: 13px;
-        }
-
-        .empty {
-            background: white;
-            padding: 25px;
-            text-align: center;
-            border-radius: 12px;
-            color: #777;
-        }
-
-        @media(max-width: 850px) {
-
-            .dashboard-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .info-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media(max-width: 550px) {
-
-            header {
-                padding: 15px;
-            }
-
-            header h1 {
-                font-size: 19px;
-            }
-
-            .container {
-                padding: 14px;
-            }
-
-            .dashboard-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 10px;
-            }
-
-            .dashboard-card {
-                padding: 15px;
-            }
-
-            .dashboard-card .icon {
-                font-size: 24px;
-            }
-        }
-    </style>
 </head>
 
+
 <body>
+
 
 <header>
 
     <div>
+
         <h1>⚡ NextTurn</h1>
-        <p>Student Dashboard • College Canteen</p>
+
+        <p>
+            Student Dashboard • College Canteen
+        </p>
+
     </div>
 
-    <button class="logout" onclick="logout()">
+
+    <button
+        class="logout"
+        onclick="logout()"
+    >
         Logout
     </button>
 
 </header>
 
 
+
 <div class="container">
+
+
+    <!-- WELCOME -->
 
     <div class="welcome">
 
@@ -311,74 +56,104 @@
         </h2>
 
         <p>
-            Order food from your classroom and track your canteen order.
+            Order food from your classroom and track
+            your canteen order without standing in a queue.
         </p>
 
     </div>
+
 
 
     <!-- DASHBOARD OPTIONS -->
 
     <div class="dashboard-grid">
 
+
         <div
             class="dashboard-card"
-            onclick="goTo('order.html')">
+            onclick="goTo('order.html')"
+        >
 
-            <div class="icon">🍔</div>
+            <div class="icon">
+                🍔
+            </div>
 
-            <h3>Order Food</h3>
+            <h3>
+                Order Food
+            </h3>
 
             <p>
-                Browse the canteen menu and add food to your cart.
+                Browse the canteen menu and order your
+                favourite food.
             </p>
 
         </div>
 
 
+
         <div
             class="dashboard-card"
-            onclick="goTo('cart.html')">
+            onclick="goTo('cart.html')"
+        >
 
-            <div class="icon">🛒</div>
+            <div class="icon">
+                🛒
+            </div>
 
             <span
                 id="cartBadge"
-                class="cart-badge">
+                class="cart-badge"
+            >
                 0
             </span>
 
-            <h3>My Cart</h3>
+            <h3>
+                My Cart
+            </h3>
 
             <p>
-                View selected food, change quantity and checkout.
+                Review selected items, change quantity
+                and checkout.
             </p>
 
         </div>
 
 
+
         <div
             class="dashboard-card"
-            onclick="showCurrentOrder()">
+            onclick="showCurrentOrder()"
+        >
 
-            <div class="icon">📦</div>
+            <div class="icon">
+                📦
+            </div>
 
-            <h3>Track Order</h3>
+            <h3>
+                Track Order
+            </h3>
 
             <p>
-                Track your token and food preparation status.
+                Track your order status and token
+                in real time.
             </p>
 
         </div>
 
 
+
         <div
             class="dashboard-card"
-            onclick="showHistory()">
+            onclick="showHistory()"
+        >
 
-            <div class="icon">🧾</div>
+            <div class="icon">
+                🧾
+            </div>
 
-            <h3>Order History</h3>
+            <h3>
+                Order History
+            </h3>
 
             <p>
                 View your previous completed orders.
@@ -387,13 +162,19 @@
         </div>
 
 
+
         <div
             class="dashboard-card"
-            onclick="showPaymentHistory()">
+            onclick="showPaymentHistory()"
+        >
 
-            <div class="icon">💳</div>
+            <div class="icon">
+                💳
+            </div>
 
-            <h3>Payment History</h3>
+            <h3>
+                Payment History
+            </h3>
 
             <p>
                 View your previous payment details.
@@ -402,28 +183,41 @@
         </div>
 
 
+
         <div
             class="dashboard-card"
-            onclick="showNotifications()">
+            onclick="showNotifications()"
+        >
 
-            <div class="icon">🔔</div>
+            <div class="icon">
+                🔔
+            </div>
 
-            <h3>Notifications</h3>
+            <h3>
+                Notifications
+            </h3>
 
             <p>
-                Check important order updates.
+                Check important updates about
+                your orders.
             </p>
 
         </div>
 
 
+
         <div
             class="dashboard-card"
-            onclick="showProfile()">
+            onclick="showProfile()"
+        >
 
-            <div class="icon">👤</div>
+            <div class="icon">
+                👤
+            </div>
 
-            <h3>My Profile</h3>
+            <h3>
+                My Profile
+            </h3>
 
             <p>
                 View your student account information.
@@ -431,21 +225,29 @@
 
         </div>
 
+
     </div>
 
 
-    <!-- ACTIVE ORDER -->
+
+    <!-- CURRENT ORDER -->
 
     <div class="active-order">
 
-        <h2>📦 Current Order</h2>
+        <h2>
+            📦 Current Order
+        </h2>
+
 
         <div id="readyAlert"></div>
+
 
         <div id="currentOrder">
 
             <div class="empty">
+
                 Checking your current order...
+
             </div>
 
         </div>
@@ -453,54 +255,69 @@
     </div>
 
 
-    <!-- INFO -->
+
+    <!-- QUICK INFO -->
 
     <div class="info-grid">
 
+
         <div class="info-card">
 
-            <h3>⚡ Quick Ordering</h3>
+            <h3>
+                ⚡ Quick Ordering
+            </h3>
 
             <p>
-                Order your food directly from your classroom
-                without standing in a queue.
+                Order directly from your classroom
+                instead of waiting in a canteen queue.
             </p>
 
         </div>
 
 
+
         <div class="info-card">
 
-            <h3>🎟 Smart Token</h3>
+            <h3>
+                🎟 Smart Token
+            </h3>
 
             <p>
                 After payment verification, your unique
-                token will be generated.
+                token is generated for collection.
             </p>
 
         </div>
+
 
 
         <div class="info-card">
 
-            <h3>🔔 Ready Notification</h3>
+            <h3>
+                🔔 Ready Notification
+            </h3>
 
             <p>
-                You'll know when your food is ready for
-                collection from the canteen.
+                Know when your food is ready so you
+                can collect it at the right time.
             </p>
 
         </div>
 
+
     </div>
+
 
 </div>
 
 
+
 <script>
+
 
 const API =
     "https://nextturn-mgbf.onrender.com";
+
 
 
 /* =========================
@@ -513,13 +330,16 @@ const student =
     );
 
 
+
 if (student.fullName) {
 
-    document.getElementById("welcomeText")
+    document
+        .getElementById("welcomeText")
         .textContent =
         "Welcome, " + student.fullName + "!";
 
 }
+
 
 
 /* =========================
@@ -534,38 +354,50 @@ function updateCartBadge() {
 
         cart =
             JSON.parse(
-                localStorage.getItem("nextTurnCart") || "[]"
+                localStorage.getItem(
+                    "nextTurnCart"
+                ) || "[]"
             );
 
     } catch (e) {
 
         cart = [];
+
     }
 
 
     let count = 0;
 
+
     cart.forEach(item => {
 
-        count += Number(item.quantity || 1);
+        count += Number(
+            item.quantity || 1
+        );
 
     });
 
 
     const badge =
-        document.getElementById("cartBadge");
+        document.getElementById(
+            "cartBadge"
+        );
 
 
     if (count > 0) {
 
         badge.textContent = count;
+
         badge.style.display = "flex";
 
     } else {
 
         badge.style.display = "none";
+
     }
+
 }
+
 
 
 /* =========================
@@ -579,7 +411,9 @@ async function loadCurrentOrder() {
 
 
     const container =
-        document.getElementById("currentOrder");
+        document.getElementById(
+            "currentOrder"
+        );
 
 
     try {
@@ -596,18 +430,32 @@ async function loadCurrentOrder() {
         if (response.status === 404) {
 
             container.innerHTML = `
+
                 <div class="empty">
+
                     No active order right now.
+
                     <br><br>
-                    Go to <b>🍔 Order Food</b> to place an order.
+
+                    Go to
+                    <b>🍔 Order Food</b>
+                    to place an order.
+
                 </div>
+
             `;
 
-            document.getElementById("readyAlert")
+
+            document
+                .getElementById(
+                    "readyAlert"
+                )
                 .innerHTML = "";
 
             return;
+
         }
+
 
 
         if (!response.ok) {
@@ -615,7 +463,9 @@ async function loadCurrentOrder() {
             throw new Error(
                 "Unable to load order"
             );
+
         }
+
 
 
         const order =
@@ -629,15 +479,25 @@ async function loadCurrentOrder() {
 
         console.error(error);
 
+
         container.innerHTML = `
+
             <div class="empty">
+
                 Unable to load your current order.
+
                 <br><br>
+
                 Please try again.
+
             </div>
+
         `;
+
     }
+
 }
+
 
 
 /* =========================
@@ -647,10 +507,15 @@ async function loadCurrentOrder() {
 function displayCurrentOrder(order) {
 
     const container =
-        document.getElementById("currentOrder");
+        document.getElementById(
+            "currentOrder"
+        );
+
 
     const readyAlert =
-        document.getElementById("readyAlert");
+        document.getElementById(
+            "readyAlert"
+        );
 
 
     const status =
@@ -662,34 +527,47 @@ function displayCurrentOrder(order) {
 
 
     if (status === "Preparing") {
-        statusClass = "preparing";
+
+        statusClass =
+            "preparing";
+
     }
 
 
     if (status === "Ready") {
-        statusClass = "ready";
+
+        statusClass =
+            "ready";
+
     }
+
 
 
     if (status === "Ready") {
 
         readyAlert.innerHTML = `
+
             <div class="ready-alert">
 
                 <div class="big">
+
                     🔔 Your food is ready!
+
                 </div>
 
                 Please collect your order from the
                 canteen using your token.
 
             </div>
+
         `;
 
     } else {
 
         readyAlert.innerHTML = "";
+
     }
+
 
 
     let tokenHTML = "";
@@ -698,6 +576,7 @@ function displayCurrentOrder(order) {
     if (order.tokenNumber != null) {
 
         tokenHTML = `
+
             <div class="token">
 
                 Your Token
@@ -707,17 +586,23 @@ function displayCurrentOrder(order) {
                 </strong>
 
             </div>
+
         `;
+
     }
+
 
 
     container.innerHTML = `
 
         <div class="order-box">
 
+
             <div class="order-row">
 
-                <span>Order ID</span>
+                <span>
+                    Order ID
+                </span>
 
                 <strong>
                     #${order.id || "-"}
@@ -726,9 +611,12 @@ function displayCurrentOrder(order) {
             </div>
 
 
+
             <div class="order-row">
 
-                <span>Payment</span>
+                <span>
+                    Payment
+                </span>
 
                 <strong>
                     ${order.paymentStatus || "-"}
@@ -737,9 +625,12 @@ function displayCurrentOrder(order) {
             </div>
 
 
+
             <div class="order-row">
 
-                <span>Order Status</span>
+                <span>
+                    Order Status
+                </span>
 
                 <span class="status ${statusClass}">
                     ${status}
@@ -748,9 +639,12 @@ function displayCurrentOrder(order) {
             </div>
 
 
+
             <div class="order-row">
 
-                <span>Total Amount</span>
+                <span>
+                    Total Amount
+                </span>
 
                 <strong>
                     ₹${Number(
@@ -761,11 +655,16 @@ function displayCurrentOrder(order) {
             </div>
 
 
+
             ${tokenHTML}
 
+
         </div>
+
     `;
+
 }
+
 
 
 /* =========================
@@ -779,7 +678,9 @@ function showCurrentOrder() {
         .scrollIntoView({
             behavior: "smooth"
         });
+
 }
+
 
 
 /* =========================
@@ -791,7 +692,9 @@ function showHistory() {
     alert(
         "Order History section is available from the dashboard. Your completed orders are stored in the system."
     );
+
 }
+
 
 
 function showPaymentHistory() {
@@ -799,16 +702,22 @@ function showPaymentHistory() {
     alert(
         "Payment History will show your verified payment records."
     );
+
 }
+
 
 
 function showNotifications() {
 
     const alertBox =
-        document.getElementById("readyAlert");
+        document.getElementById(
+            "readyAlert"
+        );
 
 
-    if (alertBox.innerHTML.trim() !== "") {
+    if (
+        alertBox.innerHTML.trim() !== ""
+    ) {
 
         alertBox.scrollIntoView({
             behavior: "smooth"
@@ -819,8 +728,11 @@ function showNotifications() {
         alert(
             "No new notifications."
         );
+
     }
+
 }
+
 
 
 function showProfile() {
@@ -828,20 +740,34 @@ function showProfile() {
     const name =
         student.fullName || "Student";
 
+
     const id =
         student.studentId || "-";
+
 
     const email =
         student.email || "-";
 
 
     alert(
+
         "My Profile\n\n" +
-        "Name: " + name + "\n" +
-        "Student ID: " + id + "\n" +
-        "Email: " + email
+
+        "Name: " +
+        name +
+        "\n" +
+
+        "Student ID: " +
+        id +
+        "\n" +
+
+        "Email: " +
+        email
+
     );
+
 }
+
 
 
 /* =========================
@@ -851,7 +777,9 @@ function showProfile() {
 function goTo(page) {
 
     window.location.href = page;
+
 }
+
 
 
 /* =========================
@@ -864,13 +792,17 @@ function logout() {
         "nextTurnUser"
     );
 
+
     localStorage.removeItem(
         "nextTurnCurrentOrder"
     );
 
+
     window.location.href =
         "login.html";
+
 }
+
 
 
 /* =========================
@@ -880,6 +812,7 @@ function logout() {
 updateCartBadge();
 
 loadCurrentOrder();
+
 
 
 /*
@@ -892,6 +825,7 @@ setInterval(
 );
 
 
+
 /*
    Keep cart badge updated.
 */
@@ -901,7 +835,10 @@ setInterval(
     1000
 );
 
+
 </script>
 
+
 </body>
-            </html>
+
+                </html>
