@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NextTurn - My Cart</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #172033;
+        }
+
+        header {
+            background: #082b5c;
+            color: white;
+            padding: 17px 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 23px;
+        }
+
+        header p {
+            font-size: 13px;
+            opacity: .85;
+            margin-top: 3px;
+        }
+
+        .back-btn {
+            background: white;
+            color: #082b5c;
+            border: none;
+            padding: 9px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 25px 20px;
+        }
+
+        .page-title {
+            margin-bottom: 20px;
+        }
+
+        .page-title h2 {
+            color: #082b5c;
+            margin-bottom: 5px;
+        }
+
+        .page-title p {
+            color: #777;
+        }
+
+        .cart-layout {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 20px;
+            align-items: start;
+        }
+
+        /* CART ITEMS */
+
+        .cart-box {
+            background: white;
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 3px 12px rgba(0,0,0,.07);
+        }
+
+        .cart-box h3 {
+            color: #082b5c;
+            margin-bottom: 15px;
+        }
+
+        .cart-item {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            gap: 15px;
+            align-items: center;
+            padding: 17px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-name {
+            font-weight: bold;
+            color: #172033;
+            margin-bottom: 5px;
+        }
+
+        .item-category {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 5px;
+        }
+
+        .item-price {
+            color: #082b5c;
+            font-weight: bold;
+        }
+
+        /* QUANTITY */
+
+        .quantity-box {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ccd5e0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .quantity-box button {
+            border: none;
+            background: #eef3f9;
+            color: #082b5c;
+            width: 34px;
+            height: 34px;
+            cursor: pointer;
+            font-size: 17px;
+            font-weight: bold;
+        }
+
+        .quantity-box span {
+            width: 35px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .item-total {
+            min-width: 75px;
+            text-align: right;
+            font-weight: bold;
+        }
+
+        .remove {
+            display: block;
+            border: none;
+            background: transparent;
+            color: #e53935;
+            cursor: pointer;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        /* SUMMARY */
+
+        .summary {
+            background: white;
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 3px 12px rgba(0,0,0,.07);
+            position: sticky;
+            top: 20px;
+        }
+
+        .summary h3 {
+            color: #082b5c;
+            margin-bottom: 18px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 9px 0;
+            color: #555;
+        }
+
+        .summary-row.total {
+            border-top: 1px solid #ddd;
+            margin-top: 10px;
+            padding-top: 15px;
+            color: #082b5c;
+            font-size: 19px;
+            font-weight: bold;
+        }
+
+        .checkout {
+            width: 100%;
+            background: #082b5c;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 9px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 18px;
+        }
+
+        .checkout:hover {
+            background: #0b3978;
+        }
+
+        .continue {
+            width: 100%;
+            background: white;
+            color: #082b5c;
+            border: 1px solid #082b5c;
+            padding: 12px;
+            border-radius: 9px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        /* EMPTY */
+
+        .empty-cart {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-cart .icon {
+            font-size: 55px;
+            margin-bottom: 15px;
+        }
+
+        .empty-cart h2 {
+            color: #082b5c;
+            margin-bottom: 8px;
+        }
+
+        .empty-cart p {
+            color: #777;
+            margin-bottom: 20px;
+        }
+
+        .shop-btn {
+            background: #082b5c;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* MOBILE */
+
+        @media(max-width: 800px) {
+
+            .cart-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .summary {
+                position: static;
+            }
+        }
+
+        @media(max-width: 550px) {
+
+            header {
+                padding: 14px;
+            }
+
+            header h1 {
+                font-size: 19px;
+            }
+
+            .container {
+                padding: 15px 12px;
+            }
+
+            .cart-box,
+            .summary {
+                padding: 15px;
+            }
+
+            .cart-item {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .item-total {
+                text-align: left;
+            }
+
+            .quantity-box {
+                width: fit-content;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div>
+
+        <h1>⚡ NextTurn</h1>
+
+        <p>
+            🛒 My Cart • College Canteen
+        </p>
+
+    </div>
+
+    <button
+        class="back-btn"
+        onclick="window.location.href='student.html'">
+
+        ← Dashboard
+
+    </button>
+
+</header>
+
+
+<div class="container">
+
+    <div class="page-title">
+
+        <h2>🛒 My Cart</h2>
+
+        <p>
+            Review your selected food before proceeding to payment.
+        </p>
+
+    </div>
+
+
+    <div id="cartContent">
+
+        <!-- CART WILL LOAD HERE -->
+
+    </div>
+
+</div>
+
+
+<script>
+
+
+/* =========================
+   CART
+========================= */
+
+let cart = [];
+
+
+/* =========================
+   LOAD CART
+========================= */
+
+function loadCart() {
+
+    try {
+
+        cart =
+            JSON.parse(
+                localStorage.getItem(
+                    "nextTurnCart"
+                ) || "[]"
+            );
+
+    } catch (error) {
+
+        cart = [];
+    }
+
+
+    renderCart();
+}
+
+
+/* =========================
+   SAVE CART
+========================= */
+
+function saveCart() {
+
+    localStorage.setItem(
+        "nextTurnCart",
+        JSON.stringify(cart)
+    );
+}
+
+
+/* =========================
+   SERVICE CHARGE
+========================= */
+
+function getServiceCharge(price) {
+
+    return Number(price) <= 20
+        ? 0.50
+        : 1.00;
+}
+
+
+/* =========================
+   SUBTOTAL
+========================= */
+
+function calculateSubtotal() {
+
+    return cart.reduce(
+        (total, item) => {
+
+            return total +
+                (
+                    Number(item.price || 0) *
+                    Number(item.quantity || 1)
+                );
+
+        },
+        0
+    );
+}
+
+
+/* =========================
+   SERVICE CHARGE TOTAL
+========================= */
+
+function calculateServiceCharge() {
+
+    return cart.reduce(
+        (total, item) => {
+
+            return total +
+                (
+                    getServiceCharge(item.price) *
+                    Number(item.quantity || 1)
+                );
+
+        },
+        0
+    );
+}
+
+
+/* =========================
+   GRAND TOTAL
+========================= */
+
+function calculateTotal() {
+
+    return (
+        calculateSubtotal() +
+        calculateServiceCharge()
+    );
+}
+
+
+/* =========================
+   RENDER
+========================= */
+
+function renderCart() {
+
+    const container =
+        document.getElementById(
+            "cartContent"
+        );
+
+
+    if (!cart.length) {
+
+        container.innerHTML = `
+
+            <div class="cart-box">
+
+                <div class="empty-cart">
+
+                    <div class="icon">
+                        🛒
+                    </div>
+
+                    <h2>
+                        Your cart is empty
+                    </h2>
+
+                    <p>
+                        Looks like you haven't added
+                        anything to your cart yet.
+                    </p>
+
+                    <button
+                        class="shop-btn"
+                        onclick="goToMenu()">
+
+                        🍔 Browse Menu
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    let itemsHTML = "";
+
+
+    cart.forEach(
+        (item, index) => {
+
+            const quantity =
+                Number(item.quantity || 1);
+
+            const price =
+                Number(item.price || 0);
+
+            const itemTotal =
+                price * quantity;
+
+
+            itemsHTML += `
+
+                <div class="cart-item">
+
+                    <div>
+
+                        <div class="item-name">
+                            ${escapeHTML(
+                                item.name || "Food Item"
+                            )}
+                        </div>
+
+                        <div class="item-category">
+                            ${escapeHTML(
+                                item.category || "Canteen"
+                            )}
+                        </div>
+
+                        <div class="item-price">
+                            ₹${price.toFixed(2)}
+                            + ₹${getServiceCharge(price).toFixed(2)}
+                            service charge / item
+                        </div>
+
+                    </div>
+
+
+                    <div>
+
+                        <div class="quantity-box">
+
+                            <button
+                                onclick="decreaseQuantity(${index})">
+                                −
+                            </button>
+
+                            <span>
+                                ${quantity}
+                            </span>
+
+                            <button
+                                onclick="increaseQuantity(${index})">
+                                +
+                            </button>
+
+                        </div>
+
+
+                        <button
+                            class="remove"
+                            onclick="removeItem(${index})">
+
+                            Remove
+
+                        </button>
+
+                    </div>
+
+
+                    <div class="item-total">
+
+                        ₹${itemTotal.toFixed(2)}
+
+                    </div>
+
+                </div>
+
+            `;
+        }
+    );
+
+
+    const subtotal =
+        calculateSubtotal();
+
+    const serviceCharge =
+        calculateServiceCharge();
+
+    const total =
+        calculateTotal();
+
+
+    container.innerHTML = `
+
+        <div class="cart-layout">
+
+
+            <!-- ITEMS -->
+
+            <div class="cart-box">
+
+                <h3>
+                    Selected Food (${getTotalItems()} items)
+                </h3>
+
+                ${itemsHTML}
+
+            </div>
+
+
+            <!-- SUMMARY -->
+
+            <div class="summary">
+
+                <h3>
+                    Order Summary
+                </h3>
+
+
+                <div class="summary-row">
+
+                    <span>
+                        Food Subtotal
+                    </span>
+
+                    <strong>
+                        ₹${subtotal.toFixed(2)}
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-row">
+
+                    <span>
+                        Service Charge
+                    </span>
+
+                    <strong>
+                        ₹${serviceCharge.toFixed(2)}
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-row total">
+
+                    <span>
+                        Total
+                    </span>
+
+                    <strong>
+                        ₹${total.toFixed(2)}
+                    </strong>
+
+                </div>
+
+
+                <button
+                    class="checkout"
+                    onclick="proceedToPayment()">
+
+                    Proceed to Payment →
+
+                </button>
+
+
+                <button
+                    class="continue"
+                    onclick="goToMenu()">
+
+                    + Add More Food
+
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
+}
+
+
+/* =========================
+   TOTAL ITEMS
+========================= */
+
+function getTotalItems() {
+
+    return cart.reduce(
+        (total, item) => {
+
+            return total +
+                Number(item.quantity || 1);
+
+        },
+        0
+    );
+}
+
+
+/* =========================
+   INCREASE
+========================= */
+
+function increaseQuantity(index) {
+
+    cart[index].quantity =
+        Number(cart[index].quantity || 1) + 1;
+
+    saveCart();
+
+    renderCart();
+}
+
+
+/* =========================
+   DECREASE
+========================= */
+
+function decreaseQuantity(index) {
+
+    const quantity =
+        Number(cart[index].quantity || 1);
+
+
+    if (quantity <= 1) {
+
+        removeItem(index);
+
+        return;
+    }
+
+
+    cart[index].quantity =
+        quantity - 1;
+
+    saveCart();
+
+    renderCart();
+}
+
+
+/* =========================
+   REMOVE
+========================= */
+
+function removeItem(index) {
+
+    cart.splice(index, 1);
+
+    saveCart();
+
+    renderCart();
+}
+
+
+/* =========================
+   PAYMENT
+========================= */
+
+function proceedToPayment() {
+
+    if (!cart.length) {
+
+        alert(
+            "Your cart is empty."
+        );
+
+        return;
+    }
+
+
+    /*
+       Save the latest cart.
+       payment.html already reads
+       nextTurnCart.
+    */
+
+    saveCart();
+
+
+    window.location.href =
+        "payment.html";
+}
+
+
+/* =========================
+   MENU
+========================= */
+
+function goToMenu() {
+
+    window.location.href =
+        "order.html";
+}
+
+
+/* =========================
+   HTML SAFETY
+========================= */
+
+function escapeHTML(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+/* =========================
+   START
+========================= */
+
+loadCart();
+
+</script>
+
+</body>
+          </html>
