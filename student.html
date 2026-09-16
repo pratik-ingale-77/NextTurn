@@ -19,173 +19,268 @@
         }
 
         header {
-            background: #0b1f3a;
+            background: #082b5c;
             color: white;
-            padding: 18px 25px;
+            padding: 18px 22px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .logo {
+        header h1 {
             font-size: 23px;
-            font-weight: bold;
+        }
+
+        header p {
+            font-size: 13px;
+            opacity: .85;
+            margin-top: 3px;
         }
 
         .logout {
             background: #e53935;
             color: white;
             border: none;
-            padding: 10px 16px;
+            padding: 9px 14px;
             border-radius: 8px;
             cursor: pointer;
+            font-weight: bold;
         }
 
         .container {
-            max-width: 1100px;
-            margin: 25px auto;
-            padding: 0 18px;
+            max-width: 1150px;
+            margin: auto;
+            padding: 22px;
         }
 
         .welcome {
-            margin-bottom: 22px;
+            margin-bottom: 20px;
         }
 
-        .welcome h1 {
-            font-size: 28px;
-            margin-bottom: 6px;
+        .welcome h2 {
+            color: #082b5c;
+            margin-bottom: 5px;
         }
 
         .welcome p {
-            color: #667085;
+            color: #666;
         }
 
-        .grid {
+        /* DASHBOARD OPTIONS */
+
+        .dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 18px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
             margin-bottom: 25px;
         }
 
-        .card {
+        .dashboard-card {
             background: white;
+            border: 2px solid #e2e8f0;
             border-radius: 14px;
-            padding: 22px;
-            box-shadow: 0 4px 14px rgba(0,0,0,0.07);
+            padding: 20px;
+            cursor: pointer;
+            transition: .2s;
+            position: relative;
         }
 
-        .card h3 {
-            margin-bottom: 8px;
+        .dashboard-card:hover {
+            transform: translateY(-2px);
+            border-color: #082b5c;
+            box-shadow: 0 5px 15px rgba(0,0,0,.08);
         }
 
-        .card p {
-            color: #667085;
-            line-height: 1.5;
+        .dashboard-card .icon {
+            font-size: 28px;
+            margin-bottom: 10px;
         }
 
-        .primary {
-            display: inline-block;
-            margin-top: 15px;
-            background: #1769e0;
+        .dashboard-card h3 {
+            color: #082b5c;
+            margin-bottom: 5px;
+        }
+
+        .dashboard-card p {
+            font-size: 12px;
+            color: #777;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: #e53935;
             color: white;
-            text-decoration: none;
-            padding: 11px 17px;
-            border-radius: 8px;
+            min-width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
             font-weight: bold;
         }
 
-        .section-title {
-            margin: 25px 0 12px;
-            font-size: 21px;
-        }
+        /* ACTIVE ORDER */
 
-        .current-order {
+        .active-order {
             background: white;
             border-radius: 14px;
-            padding: 25px;
-            box-shadow: 0 4px 14px rgba(0,0,0,0.07);
+            padding: 20px;
+            box-shadow: 0 3px 12px rgba(0,0,0,.07);
+            margin-bottom: 20px;
         }
 
-        .no-order {
-            color: #667085;
-            padding: 15px 0;
+        .active-order h2 {
+            color: #082b5c;
+            margin-bottom: 15px;
         }
 
-        .token {
-            font-size: 42px;
-            font-weight: bold;
-            color: #1769e0;
-            margin: 12px 0;
+        .order-box {
+            background: #f7f9fc;
+            padding: 16px;
+            border-radius: 10px;
+        }
+
+        .order-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .order-row:last-child {
+            border-bottom: none;
+        }
+
+        .order-row span:first-child {
+            color: #777;
         }
 
         .status {
             display: inline-block;
-            padding: 8px 13px;
+            padding: 6px 11px;
             border-radius: 20px;
-            background: #eef4ff;
-            color: #1769e0;
+            font-size: 12px;
             font-weight: bold;
-            margin-top: 8px;
         }
 
-        .details {
-            margin-top: 18px;
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
+        .preparing {
+            background: #e3f2fd;
+            color: #1565c0;
         }
 
-        .detail {
-            background: #f7f9fc;
-            padding: 13px;
-            border-radius: 8px;
+        .ready {
+            background: #e8f5e9;
+            color: #2e7d32;
         }
 
-        .detail small {
-            display: block;
-            color: #667085;
+        .pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .ready-alert {
+            background: #e8f5e9;
+            border: 2px solid #66bb6a;
+            color: #1b5e20;
+            border-radius: 12px;
+            padding: 17px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .ready-alert .big {
+            font-size: 20px;
             margin-bottom: 5px;
         }
 
-        .notifications {
-            margin-top: 25px;
-        }
-
-        .notification {
-            background: white;
-            padding: 16px;
-            margin-bottom: 10px;
+        .token {
+            text-align: center;
+            background: #fff8e1;
+            border: 2px dashed #e0a800;
             border-radius: 10px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-        }
-
-        .loading {
-            color: #667085;
-            padding: 15px 0;
-        }
-
-        .error {
-            color: #c62828;
-            background: #fff0f0;
             padding: 15px;
-            border-radius: 8px;
+            margin-top: 15px;
         }
 
-        @media (max-width: 750px) {
-            .grid {
+        .token strong {
+            display: block;
+            font-size: 30px;
+            color: #8a6500;
+            margin-top: 5px;
+        }
+
+        /* QUICK INFO */
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .info-card {
+            background: white;
+            padding: 18px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,.06);
+        }
+
+        .info-card h3 {
+            color: #082b5c;
+            margin-bottom: 7px;
+        }
+
+        .info-card p {
+            color: #666;
+            font-size: 13px;
+        }
+
+        .empty {
+            background: white;
+            padding: 25px;
+            text-align: center;
+            border-radius: 12px;
+            color: #777;
+        }
+
+        @media(max-width: 850px) {
+
+            .dashboard-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .info-grid {
                 grid-template-columns: 1fr;
             }
+        }
 
-            .details {
-                grid-template-columns: 1fr;
+        @media(max-width: 550px) {
+
+            header {
+                padding: 15px;
             }
 
-            .welcome h1 {
-                font-size: 23px;
+            header h1 {
+                font-size: 19px;
             }
 
-            .token {
-                font-size: 36px;
+            .container {
+                padding: 14px;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .dashboard-card {
+                padding: 15px;
+            }
+
+            .dashboard-card .icon {
+                font-size: 24px;
             }
         }
     </style>
@@ -194,354 +289,583 @@
 <body>
 
 <header>
-    <div class="logo">⚡ NextTurn</div>
-    <button class="logout" onclick="logout()">Logout</button>
+
+    <div>
+        <h1>⚡ NextTurn</h1>
+        <p>Student Dashboard • College Canteen</p>
+    </div>
+
+    <button class="logout" onclick="logout()">
+        Logout
+    </button>
+
 </header>
+
 
 <div class="container">
 
     <div class="welcome">
-        <h1 id="welcomeText">Welcome, Student 👋</h1>
-        <p>Manage your canteen orders without standing in the queue.</p>
-    </div>
 
-    <div class="grid">
+        <h2 id="welcomeText">
+            Welcome!
+        </h2>
 
-        <div class="card">
-            <h3>🍔 Order Food</h3>
-            <p>Choose currently available food items and place your canteen order.</p>
-            <a href="order.html" class="primary">Order Now</a>
-        </div>
-
-        <div class="card">
-            <h3>📦 Track Order</h3>
-            <p>Track your token and order status after payment verification.</p>
-            <a href="#currentOrder" class="primary">Track Order</a>
-        </div>
-
-        <div class="card">
-            <h3>👤 My Profile</h3>
-            <p id="profileInfo">Loading profile...</p>
-        </div>
+        <p>
+            Order food from your classroom and track your canteen order.
+        </p>
 
     </div>
 
-    <h2 class="section-title" id="currentOrder">
-        Current Order
-    </h2>
 
-    <div class="current-order" id="currentOrderContainer">
-        <div class="loading">
-            Checking your current order...
+    <!-- DASHBOARD OPTIONS -->
+
+    <div class="dashboard-grid">
+
+        <div
+            class="dashboard-card"
+            onclick="goTo('order.html')">
+
+            <div class="icon">🍔</div>
+
+            <h3>Order Food</h3>
+
+            <p>
+                Browse the canteen menu and add food to your cart.
+            </p>
+
         </div>
+
+
+        <div
+            class="dashboard-card"
+            onclick="goTo('cart.html')">
+
+            <div class="icon">🛒</div>
+
+            <span
+                id="cartBadge"
+                class="cart-badge">
+                0
+            </span>
+
+            <h3>My Cart</h3>
+
+            <p>
+                View selected food, change quantity and checkout.
+            </p>
+
+        </div>
+
+
+        <div
+            class="dashboard-card"
+            onclick="showCurrentOrder()">
+
+            <div class="icon">📦</div>
+
+            <h3>Track Order</h3>
+
+            <p>
+                Track your token and food preparation status.
+            </p>
+
+        </div>
+
+
+        <div
+            class="dashboard-card"
+            onclick="showHistory()">
+
+            <div class="icon">🧾</div>
+
+            <h3>Order History</h3>
+
+            <p>
+                View your previous completed orders.
+            </p>
+
+        </div>
+
+
+        <div
+            class="dashboard-card"
+            onclick="showPaymentHistory()">
+
+            <div class="icon">💳</div>
+
+            <h3>Payment History</h3>
+
+            <p>
+                View your previous payment details.
+            </p>
+
+        </div>
+
+
+        <div
+            class="dashboard-card"
+            onclick="showNotifications()">
+
+            <div class="icon">🔔</div>
+
+            <h3>Notifications</h3>
+
+            <p>
+                Check important order updates.
+            </p>
+
+        </div>
+
+
+        <div
+            class="dashboard-card"
+            onclick="showProfile()">
+
+            <div class="icon">👤</div>
+
+            <h3>My Profile</h3>
+
+            <p>
+                View your student account information.
+            </p>
+
+        </div>
+
     </div>
 
-    <h2 class="section-title">
-        Notifications
-    </h2>
 
-    <div class="notifications" id="notificationsContainer">
-        <div class="notification">
-            🔔 Your order notifications will appear here.
+    <!-- ACTIVE ORDER -->
+
+    <div class="active-order">
+
+        <h2>📦 Current Order</h2>
+
+        <div id="readyAlert"></div>
+
+        <div id="currentOrder">
+
+            <div class="empty">
+                Checking your current order...
+            </div>
+
         </div>
+
+    </div>
+
+
+    <!-- INFO -->
+
+    <div class="info-grid">
+
+        <div class="info-card">
+
+            <h3>⚡ Quick Ordering</h3>
+
+            <p>
+                Order your food directly from your classroom
+                without standing in a queue.
+            </p>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <h3>🎟 Smart Token</h3>
+
+            <p>
+                After payment verification, your unique
+                token will be generated.
+            </p>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <h3>🔔 Ready Notification</h3>
+
+            <p>
+                You'll know when your food is ready for
+                collection from the canteen.
+            </p>
+
+        </div>
+
     </div>
 
 </div>
 
+
 <script>
 
-const API_BASE_URL =
+const API =
     "https://nextturn-mgbf.onrender.com";
 
-let studentId = "STU001";
 
-function getStudentSession() {
+/* =========================
+   STUDENT
+========================= */
+
+const student =
+    JSON.parse(
+        localStorage.getItem("nextTurnUser") || "{}"
+    );
+
+
+if (student.fullName) {
+
+    document.getElementById("welcomeText")
+        .textContent =
+        "Welcome, " + student.fullName + "!";
+
+}
+
+
+/* =========================
+   CART COUNT
+========================= */
+
+function updateCartBadge() {
+
+    let cart = [];
 
     try {
 
-        const user =
+        cart =
             JSON.parse(
-                localStorage.getItem("nextTurnUser") || "{}"
+                localStorage.getItem("nextTurnCart") || "[]"
             );
 
-        if (user.studentId) {
-            studentId = user.studentId;
-        }
+    } catch (e) {
 
-        if (user.fullName) {
-            document.getElementById("welcomeText").textContent =
-                "Welcome, " + user.fullName + " 👋";
-        }
+        cart = [];
+    }
 
-        document.getElementById("profileInfo").innerHTML =
-            `
-            <strong>${escapeHTML(user.fullName || "Student")}</strong><br>
-            ${escapeHTML(user.studentId || studentId)}<br>
-            ${escapeHTML(user.email || "")}
-            `;
 
-    } catch (error) {
+    let count = 0;
 
-        console.error("Session error:", error);
+    cart.forEach(item => {
 
+        count += Number(item.quantity || 1);
+
+    });
+
+
+    const badge =
+        document.getElementById("cartBadge");
+
+
+    if (count > 0) {
+
+        badge.textContent = count;
+        badge.style.display = "flex";
+
+    } else {
+
+        badge.style.display = "none";
     }
 }
 
 
-/*
-    IMPORTANT:
-    This function ONLY gets the current order
-    from the backend.
+/* =========================
+   CURRENT ORDER
+========================= */
 
-    It does NOT fall back to old localStorage data.
-*/
 async function loadCurrentOrder() {
 
+    const studentId =
+        student.studentId || "STU001";
+
+
     const container =
-        document.getElementById("currentOrderContainer");
+        document.getElementById("currentOrder");
+
 
     try {
 
-        const response = await fetch(
-            API_BASE_URL +
-            "/api/student/orders/current/" +
-            encodeURIComponent(studentId) +
-            "?t=" +
-            Date.now(),
-            {
-                cache: "no-store"
-            }
-        );
+        const response =
+            await fetch(
+                `${API}/api/student/orders/current/${encodeURIComponent(studentId)}?t=${Date.now()}`,
+                {
+                    cache: "no-store"
+                }
+            );
 
-        /*
-            404 means there is no active order.
-            This is NOT an error.
-        */
+
         if (response.status === 404) {
 
-            showNoCurrentOrder();
+            container.innerHTML = `
+                <div class="empty">
+                    No active order right now.
+                    <br><br>
+                    Go to <b>🍔 Order Food</b> to place an order.
+                </div>
+            `;
+
+            document.getElementById("readyAlert")
+                .innerHTML = "";
 
             return;
         }
 
+
         if (!response.ok) {
 
             throw new Error(
-                "Server returned HTTP " +
-                response.status
+                "Unable to load order"
             );
         }
+
 
         const order =
             await response.json();
 
+
         displayCurrentOrder(order);
+
 
     } catch (error) {
 
-        console.error(
-            "Current order error:",
-            error
-        );
+        console.error(error);
 
-        container.innerHTML =
-            `
-            <div class="error">
+        container.innerHTML = `
+            <div class="empty">
                 Unable to load your current order.
-                Please try again in a moment.
+                <br><br>
+                Please try again.
             </div>
-            `;
+        `;
     }
 }
 
+
+/* =========================
+   DISPLAY CURRENT ORDER
+========================= */
 
 function displayCurrentOrder(order) {
 
     const container =
-        document.getElementById("currentOrderContainer");
+        document.getElementById("currentOrder");
 
-    const token =
-        order.tokenNumber;
+    const readyAlert =
+        document.getElementById("readyAlert");
 
-    const orderStatus =
+
+    const status =
         order.orderStatus || "Unknown";
 
-    const paymentStatus =
-        order.paymentStatus || "Unknown";
 
-    let tokenHTML = "";
+    let statusClass =
+        "pending";
 
-    if (
-        token !== null &&
-        token !== undefined
-    ) {
 
-        tokenHTML =
-            `
-            <div>
-                <small>Your Token</small>
-                <div class="token">
-                    ${escapeHTML(String(token))}
+    if (status === "Preparing") {
+        statusClass = "preparing";
+    }
+
+
+    if (status === "Ready") {
+        statusClass = "ready";
+    }
+
+
+    if (status === "Ready") {
+
+        readyAlert.innerHTML = `
+            <div class="ready-alert">
+
+                <div class="big">
+                    🔔 Your food is ready!
                 </div>
+
+                Please collect your order from the
+                canteen using your token.
+
             </div>
-            `;
+        `;
 
     } else {
 
-        tokenHTML =
-            `
-            <div class="status">
-                Token Pending
-            </div>
-            `;
+        readyAlert.innerHTML = "";
     }
 
 
-    let notificationMessage =
-        "Your order has been submitted.";
+    let tokenHTML = "";
 
-    if (orderStatus === "Payment Submitted") {
 
-        notificationMessage =
-            "💳 Payment submitted. Waiting for staff verification.";
+    if (order.tokenNumber != null) {
 
-    } else if (orderStatus === "Payment Verified") {
+        tokenHTML = `
+            <div class="token">
 
-        notificationMessage =
-            "✅ Payment verified. Your token will be generated shortly.";
+                Your Token
 
-    } else if (orderStatus === "Preparing") {
+                <strong>
+                    #${order.tokenNumber}
+                </strong>
 
-        notificationMessage =
-            "👨‍🍳 Your food is being prepared.";
-
-    } else if (orderStatus === "Ready") {
-
-        notificationMessage =
-            "🎉 Your food is ready for collection!";
-
+            </div>
+        `;
     }
 
 
-    container.innerHTML =
-        `
-        <h3>Order #${escapeHTML(String(order.id))}</h3>
+    container.innerHTML = `
 
-        ${tokenHTML}
+        <div class="order-box">
 
-        <div class="details">
+            <div class="order-row">
 
-            <div class="detail">
-                <small>Order Status</small>
+                <span>Order ID</span>
+
                 <strong>
-                    ${escapeHTML(orderStatus)}
+                    #${order.id || "-"}
                 </strong>
+
             </div>
 
-            <div class="detail">
-                <small>Payment Status</small>
+
+            <div class="order-row">
+
+                <span>Payment</span>
+
                 <strong>
-                    ${escapeHTML(paymentStatus)}
+                    ${order.paymentStatus || "-"}
                 </strong>
+
             </div>
 
-            <div class="detail">
-                <small>Total Amount</small>
-                <strong>
-                    ₹${Number(order.totalAmount || 0).toFixed(2)}
-                </strong>
+
+            <div class="order-row">
+
+                <span>Order Status</span>
+
+                <span class="status ${statusClass}">
+                    ${status}
+                </span>
+
             </div>
 
-            <div class="detail">
-                <small>Student ID</small>
+
+            <div class="order-row">
+
+                <span>Total Amount</span>
+
                 <strong>
-                    ${escapeHTML(order.studentId || studentId)}
+                    ₹${Number(
+                        order.totalAmount || 0
+                    ).toFixed(2)}
                 </strong>
+
             </div>
+
+
+            ${tokenHTML}
 
         </div>
-        `;
-
-
-    document.getElementById(
-        "notificationsContainer"
-    ).innerHTML =
-        `
-        <div class="notification">
-            ${notificationMessage}
-        </div>
-        `;
+    `;
 }
 
 
-function showNoCurrentOrder() {
+/* =========================
+   TRACK ORDER
+========================= */
 
-    const container =
-        document.getElementById("currentOrderContainer");
+function showCurrentOrder() {
 
-    container.innerHTML =
-        `
-        <div class="no-order">
-
-            <h3>No active order</h3>
-
-            <p style="margin-top:8px;">
-                You currently don't have an active canteen order.
-            </p>
-
-            <a href="order.html" class="primary">
-                Order Food
-            </a>
-
-        </div>
-        `;
-
-    document.getElementById(
-        "notificationsContainer"
-    ).innerHTML =
-        `
-        <div class="notification">
-            🍽️ You don't have an active order right now.
-        </div>
-        `;
+    document
+        .querySelector(".active-order")
+        .scrollIntoView({
+            behavior: "smooth"
+        });
 }
 
 
-function escapeHTML(value) {
+/* =========================
+   OTHER OPTIONS
+========================= */
 
-    const div =
-        document.createElement("div");
+function showHistory() {
 
-    div.textContent =
-        value == null ? "" : String(value);
-
-    return div.innerHTML;
+    alert(
+        "Order History section is available from the dashboard. Your completed orders are stored in the system."
+    );
 }
 
+
+function showPaymentHistory() {
+
+    alert(
+        "Payment History will show your verified payment records."
+    );
+}
+
+
+function showNotifications() {
+
+    const alertBox =
+        document.getElementById("readyAlert");
+
+
+    if (alertBox.innerHTML.trim() !== "") {
+
+        alertBox.scrollIntoView({
+            behavior: "smooth"
+        });
+
+    } else {
+
+        alert(
+            "No new notifications."
+        );
+    }
+}
+
+
+function showProfile() {
+
+    const name =
+        student.fullName || "Student";
+
+    const id =
+        student.studentId || "-";
+
+    const email =
+        student.email || "-";
+
+
+    alert(
+        "My Profile\n\n" +
+        "Name: " + name + "\n" +
+        "Student ID: " + id + "\n" +
+        "Email: " + email
+    );
+}
+
+
+/* =========================
+   NAVIGATION
+========================= */
+
+function goTo(page) {
+
+    window.location.href = page;
+}
+
+
+/* =========================
+   LOGOUT
+========================= */
 
 function logout() {
-
-    /*
-        Remove login session.
-
-        We intentionally do NOT use
-        nextTurnCurrentOrder anywhere.
-    */
 
     localStorage.removeItem(
         "nextTurnUser"
     );
 
     localStorage.removeItem(
-        "nextTurnRole"
-    );
-
-    localStorage.removeItem(
         "nextTurnCurrentOrder"
-    );
-
-    localStorage.removeItem(
-        "nextTurnCart"
     );
 
     window.location.href =
@@ -549,21 +873,17 @@ function logout() {
 }
 
 
-/* Start page */
+/* =========================
+   START
+========================= */
 
-getStudentSession();
+updateCartBadge();
 
 loadCurrentOrder();
 
 
 /*
-    Refresh every 5 seconds so that:
-
-    Staff verifies payment
-          ↓
-    Staff generates token
-          ↓
-    Student page automatically sees token
+   Keep order status updated.
 */
 
 setInterval(
@@ -571,7 +891,17 @@ setInterval(
     5000
 );
 
+
+/*
+   Keep cart badge updated.
+*/
+
+setInterval(
+    updateCartBadge,
+    1000
+);
+
 </script>
 
 </body>
-  </html>
+            </html>
