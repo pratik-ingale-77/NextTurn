@@ -1,344 +1,768 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>NextTurn - Login</title>
 
+    <link rel="stylesheet" href="styles.css">
+
     <style>
+
         * {
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
         }
 
         body {
+
             min-height: 100vh;
-            background: linear-gradient(135deg, #07152f, #0d2b5c);
+
+            background:
+                radial-gradient(
+                    circle at top left,
+                    rgba(212,175,55,0.12),
+                    transparent 35%
+                ),
+                radial-gradient(
+                    circle at bottom right,
+                    rgba(212,175,55,0.06),
+                    transparent 35%
+                ),
+                #080808;
+
+            color: #f5f5f5;
+
             display: flex;
-            justify-content: center;
+
             align-items: center;
+
+            justify-content: center;
+
             padding: 20px;
+
         }
 
-        .login-container {
+
+        .login-wrapper {
+
             width: 100%;
-            max-width: 430px;
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+
+            max-width: 440px;
+
         }
 
-        .logo {
-            text-align: center;
-            font-size: 30px;
-            font-weight: bold;
-            color: #0b2d63;
-            margin-bottom: 5px;
-        }
 
-        .subtitle {
+        .brand-area {
+
             text-align: center;
-            color: #666;
+
             margin-bottom: 25px;
+
         }
+
+
+        .brand {
+
+            font-size: 34px;
+
+            font-weight: 900;
+
+            letter-spacing: -1px;
+
+            color: #D4AF37;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .tagline {
+
+            color: #858585;
+
+            font-size: 14px;
+
+        }
+
+
+        .login-card {
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #151515,
+                    #0d0d0d
+                );
+
+            border: 1px solid
+                rgba(212,175,55,0.24);
+
+            border-radius: 24px;
+
+            padding: 30px;
+
+            box-shadow:
+                0 25px 70px
+                rgba(0,0,0,0.55);
+
+        }
+
+
+        .welcome {
+
+            margin-bottom: 24px;
+
+        }
+
+
+        .welcome h1 {
+
+            font-size: 25px;
+
+            margin-bottom: 7px;
+
+            color: #f5f5f5;
+
+        }
+
+
+        .welcome p {
+
+            color: #888;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+
+        }
+
+
+        .role-title {
+
+            font-size: 13px;
+
+            color: #999;
+
+            margin-bottom: 10px;
+
+            font-weight: 600;
+
+        }
+
 
         .roles {
+
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
             gap: 8px;
-            margin-bottom: 25px;
+
+            margin-bottom: 23px;
+
         }
+
 
         .role-btn {
-            padding: 12px 5px;
-            border: 2px solid #d8dce5;
-            background: white;
-            border-radius: 10px;
+
+            border: 1px solid #292929;
+
+            background: #0b0b0b;
+
+            color: #aaa;
+
+            border-radius: 11px;
+
+            padding: 12px 6px;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
             cursor: pointer;
-            font-weight: bold;
-            color: #333;
+
+            transition: 0.2s ease;
+
         }
+
+
+        .role-btn:hover {
+
+            border-color:
+                rgba(212,175,55,0.5);
+
+            color: #F4D77D;
+
+        }
+
 
         .role-btn.active {
-            background: #0b2d63;
-            color: white;
-            border-color: #0b2d63;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #D4AF37,
+                    #F4D77D
+                );
+
+            color: #090909;
+
+            border-color: #D4AF37;
+
+            box-shadow:
+                0 7px 20px
+                rgba(212,175,55,0.14);
+
         }
+
 
         .form-group {
+
             margin-bottom: 17px;
+
         }
 
-        label {
+
+        .form-group label {
+
             display: block;
-            margin-bottom: 7px;
-            font-weight: bold;
-            color: #333;
+
+            margin-bottom: 8px;
+
+            font-size: 14px;
+
+            color: #d5d5d5;
+
+            font-weight: 600;
+
         }
 
-        input {
+
+        .form-group input {
+
             width: 100%;
-            padding: 13px;
-            border: 1px solid #ccc;
-            border-radius: 9px;
+
+            padding: 14px 15px;
+
+            background: #090909;
+
+            border: 1px solid #292929;
+
+            border-radius: 11px;
+
+            color: #f5f5f5;
+
             font-size: 15px;
+
             outline: none;
+
+            transition: 0.2s ease;
+
         }
 
-        input:focus {
-            border-color: #0b2d63;
+
+        .form-group input::placeholder {
+
+            color: #606060;
+
         }
+
+
+        .form-group input:focus {
+
+            border-color: #D4AF37;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(212,175,55,0.08);
+
+        }
+
 
         .login-btn {
+
             width: 100%;
-            padding: 14px;
-            background: #0b2d63;
-            color: white;
+
+            padding: 15px;
+
+            margin-top: 4px;
+
             border: none;
-            border-radius: 10px;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #D4AF37,
+                    #F4D77D
+                );
+
+            color: #090909;
+
             font-size: 16px;
-            font-weight: bold;
+
+            font-weight: 800;
+
             cursor: pointer;
-            margin-top: 5px;
+
+            transition: 0.2s ease;
+
         }
+
 
         .login-btn:hover {
-            background: #061d43;
+
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 12px 28px
+                rgba(212,175,55,0.18);
+
         }
+
 
         .login-btn:disabled {
-            background: #888;
+
+            opacity: 0.55;
+
             cursor: not-allowed;
+
+            transform: none;
+
         }
+
 
         .message {
-            margin-top: 15px;
-            padding: 12px;
-            border-radius: 8px;
+
             display: none;
+
+            margin-top: 15px;
+
+            padding: 12px;
+
+            border-radius: 10px;
+
             text-align: center;
-            font-size: 14px;
+
+            font-size: 13px;
+
+            line-height: 1.4;
+
         }
 
-        .success {
+
+        .message.success {
+
             display: block;
-            background: #e8f7ee;
-            color: #176b36;
+
+            background:
+                rgba(212,175,55,0.09);
+
+            border: 1px solid
+                rgba(212,175,55,0.25);
+
+            color: #F4D77D;
+
         }
 
-        .error {
+
+        .message.error {
+
             display: block;
-            background: #fdeaea;
-            color: #a32020;
+
+            background:
+                rgba(180,40,40,0.10);
+
+            border: 1px solid
+                rgba(220,70,70,0.22);
+
+            color: #ff9b9b;
+
         }
 
-        .back {
+
+        .back-home {
+
             display: block;
+
             text-align: center;
+
             margin-top: 20px;
-            color: #0b2d63;
+
+            color: #777;
+
             text-decoration: none;
-            font-weight: bold;
+
+            font-size: 13px;
+
+            transition: 0.2s ease;
+
         }
 
-        @media (max-width: 450px) {
-            .login-container {
-                padding: 22px;
+
+        .back-home:hover {
+
+            color: #D4AF37;
+
+        }
+
+
+        .security-note {
+
+            text-align: center;
+
+            margin-top: 18px;
+
+            color: #555;
+
+            font-size: 11px;
+
+        }
+
+
+        @media (max-width: 500px) {
+
+            body {
+                padding: 14px;
             }
+
+            .login-card {
+                padding: 21px;
+                border-radius: 19px;
+            }
+
+            .brand {
+                font-size: 30px;
+            }
+
+            .welcome h1 {
+                font-size: 23px;
+            }
+
+        }
+
+
+        @media (max-width: 360px) {
 
             .roles {
                 grid-template-columns: 1fr;
             }
+
         }
+
     </style>
+
 </head>
+
 
 <body>
 
-<div class="login-container">
+<div class="login-wrapper">
 
-    <div class="logo">⚡ NextTurn</div>
 
-    <div class="subtitle">
-        College Canteen Digital Ordering
-    </div>
+    <div class="brand-area">
 
-    <div class="roles">
+        <div class="brand">
+            NextTurn
+        </div>
 
-        <button
-            type="button"
-            class="role-btn active"
-            onclick="selectRole('student', this)"
-        >
-            Student
-        </button>
-
-        <button
-            type="button"
-            class="role-btn"
-            onclick="selectRole('staff', this)"
-        >
-            Staff
-        </button>
-
-        <button
-            type="button"
-            class="role-btn"
-            onclick="selectRole('partner', this)"
-        >
-            Partner
-        </button>
+        <div class="tagline">
+            Digital Canteen Ordering System
+        </div>
 
     </div>
 
-    <form id="loginForm">
 
-        <div class="form-group">
+    <div class="login-card">
 
-            <label id="emailLabel">Gmail</label>
 
-            <!-- TEXT instead of EMAIL so Staff ID works -->
-            <input
-                type="text"
-                id="email"
-                placeholder="Enter your Gmail"
-                required
-                autocomplete="username"
-            >
+        <div class="welcome">
 
-        </div>
+            <h1>
+                Welcome back
+            </h1>
 
-        <div class="form-group">
-
-            <label>Password</label>
-
-            <input
-                type="password"
-                id="password"
-                placeholder="Enter password"
-                required
-                autocomplete="current-password"
-            >
+            <p>
+                Sign in to manage your canteen
+                experience.
+            </p>
 
         </div>
 
-        <button
-            type="submit"
-            class="login-btn"
-            id="loginBtn"
+
+        <div class="role-title">
+            Choose account type
+        </div>
+
+
+        <div class="roles">
+
+
+            <button
+                type="button"
+                class="role-btn active"
+                onclick="selectRole('student', this)"
+            >
+                Student
+            </button>
+
+
+            <button
+                type="button"
+                class="role-btn"
+                onclick="selectRole('staff', this)"
+            >
+                Staff
+            </button>
+
+
+            <button
+                type="button"
+                class="role-btn"
+                onclick="selectRole('partner', this)"
+            >
+                Partner
+            </button>
+
+
+        </div>
+
+
+        <form id="loginForm">
+
+
+            <div class="form-group">
+
+                <label id="emailLabel">
+                    Gmail
+                </label>
+
+                <input
+                    type="text"
+                    id="email"
+                    placeholder="Enter your Gmail"
+                    required
+                    autocomplete="username"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Enter password"
+                    required
+                    autocomplete="current-password"
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="login-btn"
+                id="loginBtn"
+            >
+                Login as Student
+            </button>
+
+
+        </form>
+
+
+        <div
+            id="message"
+            class="message"
+        ></div>
+
+
+        <a
+            href="index.html"
+            class="back-home"
         >
-            Login as Student
-        </button>
+            ← Back to Home
+        </a>
 
-    </form>
 
-    <div id="message" class="message"></div>
+        <div class="security-note">
+            NextTurn • College Canteen
+        </div>
 
-    <a href="index.html" class="back">
-        ← Back to Home
-    </a>
+
+    </div>
+
 
 </div>
 
+
 <script>
 
-    // LIVE JAVA SPRING BOOT BACKEND
-    const API_BASE_URL = "https://nextturn-mgbf.onrender.com";
 
-    let selectedRole = "student";
-
-
-    function selectRole(role, button) {
-
-        selectedRole = role;
-
-        document.querySelectorAll(".role-btn").forEach(function(btn) {
-            btn.classList.remove("active");
-        });
-
-        button.classList.add("active");
-
-        const emailLabel =
-            document.getElementById("emailLabel");
-
-        const emailInput =
-            document.getElementById("email");
-
-        const loginBtn =
-            document.getElementById("loginBtn");
+const API_BASE_URL =
+    "https://nextturn-mgbf.onrender.com";
 
 
-        if (role === "student") {
-
-            emailLabel.textContent = "Gmail";
-
-            emailInput.placeholder =
-                "Enter your Gmail";
-
-            loginBtn.textContent =
-                "Login as Student";
-
-        }
-
-        else if (role === "staff") {
-
-            emailLabel.textContent = "Staff ID";
-
-            emailInput.placeholder =
-                "Enter Staff ID";
-
-            loginBtn.textContent =
-                "Login as Staff";
-
-        }
-
-        else {
-
-            emailLabel.textContent = "Partner ID";
-
-            emailInput.placeholder =
-                "Enter Partner ID";
-
-            loginBtn.textContent =
-                "Login as Partner";
-        }
+let selectedRole =
+    "student";
 
 
-        // Clear previous input when changing role
-        emailInput.value = "";
+function selectRole(role, button) {
 
-        document.getElementById("password").value = "";
 
-        hideMessage();
-    }
+    selectedRole =
+        role;
 
 
     document
-        .getElementById("loginForm")
-        .addEventListener("submit", async function(event) {
+        .querySelectorAll(".role-btn")
+        .forEach(function(btn) {
+
+            btn.classList.remove(
+                "active"
+            );
+
+        });
+
+
+    button.classList.add(
+        "active"
+    );
+
+
+    const emailLabel =
+        document.getElementById(
+            "emailLabel"
+        );
+
+
+    const emailInput =
+        document.getElementById(
+            "email"
+        );
+
+
+    const loginBtn =
+        document.getElementById(
+            "loginBtn"
+        );
+
+
+    if (role === "student") {
+
+
+        emailLabel.textContent =
+            "Gmail";
+
+
+        emailInput.placeholder =
+            "Enter your Gmail";
+
+
+        loginBtn.textContent =
+            "Login as Student";
+
+
+    }
+
+
+    else if (role === "staff") {
+
+
+        emailLabel.textContent =
+            "Staff ID";
+
+
+        emailInput.placeholder =
+            "Enter Staff ID";
+
+
+        loginBtn.textContent =
+            "Login as Staff";
+
+
+    }
+
+
+    else {
+
+
+        emailLabel.textContent =
+            "Partner ID";
+
+
+        emailInput.placeholder =
+            "Enter Partner ID";
+
+
+        loginBtn.textContent =
+            "Login as Partner";
+
+    }
+
+
+    emailInput.value = "";
+
+    document.getElementById(
+        "password"
+    ).value = "";
+
+
+    hideMessage();
+
+}
+
+
+document
+    .getElementById("loginForm")
+    .addEventListener(
+        "submit",
+        async function(event) {
+
 
             event.preventDefault();
 
 
             const loginValue =
-                document.getElementById("email").value.trim();
+                document
+                    .getElementById("email")
+                    .value
+                    .trim();
+
 
             const password =
-                document.getElementById("password").value;
+                document
+                    .getElementById("password")
+                    .value;
 
 
             const loginBtn =
-                document.getElementById("loginBtn");
+                document.getElementById(
+                    "loginBtn"
+                );
 
 
             hideMessage();
 
 
-            if (!loginValue || !password) {
+            if (
+                !loginValue ||
+                !password
+            ) {
 
                 showMessage(
                     "Please enter your login details.",
@@ -346,6 +770,7 @@
                 );
 
                 return;
+
             }
 
 
@@ -354,45 +779,75 @@
             let requestBody = {};
 
 
-            // STUDENT LOGIN
-            if (selectedRole === "student") {
+            if (
+                selectedRole ===
+                "student"
+            ) {
 
-                endpoint = "/api/student-login";
+
+                endpoint =
+                    "/api/student-login";
+
 
                 requestBody = {
-                    email: loginValue,
-                    password: password
+
+                    email:
+                        loginValue,
+
+                    password:
+                        password
+
                 };
 
             }
 
 
-            // STAFF LOGIN
-            else if (selectedRole === "staff") {
+            else if (
+                selectedRole ===
+                "staff"
+            ) {
 
-                endpoint = "/api/staff-login";
+
+                endpoint =
+                    "/api/staff-login";
+
 
                 requestBody = {
-                    staffId: loginValue,
-                    password: password
+
+                    staffId:
+                        loginValue,
+
+                    password:
+                        password
+
                 };
 
             }
 
 
-            // PARTNER LOGIN
             else {
 
-                endpoint = "/api/partner-login";
+
+                endpoint =
+                    "/api/partner-login";
+
 
                 requestBody = {
-                    partnerId: loginValue,
-                    password: password
+
+                    partnerId:
+                        loginValue,
+
+                    password:
+                        password
+
                 };
+
             }
 
 
-            loginBtn.disabled = true;
+            loginBtn.disabled =
+                true;
+
 
             loginBtn.textContent =
                 "Logging in...";
@@ -400,18 +855,30 @@
 
             try {
 
-                const response = await fetch(
-                    API_BASE_URL + endpoint,
-                    {
-                        method: "POST",
 
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
+                const response =
+                    await fetch(
+                        API_BASE_URL +
+                        endpoint,
+                        {
 
-                        body: JSON.stringify(requestBody)
-                    }
-                );
+                            method:
+                                "POST",
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/json"
+
+                            },
+
+                            body:
+                                JSON.stringify(
+                                    requestBody
+                                )
+
+                        }
+                    );
 
 
                 let data = {};
@@ -419,32 +886,37 @@
 
                 try {
 
-                    data = await response.json();
+                    data =
+                        await response.json();
 
-                } catch {
+                }
+
+                catch {
 
                     data = {};
+
                 }
 
 
                 if (!response.ok) {
 
                     throw new Error(
+
                         data.message ||
                         data.error ||
                         "Invalid login details."
+
                     );
+
                 }
 
 
-                // Save role
                 localStorage.setItem(
                     "nextTurnRole",
                     selectedRole
                 );
 
 
-                // Save user information
                 localStorage.setItem(
                     "nextTurnUser",
                     JSON.stringify(data)
@@ -457,35 +929,50 @@
                 );
 
 
-                setTimeout(function() {
+                setTimeout(
+                    function() {
 
-                    if (selectedRole === "student") {
 
-                        window.location.href =
-                            "student.html";
+                        if (
+                            selectedRole ===
+                            "student"
+                        ) {
 
-                    }
+                            window.location.href =
+                                "student.html";
 
-                    else if (selectedRole === "staff") {
+                        }
 
-                        window.location.href =
-                            "staff.html";
 
-                    }
+                        else if (
+                            selectedRole ===
+                            "staff"
+                        ) {
 
-                    else {
+                            window.location.href =
+                                "staff.html";
 
-                        window.location.href =
-                            "partner.html";
-                    }
+                        }
 
-                }, 700);
+
+                        else {
+
+                            window.location.href =
+                                "partner.html";
+
+                        }
+
+
+                    },
+                    700
+                );
 
 
             }
 
 
             catch (error) {
+
 
                 console.error(
                     "Login error:",
@@ -494,23 +981,31 @@
 
 
                 if (
-                    error instanceof TypeError ||
-                    error.message.includes("Failed to fetch")
+                    error instanceof
+                    TypeError ||
+                    error.message.includes(
+                        "Failed to fetch"
+                    )
                 ) {
+
 
                     showMessage(
                         "Cannot connect to NextTurn server. Please try again.",
                         "error"
                     );
 
+
                 }
 
+
                 else {
+
 
                     showMessage(
                         error.message,
                         "error"
                     );
+
                 }
 
             }
@@ -518,57 +1013,86 @@
 
             finally {
 
-                loginBtn.disabled = false;
+
+                loginBtn.disabled =
+                    false;
 
 
-                if (selectedRole === "student") {
+                if (
+                    selectedRole ===
+                    "student"
+                ) {
 
                     loginBtn.textContent =
                         "Login as Student";
 
                 }
 
-                else if (selectedRole === "staff") {
+
+                else if (
+                    selectedRole ===
+                    "staff"
+                ) {
 
                     loginBtn.textContent =
                         "Login as Staff";
 
                 }
 
+
                 else {
 
                     loginBtn.textContent =
                         "Login as Partner";
+
                 }
 
             }
 
-        });
+        }
+    );
 
 
-    function showMessage(text, type) {
+function showMessage(
+    text,
+    type
+) {
 
-        const message =
-            document.getElementById("message");
-
-        message.textContent = text;
-
-        message.className =
-            "message " + type;
-    }
+    const message =
+        document.getElementById(
+            "message"
+        );
 
 
-    function hideMessage() {
+    message.textContent =
+        text;
 
-        const message =
-            document.getElementById("message");
 
-        message.textContent = "";
+    message.className =
+        "message " + type;
 
-        message.className = "message";
-    }
+}
+
+
+function hideMessage() {
+
+    const message =
+        document.getElementById(
+            "message"
+        );
+
+
+    message.textContent =
+        "";
+
+
+    message.className =
+        "message";
+
+}
+
 
 </script>
 
 </body>
-    </html>
+        </html>
