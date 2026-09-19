@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
 
     <meta
@@ -14,6 +13,93 @@
 
     <link rel="stylesheet" href="styles.css">
 
+    <style>
+        .food-type-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+
+        .food-type-card {
+            position: relative;
+            overflow: hidden;
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(212,175,55,.12),
+                    transparent 40%
+                ),
+                #111111;
+
+            border: 1px solid rgba(212,175,55,.22);
+            border-radius: 22px;
+            padding: 25px;
+            cursor: pointer;
+            transition: .25s ease;
+        }
+
+        .food-type-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(212,175,55,.65);
+            box-shadow: 0 15px 40px rgba(0,0,0,.4);
+        }
+
+        .food-type-icon {
+            width: 58px;
+            height: 58px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 16px;
+            background: rgba(212,175,55,.09);
+            border: 1px solid rgba(212,175,55,.22);
+
+            font-size: 29px;
+            margin-bottom: 16px;
+        }
+
+        .food-type-card h3 {
+            margin: 0 0 8px;
+            color: #f5f5f5;
+            font-size: 21px;
+        }
+
+        .food-type-card p {
+            margin: 0;
+            color: #999;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .food-type-arrow {
+            position: absolute;
+            right: 22px;
+            bottom: 22px;
+
+            color: #d4af37;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .section-title {
+            color: #f5f5f5;
+            margin: 0 0 15px;
+            font-size: 22px;
+        }
+
+        @media (max-width: 650px) {
+            .food-type-grid {
+                grid-template-columns: 1fr;
+                gap: 13px;
+            }
+
+            .food-type-card {
+                padding: 21px;
+            }
+        }
+    </style>
 </head>
 
 
@@ -24,7 +110,7 @@
 
     <div>
 
-        <h1>⚡ NextTurn</h1>
+        <h1>NextTurn</h1>
 
         <p>
             Student Dashboard • College Canteen
@@ -56,9 +142,74 @@
         </h2>
 
         <p>
-            Order food from your classroom and track
-            your canteen order without standing in a queue.
+            Choose your food type, place your order,
+            and skip the canteen queue.
         </p>
+
+    </div>
+
+
+
+    <!-- FOOD TYPE -->
+
+    <h2 class="section-title">
+        🍽 Choose Food Type
+    </h2>
+
+
+    <div class="food-type-grid">
+
+
+        <div
+            class="food-type-card"
+            onclick="openFood('Veg')"
+        >
+
+            <div class="food-type-icon">
+                🥗
+            </div>
+
+            <h3>
+                Veg Food
+            </h3>
+
+            <p>
+                Browse vegetarian snacks, fast food,
+                meals and drinks.
+            </p>
+
+            <div class="food-type-arrow">
+                →
+            </div>
+
+        </div>
+
+
+
+        <div
+            class="food-type-card"
+            onclick="openFood('Non-Veg')"
+        >
+
+            <div class="food-type-icon">
+                🍗
+            </div>
+
+            <h3>
+                Non-Veg Food
+            </h3>
+
+            <p>
+                Browse chicken, egg and other
+                non-vegetarian food options.
+            </p>
+
+            <div class="food-type-arrow">
+                →
+            </div>
+
+        </div>
+
 
     </div>
 
@@ -67,28 +218,6 @@
     <!-- DASHBOARD OPTIONS -->
 
     <div class="dashboard-grid">
-
-
-        <div
-            class="dashboard-card"
-            onclick="goTo('order.html')"
-        >
-
-            <div class="icon">
-                🍔
-            </div>
-
-            <h3>
-                Order Food
-            </h3>
-
-            <p>
-                Browse the canteen menu and order your
-                favourite food.
-            </p>
-
-        </div>
-
 
 
         <div
@@ -330,13 +459,31 @@ const student =
     );
 
 
-
 if (student.fullName) {
 
     document
         .getElementById("welcomeText")
         .textContent =
         "Welcome, " + student.fullName + "!";
+
+}
+
+
+
+/* =========================
+   OPEN VEG / NON-VEG
+========================= */
+
+function openFood(type) {
+
+    localStorage.setItem(
+        "nextTurnFoodType",
+        type
+    );
+
+    window.location.href =
+        "order.html?type=" +
+        encodeURIComponent(type);
 
 }
 
@@ -437,8 +584,10 @@ async function loadCurrentOrder() {
 
                     <br><br>
 
-                    Go to
-                    <b>🍔 Order Food</b>
+                    Choose
+                    <b>🥗 Veg Food</b>
+                    or
+                    <b>🍗 Non-Veg Food</b>
                     to place an order.
 
                 </div>
@@ -814,21 +963,11 @@ updateCartBadge();
 loadCurrentOrder();
 
 
-
-/*
-   Keep order status updated.
-*/
-
 setInterval(
     loadCurrentOrder,
     5000
 );
 
-
-
-/*
-   Keep cart badge updated.
-*/
 
 setInterval(
     updateCartBadge,
@@ -841,4 +980,4 @@ setInterval(
 
 </body>
 
-                </html>
+    </html>
