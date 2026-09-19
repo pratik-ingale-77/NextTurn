@@ -23,12 +23,6 @@ public class FlavorController {
      *
      * Example:
      * GET /api/food/flavors/Chips
-     *
-     * Response can contain:
-     * Cream & Onion
-     * Tangy Tomato
-     * Masala
-     * Wonder
      */
     @GetMapping("/flavors/{foodName}")
     public ResponseEntity<List<FoodItem>> getFlavors(
@@ -54,19 +48,5 @@ public class FlavorController {
                 .getFoodItemByNameAndFlavor(foodName, flavor)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
-    }
-
-    /*
-     * Get all currently available food items/flavors.
-     *
-     * Student side can use this later to check availability
-     * directly from the backend.
-     */
-    @GetMapping("/available")
-    public ResponseEntity<List<FoodItem>> getAvailableFood() {
-
-        return ResponseEntity.ok(
-                foodItemService.getAvailableFoodItems()
-        );
     }
 }
