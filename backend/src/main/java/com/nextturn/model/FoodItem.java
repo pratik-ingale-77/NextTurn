@@ -10,9 +10,23 @@ public class FoodItem {
     private Long id;
 
     private String name;
+
     private String category;
+
     private double price;
+
     private boolean available;
+
+    /*
+     * Flavor support
+     *
+     * Example:
+     * Chips -> Cream & Onion
+     * Chips -> Tangy Tomato
+     *
+     * For foods without flavors, flavor can remain null.
+     */
+    private String flavor;
 
     public FoodItem() {
         this.available = true;
@@ -23,6 +37,15 @@ public class FoodItem {
         this.category = category;
         this.price = price;
         this.available = true;
+        this.flavor = null;
+    }
+
+    public FoodItem(String name, String category, double price, String flavor) {
+        this.name = name;
+        this.category = category;
+        this.price = price;
+        this.available = true;
+        this.flavor = flavor;
     }
 
     public Long getId() {
@@ -59,5 +82,13 @@ public class FoodItem {
 
     public void setAvailable(boolean available) {
         this.available = available;
+    }
+
+    public String getFlavor() {
+        return flavor;
+    }
+
+    public void setFlavor(String flavor) {
+        this.flavor = flavor;
     }
 }
