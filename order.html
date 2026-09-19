@@ -37,8 +37,6 @@
             font-size: 15px;
         }
 
-        /* FOOD TYPE */
-
         .food-type-section {
             max-width: 1200px;
             margin: 0 auto;
@@ -74,8 +72,6 @@
             border-color: #D4AF37;
             box-shadow: 0 8px 25px rgba(212, 175, 55, 0.15);
         }
-
-        /* CATEGORY */
 
         .category-section {
             max-width: 1200px;
@@ -117,8 +113,6 @@
             background: #D4AF37;
             border-color: #D4AF37;
         }
-
-        /* MENU */
 
         .menu-section {
             max-width: 1200px;
@@ -241,14 +235,32 @@
             transform: scale(0.97);
         }
 
-        .unavailable {
-            opacity: 0.5;
+        .add-food-btn:disabled {
+            background: #333333;
+            color: #777777;
+            cursor: not-allowed;
+            transform: none;
         }
 
-        .unavailable .add-food-btn {
-            background: #333333;
-            color: #888888;
-            cursor: not-allowed;
+        .unavailable {
+            opacity: 0.52;
+        }
+
+        .unavailable:hover {
+            transform: none;
+            border-color: rgba(212, 175, 55, 0.16);
+            box-shadow: none;
+        }
+
+        .unavailable-label {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 5px 9px;
+            border-radius: 8px;
+            background: rgba(180, 50, 50, 0.12);
+            color: #e88b8b;
+            font-size: 10px;
+            font-weight: 800;
         }
 
         .empty-menu {
@@ -260,8 +272,6 @@
             border-radius: 20px;
             color: #888888;
         }
-
-        /* FLOATING CART */
 
         .floating-cart {
             position: fixed;
@@ -295,8 +305,6 @@
             margin-left: 5px;
         }
 
-        /* HEADER */
-
         .top-header {
             position: sticky;
             top: 0;
@@ -321,10 +329,6 @@
             font-size: 22px;
             font-weight: 850;
             letter-spacing: -0.5px;
-        }
-
-        .brand span {
-            color: #F5F5F5;
         }
 
         .header-actions {
@@ -362,8 +366,6 @@
             font-weight: 900;
             margin-left: 4px;
         }
-
-        /* RESPONSIVE */
 
         @media (max-width: 1050px) {
             .menu-grid {
@@ -447,8 +449,8 @@
 
 <div class="order-page">
 
-    <!-- HEADER -->
     <header class="top-header">
+
         <div class="header-inner">
 
             <div class="brand">
@@ -457,21 +459,33 @@
 
             <div class="header-actions">
 
-                <button class="header-btn" onclick="goToDashboard()">
+                <button
+                    class="header-btn"
+                    onclick="goToDashboard()">
                     Dashboard
                 </button>
 
-                <button class="header-btn" onclick="goToCart()">
+                <button
+                    class="header-btn"
+                    onclick="goToCart()">
+
                     Cart
-                    <span id="cartBadge" class="cart-badge">0</span>
+
+                    <span
+                        id="cartBadge"
+                        class="cart-badge">
+                        0
+                    </span>
+
                 </button>
 
             </div>
+
         </div>
+
     </header>
 
 
-    <!-- HERO -->
     <section class="order-hero">
 
         <h1>
@@ -485,7 +499,6 @@
     </section>
 
 
-    <!-- VEG / NON-VEG -->
     <section class="food-type-section">
 
         <div class="food-type-tabs">
@@ -494,21 +507,27 @@
                 class="food-type-btn active"
                 data-type="All"
                 onclick="selectFoodType('All')">
+
                 🍽️ All Food
+
             </button>
 
             <button
                 class="food-type-btn"
                 data-type="Veg"
                 onclick="selectFoodType('Veg')">
+
                 🥗 Veg Food
+
             </button>
 
             <button
                 class="food-type-btn"
                 data-type="Non-Veg"
                 onclick="selectFoodType('Non-Veg')">
+
                 🍗 Non-Veg Food
+
             </button>
 
         </div>
@@ -516,7 +535,6 @@
     </section>
 
 
-    <!-- CATEGORIES -->
     <section class="category-section">
 
         <div class="category-bar">
@@ -556,410 +574,561 @@
     </section>
 
 
-    <!-- MENU -->
     <section class="menu-section">
 
-        <div id="menuGrid" class="menu-grid"></div>
+        <div
+            id="menuGrid"
+            class="menu-grid">
+        </div>
 
     </section>
 
 
-    <!-- FLOATING CART -->
     <div class="floating-cart">
 
         <button onclick="goToCart()">
+
             🛒 View Cart
-            <span id="cartText">(0 items)</span>
-            <span id="cartTotal" class="cart-total">₹0.00</span>
+
+            <span id="cartText">
+                (0 items)
+            </span>
+
+            <span
+                id="cartTotal"
+                class="cart-total">
+                ₹0.00
+            </span>
+
         </button>
 
     </div>
 
-</div>
-
-
+    </div>
 <script>
-    /*
-     * NEXTTURN FOOD MENU
-     * Demo menu data.
-     * Backend/API logic remains untouched.
-     */
 
-    const menu = [
+/* ==========================================
+   API
+========================================== */
 
-        /* VEG - SNACKS */
-
-        {
-            name: "Chips",
-            price: 10,
-            category: "Snacks",
-            type: "Veg",
-            icon: "🥔",
-            available: true
-        },
-
-        {
-            name: "Kurkure",
-            price: 10,
-            category: "Snacks",
-            type: "Veg",
-            icon: "🌽",
-            available: true
-        },
-
-        {
-            name: "Samosa",
-            price: 15,
-            category: "Snacks",
-            type: "Veg",
-            icon: "🥟",
-            available: true
-        },
-
-        {
-            name: "Vada Pav",
-            price: 20,
-            category: "Snacks",
-            type: "Veg",
-            icon: "🍔",
-            available: true
-        },
+const API = "https://nextturn-mgbf.onrender.com";
 
 
-        /* VEG - FAST FOOD */
+/* ==========================================
+   MENU DATA
+========================================== */
 
-        {
-            name: "Veg Sandwich",
-            price: 40,
-            category: "Fast Food",
-            type: "Veg",
-            icon: "🥪",
-            available: true
-        },
+const menu = [
 
-        {
-            name: "Cheese Sandwich",
-            price: 50,
-            category: "Fast Food",
-            type: "Veg",
-            icon: "🥪",
-            available: true
-        },
+    {
+        name: "Chips",
+        price: 10,
+        category: "Snacks",
+        type: "Veg",
+        icon: "🥔",
+        available: true
+    },
 
-        {
-            name: "Veg Burger",
-            price: 60,
-            category: "Fast Food",
-            type: "Veg",
-            icon: "🍔",
-            available: true
-        },
+    {
+        name: "Kurkure",
+        price: 10,
+        category: "Snacks",
+        type: "Veg",
+        icon: "🌽",
+        available: true
+    },
 
-        {
-            name: "French Fries",
-            price: 50,
-            category: "Fast Food",
-            type: "Veg",
-            icon: "🍟",
-            available: true
-        },
+    {
+        name: "Samosa",
+        price: 15,
+        category: "Snacks",
+        type: "Veg",
+        icon: "🥟",
+        available: true
+    },
 
-        {
-            name: "Veg Roll",
-            price: 45,
-            category: "Fast Food",
-            type: "Veg",
-            icon: "🌯",
-            available: true
-        },
+    {
+        name: "Vada Pav",
+        price: 20,
+        category: "Snacks",
+        type: "Veg",
+        icon: "🍔",
+        available: true
+    },
 
+    {
+        name: "Veg Sandwich",
+        price: 40,
+        category: "Fast Food",
+        type: "Veg",
+        icon: "🥪",
+        available: true
+    },
 
-        /* VEG - MEALS */
+    {
+        name: "Cheese Sandwich",
+        price: 50,
+        category: "Fast Food",
+        type: "Veg",
+        icon: "🥪",
+        available: true
+    },
 
-        {
-            name: "Veg Biryani",
-            price: 80,
-            category: "Meals",
-            type: "Veg",
-            icon: "🍚",
-            available: true
-        },
+    {
+        name: "Veg Burger",
+        price: 60,
+        category: "Fast Food",
+        type: "Veg",
+        icon: "🍔",
+        available: true
+    },
 
-        {
-            name: "Veg Thali",
-            price: 90,
-            category: "Meals",
-            type: "Veg",
-            icon: "🍛",
-            available: true
-        },
+    {
+        name: "French Fries",
+        price: 50,
+        category: "Fast Food",
+        type: "Veg",
+        icon: "🍟",
+        available: true
+    },
 
-        {
-            name: "Misal Pav",
-            price: 45,
-            category: "Meals",
-            type: "Veg",
-            icon: "🍲",
-            available: true
-        },
+    {
+        name: "Veg Roll",
+        price: 45,
+        category: "Fast Food",
+        type: "Veg",
+        icon: "🌯",
+        available: true
+    },
 
+    {
+        name: "Veg Biryani",
+        price: 80,
+        category: "Meals",
+        type: "Veg",
+        icon: "🍚",
+        available: true
+    },
 
-        /* VEG - DRINKS */
+    {
+        name: "Veg Thali",
+        price: 90,
+        category: "Meals",
+        type: "Veg",
+        icon: "🍛",
+        available: true
+    },
 
-        {
-            name: "Frooti",
-            price: 20,
-            category: "Drinks",
-            type: "Veg",
-            icon: "🧃",
-            available: true
-        },
+    {
+        name: "Misal Pav",
+        price: 45,
+        category: "Meals",
+        type: "Veg",
+        icon: "🍲",
+        available: true
+    },
 
-        {
-            name: "Masala Chai",
-            price: 15,
-            category: "Drinks",
-            type: "Veg",
-            icon: "☕",
-            available: true
-        },
+    {
+        name: "Frooti",
+        price: 20,
+        category: "Drinks",
+        type: "Veg",
+        icon: "🧃",
+        available: true
+    },
 
-        {
-            name: "Cold Coffee",
-            price: 40,
-            category: "Drinks",
-            type: "Veg",
-            icon: "🥤",
-            available: true
-        },
+    {
+        name: "Masala Chai",
+        price: 15,
+        category: "Drinks",
+        type: "Veg",
+        icon: "☕",
+        available: true
+    },
 
-        {
-            name: "Lemon Juice",
-            price: 25,
-            category: "Drinks",
-            type: "Veg",
-            icon: "🍋",
-            available: true
-        },
+    {
+        name: "Cold Coffee",
+        price: 40,
+        category: "Drinks",
+        type: "Veg",
+        icon: "🥤",
+        available: true
+    },
 
-        {
-            name: "Soft Drink",
-            price: 30,
-            category: "Drinks",
-            type: "Veg",
-            icon: "🥤",
-            available: true
-        },
+    {
+        name: "Lemon Juice",
+        price: 25,
+        category: "Drinks",
+        type: "Veg",
+        icon: "🍋",
+        available: true
+    },
 
+    {
+        name: "Soft Drink",
+        price: 30,
+        category: "Drinks",
+        type: "Veg",
+        icon: "🥤",
+        available: true
+    },
 
-        /* NON-VEG - FAST FOOD */
+    {
+        name: "Chicken Sandwich",
+        price: 70,
+        category: "Fast Food",
+        type: "Non-Veg",
+        icon: "🥪",
+        available: true
+    },
 
-        {
-            name: "Chicken Sandwich",
-            price: 70,
-            category: "Fast Food",
-            type: "Non-Veg",
-            icon: "🥪",
-            available: true
-        },
+    {
+        name: "Chicken Burger",
+        price: 90,
+        category: "Fast Food",
+        type: "Non-Veg",
+        icon: "🍔",
+        available: true
+    },
 
-        {
-            name: "Chicken Burger",
-            price: 90,
-            category: "Fast Food",
-            type: "Non-Veg",
-            icon: "🍔",
-            available: true
-        },
+    {
+        name: "Chicken Roll",
+        price: 80,
+        category: "Fast Food",
+        type: "Non-Veg",
+        icon: "🌯",
+        available: true
+    },
 
-        {
-            name: "Chicken Roll",
-            price: 80,
-            category: "Fast Food",
-            type: "Non-Veg",
-            icon: "🌯",
-            available: true
-        },
+    {
+        name: "Chicken Biryani",
+        price: 120,
+        category: "Meals",
+        type: "Non-Veg",
+        icon: "🍗",
+        available: true
+    },
 
+    {
+        name: "Chicken Thali",
+        price: 130,
+        category: "Meals",
+        type: "Non-Veg",
+        icon: "🍛",
+        available: true
+    },
 
-        /* NON-VEG - MEALS */
+    {
+        name: "Egg Roll",
+        price: 55,
+        category: "Fast Food",
+        type: "Non-Veg",
+        icon: "🌯",
+        available: true
+    },
 
-        {
-            name: "Chicken Biryani",
-            price: 120,
-            category: "Meals",
-            type: "Non-Veg",
-            icon: "🍗",
-            available: true
-        },
-
-        {
-            name: "Chicken Thali",
-            price: 130,
-            category: "Meals",
-            type: "Non-Veg",
-            icon: "🍛",
-            available: true
-        },
-
-
-        /* NON-VEG - SNACKS / FAST FOOD */
-
-        {
-            name: "Egg Roll",
-            price: 55,
-            category: "Fast Food",
-            type: "Non-Veg",
-            icon: "🌯",
-            available: true
-        },
-
-        {
-            name: "Egg Sandwich",
-            price: 60,
-            category: "Fast Food",
-            type: "Non-Veg",
-            icon: "🥪",
-            available: true
-        }
-
-    ];
-
-
-    let currentType = "All";
-    let currentCategory = "All";
-        
-    /* ============================
-       SERVICE CHARGE
-       ============================ */
-
-    function getServiceCharge(price) {
-        return price <= 20 ? 0.50 : 1.00;
+    {
+        name: "Egg Sandwich",
+        price: 60,
+        category: "Fast Food",
+        type: "Non-Veg",
+        icon: "🥪",
+        available: true
     }
 
-    function getItemTotal(price, quantity) {
-        return (price * quantity) + (getServiceCharge(price) * quantity);
-    }
+];
 
 
-    /* ============================
-       ESCAPE HTML
-       ============================ */
+/* ==========================================
+   FILTER STATE
+========================================== */
 
-    function escapeHTML(value) {
-        return String(value)
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-    }
+let currentType = "All";
+let currentCategory = "All";
 
 
-    /* ============================
-       FOOD TYPE
-       ============================ */
+/* ==========================================
+   SERVICE CHARGE
+========================================== */
 
-    function selectFoodType(type) {
+function getServiceCharge(price) {
 
-        currentType = type;
+    return Number(price) <= 20
+        ? 0.50
+        : 1.00;
 
-        document.querySelectorAll(".food-type-btn").forEach(button => {
-            button.classList.remove("active");
-
-            if (button.dataset.type === type) {
-                button.classList.add("active");
-            }
-        });
-
-        renderMenu();
-    }
+}
 
 
-    /* ============================
-       CATEGORY FILTER
-       ============================ */
+/* ==========================================
+   ESCAPE HTML
+========================================== */
 
-    function filterMenu(category, button) {
+function escapeHTML(value) {
 
-        currentCategory = category;
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 
-        document.querySelectorAll(".category-btn").forEach(btn => {
-            btn.classList.remove("active");
-        });
-
-        if (button) {
-            button.classList.add("active");
-        }
-
-        renderMenu();
-    }
+}
 
 
-    /* ============================
-       CHECK AVAILABILITY
-       ============================ */
+/* ==========================================
+   FOOD TYPE
+========================================== */
 
-    function isItemAvailable(item) {
+function selectFoodType(type) {
 
-        const unavailableItems =
-            JSON.parse(
-                localStorage.getItem("nextTurnUnavailableItems") || "[]"
+    currentType = type;
+
+    localStorage.setItem(
+        "nextTurnFoodType",
+        type
+    );
+
+    document
+        .querySelectorAll(".food-type-btn")
+        .forEach(button => {
+
+            button.classList.toggle(
+                "active",
+                button.dataset.type === type
             );
 
-        return item.available &&
-               !unavailableItems.includes(item.name);
+        });
+
+    renderMenu();
+
+}
+
+
+/* ==========================================
+   CATEGORY
+========================================== */
+
+function filterMenu(category, button) {
+
+    currentCategory = category;
+
+    document
+        .querySelectorAll(".category-btn")
+        .forEach(btn => {
+
+            btn.classList.remove("active");
+
+        });
+
+
+    if (button) {
+
+        button.classList.add("active");
+
     }
 
 
-    /* ============================
-       RENDER MENU
-       ============================ */
+    renderMenu();
 
-    function renderMenu() {
+}
 
-        const menuGrid = document.getElementById("menuGrid");
 
-        if (!menuGrid) return;
+/* ==========================================
+   BACKEND AVAILABILITY SYNC
+========================================== */
 
-        let filteredMenu = menu.filter(item => {
+async function syncFoodAvailability() {
+
+    try {
+
+        const response = await fetch(
+            `${API}/api/staff/food?t=${Date.now()}`,
+            {
+                method: "GET",
+                cache: "no-store"
+            }
+        );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Unable to load food availability"
+            );
+
+        }
+
+
+        const backendFood =
+            await response.json();
+
+
+        if (!Array.isArray(backendFood)) {
+
+            console.warn(
+                "Backend food response is not an array"
+            );
+
+            return;
+
+        }
+
+
+        menu.forEach(studentItem => {
+
+            const studentName =
+                studentItem.name
+                    .trim()
+                    .toLowerCase();
+
+
+            const backendItem =
+                backendFood.find(food => {
+
+                    const backendName =
+                        String(
+                            food.name ||
+                            food.foodName ||
+                            ""
+                        )
+                        .trim()
+                        .toLowerCase();
+
+
+                    return backendName ===
+                        studentName;
+
+                });
+
+
+            if (backendItem) {
+
+                const value =
+                    backendItem.available;
+
+
+                studentItem.available =
+                    value === true ||
+                    value === "true" ||
+                    value === 1;
+
+            }
+
+        });
+
+
+        renderMenu();
+
+    } catch (error) {
+
+        console.error(
+            "Availability sync failed:",
+            error
+        );
+
+        /*
+         * Keep the menu visible if
+         * Render is temporarily sleeping.
+         */
+
+        renderMenu();
+
+    }
+
+}
+
+
+/* ==========================================
+   AVAILABILITY CHECK
+========================================== */
+
+function isItemAvailable(item) {
+
+    return item.available === true;
+
+}
+
+
+/* ==========================================
+   RENDER MENU
+========================================== */
+
+function renderMenu() {
+
+    const menuGrid =
+        document.getElementById("menuGrid");
+
+
+    if (!menuGrid) {
+
+        return;
+
+    }
+
+
+    const filteredMenu =
+        menu.filter(item => {
 
             const typeMatch =
                 currentType === "All" ||
                 item.type === currentType;
 
+
             const categoryMatch =
                 currentCategory === "All" ||
                 item.category === currentCategory;
 
-            return typeMatch && categoryMatch;
+
+            return typeMatch &&
+                   categoryMatch;
+
         });
 
 
-        if (filteredMenu.length === 0) {
+    if (filteredMenu.length === 0) {
 
-            menuGrid.innerHTML = `
-                <div class="empty-menu">
-                    <h3>No food available</h3>
-                    <p>
-                        There are no items in this section right now.
-                    </p>
-                </div>
-            `;
+        menuGrid.innerHTML = `
 
-            return;
-        }
+            <div class="empty-menu">
+
+                <h3>
+                    No food available
+                </h3>
+
+                <p style="margin-top:8px;">
+                    There are no items in this section right now.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
 
 
-        menuGrid.innerHTML = filteredMenu.map(item => {
+    menuGrid.innerHTML =
+        filteredMenu.map(item => {
 
-            const available = isItemAvailable(item);
+            const available =
+                isItemAvailable(item);
+
 
             const serviceCharge =
-                getServiceCharge(item.price);
+                getServiceCharge(
+                    item.price
+                );
+
 
             return `
-                <div class="food-card ${available ? "" : "unavailable"}">
+
+                <div class="food-card ${
+                    available
+                        ? ""
+                        : "unavailable"
+                }">
 
                     <div>
 
@@ -979,14 +1148,25 @@
                             ${escapeHTML(item.category)}
                         </p>
 
+                        ${
+                            available
+                            ? ""
+                            : `
+                                <div class="unavailable-label">
+                                    NOT AVAILABLE
+                                </div>
+                            `
+                        }
+
                     </div>
 
 
                     <div class="food-bottom">
 
                         <div>
+
                             <div class="food-price">
-                                ₹${item.price.toFixed(2)}
+                                ₹${Number(item.price).toFixed(2)}
                             </div>
 
                             <small style="
@@ -995,368 +1175,477 @@
                                 display:block;
                                 margin-top:3px;
                             ">
-                                + ₹${serviceCharge.toFixed(2)} service
+
+                                + ₹${serviceCharge.toFixed(2)}
+                                service
+
                             </small>
+
                         </div>
 
 
                         ${
                             available
+
                             ?
+
                             `
-                            <button
-                                class="add-food-btn"
-                                onclick='addToCart(${JSON.stringify(item.name)})'>
-                                + Add
-                            </button>
+
+                                <button
+                                    class="add-food-btn"
+                                    onclick='addToCart(${JSON.stringify(item.name)})'>
+
+                                    + Add
+
+                                </button>
+
                             `
+
                             :
+
                             `
-                            <button
-                                class="add-food-btn"
-                                disabled>
-                                Unavailable
-                            </button>
+
+                                <button
+                                    class="add-food-btn"
+                                    disabled>
+
+                                    Unavailable
+
+                                </button>
+
                             `
+
                         }
 
                     </div>
 
                 </div>
+
             `;
 
         }).join("");
-    }
+
+}
 
 
-    /* ============================
-       CART
-       ============================ */
+/* ==========================================
+   CART
+========================================== */
 
-    function getCart() {
+function getCart() {
 
-        try {
+    try {
 
-            return JSON.parse(
-                localStorage.getItem("nextTurnCart") || "[]"
+        const cart =
+            JSON.parse(
+                localStorage.getItem(
+                    "nextTurnCart"
+                ) || "[]"
             );
 
-        } catch (error) {
 
-            return [];
+        return Array.isArray(cart)
+            ? cart
+            : [];
 
-        }
+    } catch {
+
+        return [];
+
     }
 
+}
 
-    function saveCart(cart) {
 
-        localStorage.setItem(
-            "nextTurnCart",
-            JSON.stringify(cart)
+function saveCart(cart) {
+
+    localStorage.setItem(
+        "nextTurnCart",
+        JSON.stringify(cart)
+    );
+
+}
+
+
+/* ==========================================
+   ADD TO CART
+========================================== */
+
+function addToCart(itemName) {
+
+    const item =
+        menu.find(food =>
+            food.name === itemName
         );
 
-    }
 
+    if (!item) {
 
-    /* ============================
-       ADD TO CART
-       ============================ */
-
-    function addToCart(itemName) {
-
-        const item =
-            menu.find(food => food.name === itemName);
-
-        if (!item) return;
-
-        if (!isItemAvailable(item)) {
-
-            alert(
-                `${item.name} is currently unavailable.`
-            );
-
-            return;
-        }
-
-
-        const cart = getCart();
-
-        const existingItem =
-            cart.find(food => food.name === item.name);
-
-
-        if (existingItem) {
-
-            existingItem.quantity =
-                Number(existingItem.quantity || 0) + 1;
-
-        } else {
-
-            cart.push({
-
-                name: item.name,
-
-                price: item.price,
-
-                quantity: 1,
-
-                category: item.category,
-
-                type: item.type,
-
-                serviceCharge:
-                    getServiceCharge(item.price)
-
-            });
-
-        }
-
-
-        saveCart(cart);
-
-        updateCartUI();
-
-        // Small confirmation
-        const button =
-            [...document.querySelectorAll(".add-food-btn")]
-                .find(btn =>
-                    btn.getAttribute("onclick") &&
-                    btn.getAttribute("onclick")
-                        .includes(item.name)
-                );
-
-        if (button) {
-
-            const originalText =
-                button.textContent;
-
-            button.textContent = "✓ Added";
-
-            setTimeout(() => {
-
-                if (button) {
-                    button.textContent = originalText;
-                }
-
-            }, 700);
-
-        }
+        return;
 
     }
 
 
-    /* ============================
-       CART TOTAL
-       ============================ */
+    /*
+     * Always check availability
+     * before adding.
+     */
 
-    function calculateCartTotal(cart) {
+    if (!isItemAvailable(item)) {
 
-        let total = 0;
+        alert(
+            `${item.name} is currently unavailable.`
+        );
 
-        cart.forEach(item => {
+        return;
 
-            const price =
-                Number(item.price || 0);
+    }
 
-            const quantity =
-                Number(item.quantity || 0);
 
-            const serviceCharge =
-                price <= 20 ? 0.50 : 1.00;
+    const cart =
+        getCart();
 
-            total +=
-                (price + serviceCharge) * quantity;
+
+    const existingItem =
+        cart.find(food =>
+            food.name === item.name
+        );
+
+
+    if (existingItem) {
+
+        existingItem.quantity =
+            Number(
+                existingItem.quantity || 0
+            ) + 1;
+
+    } else {
+
+        cart.push({
+
+            name: item.name,
+
+            price: Number(item.price),
+
+            quantity: 1,
+
+            category: item.category,
+
+            type: item.type,
+
+            serviceCharge:
+                getServiceCharge(
+                    item.price
+                )
 
         });
 
-        return total;
-
     }
 
 
-    /* ============================
-       UPDATE CART UI
-       ============================ */
+    saveCart(cart);
 
-    function updateCartUI() {
-
-        const cart = getCart();
-
-        let itemCount = 0;
-
-        cart.forEach(item => {
-
-            itemCount +=
-                Number(item.quantity || 0);
-
-        });
+    updateCartUI();
 
 
-        const total =
-            calculateCartTotal(cart);
+    /*
+     * Small button feedback.
+     */
 
+    document
+        .querySelectorAll(".add-food-btn")
+        .forEach(button => {
 
-        const badge =
-            document.getElementById("cartBadge");
+            const onclick =
+                button.getAttribute("onclick");
 
-        const cartText =
-            document.getElementById("cartText");
-
-        const cartTotal =
-            document.getElementById("cartTotal");
-
-
-        if (badge) {
-
-            badge.textContent =
-                itemCount;
-
-        }
-
-
-        if (cartText) {
-
-            cartText.textContent =
-                `(${itemCount} ${
-                    itemCount === 1
-                    ? "item"
-                    : "items"
-                })`;
-
-        }
-
-
-        if (cartTotal) {
-
-            cartTotal.textContent =
-                `₹${total.toFixed(2)}`;
-
-        }
-
-    }
-
-
-    /* ============================
-       NAVIGATION
-       ============================ */
-
-    function goToCart() {
-
-        window.location.href =
-            "cart.html";
-
-    }
-
-
-    function goToDashboard() {
-
-        window.location.href =
-            "student.html";
-
-    }
-
-
-    /* ============================
-       LOAD SELECTED FOOD TYPE
-       ============================ */
-
-    function loadSelectedType() {
-
-        const params =
-            new URLSearchParams(
-                window.location.search
-            );
-
-        const urlType =
-            params.get("type");
-
-
-        const savedType =
-            localStorage.getItem(
-                "nextTurnFoodType"
-            );
-
-
-        let selectedType = "All";
-
-
-        if (
-            urlType === "Veg" ||
-            urlType === "Non-Veg"
-        ) {
-
-            selectedType = urlType;
-
-        } else if (
-            savedType === "Veg" ||
-            savedType === "Non-Veg"
-        ) {
-
-            selectedType = savedType;
-
-        }
-
-
-        currentType =
-            selectedType;
-
-
-        document
-            .querySelectorAll(".food-type-btn")
-            .forEach(button => {
-
-                button.classList.toggle(
-                    "active",
-                    button.dataset.type === selectedType
-                );
-
-            });
-
-    }
-
-
-    /* ============================
-       STORAGE SYNC
-       ============================ */
-
-    window.addEventListener(
-        "storage",
-        function(event) {
 
             if (
-                event.key === "nextTurnCart" ||
-                event.key === "nextTurnUnavailableItems"
+                onclick &&
+                onclick.includes(item.name)
             ) {
 
-                renderMenu();
+                const oldText =
+                    button.textContent;
 
-                updateCartUI();
+
+                button.textContent =
+                    "✓ Added";
+
+
+                setTimeout(() => {
+
+                    button.textContent =
+                        oldText;
+
+                }, 700);
 
             }
 
-        }
-    );
+        });
+
+}
 
 
-    /* ============================
-       INITIALIZE
-       ============================ */
+/* ==========================================
+   CART TOTAL
+========================================== */
 
-    document.addEventListener(
-        "DOMContentLoaded",
-        function() {
+function calculateCartTotal(cart) {
 
-            loadSelectedType();
+    let total = 0;
 
-            renderMenu();
+
+    cart.forEach(item => {
+
+        const price =
+            Number(item.price || 0);
+
+
+        const quantity =
+            Number(item.quantity || 0);
+
+
+        const serviceCharge =
+            price <= 20
+                ? 0.50
+                : 1.00;
+
+
+        total +=
+            (price + serviceCharge) *
+            quantity;
+
+    });
+
+
+    return total;
+
+}
+
+
+/* ==========================================
+   CART UI
+========================================== */
+
+function updateCartUI() {
+
+    const cart =
+        getCart();
+
+
+    let itemCount = 0;
+
+
+    cart.forEach(item => {
+
+        itemCount +=
+            Number(
+                item.quantity || 0
+            );
+
+    });
+
+
+    const total =
+        calculateCartTotal(cart);
+
+
+    const badge =
+        document.getElementById(
+            "cartBadge"
+        );
+
+
+    const cartText =
+        document.getElementById(
+            "cartText"
+        );
+
+
+    const cartTotal =
+        document.getElementById(
+            "cartTotal"
+        );
+
+
+    if (badge) {
+
+        badge.textContent =
+            itemCount;
+
+    }
+
+
+    if (cartText) {
+
+        cartText.textContent =
+            `(${itemCount} ${
+                itemCount === 1
+                    ? "item"
+                    : "items"
+            })`;
+
+    }
+
+
+    if (cartTotal) {
+
+        cartTotal.textContent =
+            `₹${total.toFixed(2)}`;
+
+    }
+
+}
+
+
+/* ==========================================
+   NAVIGATION
+========================================== */
+
+function goToCart() {
+
+    window.location.href =
+        "cart.html";
+
+}
+
+
+function goToDashboard() {
+
+    window.location.href =
+        "student.html";
+
+}
+
+
+/* ==========================================
+   LOAD FOOD TYPE
+========================================== */
+
+function loadSelectedType() {
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    const urlType =
+        params.get("type");
+
+
+    const savedType =
+        localStorage.getItem(
+            "nextTurnFoodType"
+        );
+
+
+    let selectedType = "All";
+
+
+    if (
+        urlType === "Veg" ||
+        urlType === "Non-Veg"
+    ) {
+
+        selectedType =
+            urlType;
+
+    } else if (
+        savedType === "Veg" ||
+        savedType === "Non-Veg"
+    ) {
+
+        selectedType =
+            savedType;
+
+    }
+
+
+    currentType =
+        selectedType;
+
+
+    document
+        .querySelectorAll(
+            ".food-type-btn"
+        )
+        .forEach(button => {
+
+            button.classList.toggle(
+                "active",
+                button.dataset.type ===
+                    selectedType
+            );
+
+        });
+
+}
+
+
+/* ==========================================
+   CART STORAGE SYNC
+========================================== */
+
+window.addEventListener(
+    "storage",
+    function(event) {
+
+        if (
+            event.key ===
+            "nextTurnCart"
+        ) {
 
             updateCartUI();
 
         }
-    );
+
+    }
+);
+
+
+/* ==========================================
+   INITIALIZE
+========================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    async function() {
+
+        loadSelectedType();
+
+        renderMenu();
+
+        updateCartUI();
+
+        /*
+         * Get the real availability
+         * from Staff/backend.
+         */
+
+        await syncFoodAvailability();
+
+    }
+);
+
+
+/* ==========================================
+   AUTO REFRESH
+   Every 5 seconds
+========================================== */
+
+setInterval(
+    async function() {
+
+        await syncFoodAvailability();
+
+    },
+    5000
+);
 
 </script>
 
 </body>
-</html>
+    </html>
+    
