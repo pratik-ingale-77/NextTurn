@@ -1,857 +1,676 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>NextTurn | Order Food</title>
 
-    <title>NextTurn - Order Food</title>
+<link rel="stylesheet" href="styles.css">
 
-    <link rel="stylesheet" href="styles.css">
+<style>
+*{box-sizing:border-box}
 
-    <style>
-        .order-page {
-            min-height: 100vh;
-            padding-bottom: 110px;
-        }
+body{
+    margin:0;
+    background:#080808;
+    color:#f5f5f5;
+    font-family:Arial,sans-serif;
+}
 
-        .order-hero {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 42px 20px 25px;
-        }
+.top-header{
+    position:sticky;
+    top:0;
+    z-index:100;
+    background:rgba(8,8,8,.96);
+    border-bottom:1px solid rgba(212,175,55,.18);
+    backdrop-filter:blur(12px);
+}
 
-        .order-hero h1 {
-            margin: 0;
-            font-size: clamp(30px, 5vw, 48px);
-            font-weight: 800;
-            letter-spacing: -1px;
-        }
+.header-inner{
+    max-width:1200px;
+    margin:auto;
+    padding:15px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+}
 
-        .order-hero h1 span {
-            color: #D4AF37;
-        }
+.brand{
+    font-size:25px;
+    font-weight:900;
+    color:#d4af37;
+}
 
-        .order-hero p {
-            margin: 10px 0 0;
-            color: #9A9A9A;
-            font-size: 15px;
-        }
+.header-actions{
+    display:flex;
+    gap:8px;
+}
 
-        .food-type-section {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px 20px;
-        }
+.header-btn{
+    border:1px solid rgba(212,175,55,.3);
+    background:#111;
+    color:#d4af37;
+    padding:9px 13px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:700;
+}
 
-        .food-type-tabs {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
+.page{
+    max-width:1200px;
+    margin:auto;
+    padding:28px 18px 100px;
+}
 
-        .food-type-btn {
-            border: 1px solid rgba(212, 175, 55, 0.25);
-            background: #111111;
-            color: #D0D0D0;
-            padding: 13px 22px;
-            border-radius: 14px;
-            cursor: pointer;
-            font-weight: 700;
-            transition: 0.25s ease;
-        }
+.hero{
+    background:linear-gradient(135deg,#151515,#090909);
+    border:1px solid rgba(212,175,55,.2);
+    border-radius:22px;
+    padding:28px;
+    margin-bottom:22px;
+}
 
-        .food-type-btn:hover {
-            border-color: #D4AF37;
-            color: #F4D77D;
-            transform: translateY(-1px);
-        }
+.eyebrow{
+    color:#d4af37;
+    font-size:11px;
+    font-weight:900;
+    letter-spacing:2px;
+    text-transform:uppercase;
+}
 
-        .food-type-btn.active {
-            background: #D4AF37;
-            color: #080808;
-            border-color: #D4AF37;
-            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.15);
-        }
+.hero h1{
+    margin:8px 0;
+    font-size:clamp(30px,5vw,45px);
+}
 
-        .category-section {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px 25px;
-        }
+.hero h1 span{
+    color:#d4af37;
+}
 
-        .category-bar {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            padding-bottom: 5px;
-            scrollbar-width: none;
-        }
+.hero p{
+    color:#999;
+    margin:0;
+    line-height:1.6;
+}
 
-        .category-bar::-webkit-scrollbar {
-            display: none;
-        }
+.filters{
+    display:flex;
+    gap:9px;
+    overflow-x:auto;
+    padding-bottom:5px;
+    margin-bottom:15px;
+}
 
-        .category-btn {
-            flex: 0 0 auto;
-            border: 1px solid rgba(212, 175, 55, 0.18);
-            background: #111111;
-            color: #AFAFAF;
-            padding: 10px 17px;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: 0.25s ease;
-            font-weight: 600;
-        }
+.filter{
+    flex:0 0 auto;
+    border:1px solid rgba(212,175,55,.25);
+    background:#111;
+    color:#aaa;
+    padding:10px 15px;
+    border-radius:30px;
+    cursor:pointer;
+    font-weight:700;
+}
 
-        .category-btn:hover {
-            color: #F4D77D;
-            border-color: rgba(212, 175, 55, 0.5);
-        }
+.filter.active{
+    background:#d4af37;
+    color:#080808;
+}
 
-        .category-btn.active {
-            color: #080808;
-            background: #D4AF37;
-            border-color: #D4AF37;
-        }
+.menu-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:16px;
+}
 
-        .menu-section {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+.food-card{
+    background:#111;
+    border:1px solid rgba(212,175,55,.14);
+    border-radius:18px;
+    padding:18px;
+    transition:.2s;
+}
 
-        .menu-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 18px;
-        }
+.food-card:hover{
+    border-color:rgba(212,175,55,.4);
+    transform:translateY(-2px);
+}
 
-        .food-card {
-            position: relative;
-            background: linear-gradient(145deg, #151515, #0D0D0D);
-            border: 1px solid rgba(212, 175, 55, 0.16);
-            border-radius: 20px;
-            padding: 20px;
-            min-height: 220px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: 0.25s ease;
-            overflow: hidden;
-        }
+.food-top{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+}
 
-        .food-card::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                #D4AF37,
-                transparent
-            );
-            opacity: 0.7;
-        }
+.food-icon{
+    font-size:28px;
+    margin-bottom:8px;
+}
 
-        .food-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(212, 175, 55, 0.55);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
-        }
+.food-name{
+    font-size:17px;
+    font-weight:900;
+}
 
-        .food-icon {
-            width: 55px;
-            height: 55px;
-            border-radius: 16px;
-            background: #0A0A0A;
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            margin-bottom: 15px;
-        }
+.food-category{
+    color:#777;
+    font-size:12px;
+    margin:6px 0;
+}
 
-        .food-type-label {
-            display: inline-block;
-            width: fit-content;
-            padding: 4px 8px;
-            border-radius: 7px;
-            background: rgba(212, 175, 55, 0.08);
-            color: #D4AF37;
-            font-size: 10px;
-            font-weight: 800;
-            letter-spacing: 0.7px;
-            margin-bottom: 8px;
-        }
+.price{
+    color:#f4d77d;
+    font-size:17px;
+    font-weight:900;
+}
 
-        .food-name {
-            margin: 0;
-            color: #F5F5F5;
-            font-size: 18px;
-            font-weight: 750;
-        }
+.flavor-count{
+    color:#d4af37;
+    font-size:11px;
+    font-weight:800;
+    margin:10px 0;
+}
 
-        .food-category {
-            margin: 5px 0 0;
-            color: #777777;
-            font-size: 12px;
-        }
+.unavailable{
+    color:#e57373;
+    font-size:11px;
+    font-weight:900;
+    margin:12px 0;
+}
 
-        .food-bottom {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            margin-top: 20px;
-        }
+.add-btn{
+    width:100%;
+    margin-top:15px;
+    border:0;
+    border-radius:11px;
+    padding:12px;
+    background:#d4af37;
+    color:#080808;
+    font-weight:900;
+    cursor:pointer;
+}
 
-        .food-price {
-            color: #F4D77D;
-            font-size: 19px;
-            font-weight: 800;
-        }
+.add-btn:disabled{
+    background:#292929;
+    color:#777;
+    cursor:not-allowed;
+}
 
-        .add-food-btn {
-            border: none;
-            background: #D4AF37;
-            color: #080808;
-            padding: 10px 15px;
-            border-radius: 11px;
-            cursor: pointer;
-            font-weight: 800;
-            transition: 0.2s ease;
-        }
+.cart-float{
+    position:fixed;
+    right:18px;
+    bottom:18px;
+    z-index:90;
+    background:#d4af37;
+    color:#080808;
+    border:0;
+    border-radius:50px;
+    padding:14px 20px;
+    font-weight:900;
+    box-shadow:0 10px 35px rgba(0,0,0,.5);
+    cursor:pointer;
+}
 
-        .add-food-btn:hover {
-            background: #F4D77D;
-            transform: scale(1.03);
-        }
+.flavor-modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    z-index:1000;
+    background:rgba(0,0,0,.8);
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+}
 
-        .add-food-btn:active {
-            transform: scale(0.97);
-        }
+.flavor-box{
+    width:min(100%,430px);
+    max-height:90vh;
+    overflow:auto;
+    background:#111;
+    border:1px solid rgba(212,175,55,.4);
+    border-radius:22px;
+    padding:22px;
+}
 
-        .add-food-btn:disabled {
-            background: #333333;
-            color: #777777;
-            cursor: not-allowed;
-            transform: none;
-        }
+.flavor-box h2{
+    margin:0;
+}
 
-        .unavailable {
-            opacity: 0.52;
-        }
+.flavor-subtitle{
+    color:#888;
+    font-size:12px;
+    margin-top:5px;
+}
 
-        .unavailable:hover {
-            transform: none;
-            border-color: rgba(212, 175, 55, 0.16);
-            box-shadow: none;
-        }
+.flavor-list{
+    display:grid;
+    gap:10px;
+    margin-top:18px;
+}
 
-        .unavailable-label {
-            display: inline-block;
-            margin-top: 8px;
-            padding: 5px 9px;
-            border-radius: 8px;
-            background: rgba(180, 50, 50, 0.12);
-            color: #e88b8b;
-            font-size: 10px;
-            font-weight: 800;
-        }
+.flavor-option{
+    width:100%;
+    padding:15px;
+    border-radius:13px;
+    border:1px solid rgba(212,175,55,.2);
+    background:#090909;
+    color:#f5f5f5;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    text-align:left;
+    cursor:pointer;
+}
 
-        .empty-menu {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 60px 20px;
-            background: #111111;
-            border: 1px solid rgba(212, 175, 55, 0.12);
-            border-radius: 20px;
-            color: #888888;
-        }
+.flavor-option:hover{
+    border-color:#d4af37;
+}
 
-        .floating-cart {
-            position: fixed;
-            left: 50%;
-            bottom: 22px;
-            transform: translateX(-50%);
-            z-index: 1000;
-            width: min(92%, 500px);
-        }
+.flavor-option.unavailable{
+    opacity:.45;
+    cursor:not-allowed;
+}
 
-        .floating-cart button {
-            width: 100%;
-            border: 1px solid #F4D77D;
-            background: #D4AF37;
-            color: #080808;
-            padding: 16px 20px;
-            border-radius: 17px;
-            font-size: 16px;
-            font-weight: 850;
-            cursor: pointer;
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.55);
-            transition: 0.2s ease;
-        }
+.flavor-price{
+    color:#f4d77d;
+    font-weight:800;
+    font-size:13px;
+}
 
-        .floating-cart button:hover {
-            background: #F4D77D;
-            transform: translateY(-2px);
-        }
+.flavor-status{
+    color:#e57373;
+    font-size:10px;
+    font-weight:900;
+}
 
-        .cart-total {
-            margin-left: 5px;
-        }
+.close-btn{
+    width:100%;
+    margin-top:15px;
+    padding:12px;
+    border-radius:12px;
+    background:#181818;
+    border:1px solid rgba(212,175,55,.3);
+    color:#d4af37;
+    font-weight:800;
+}
 
-        .top-header {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: rgba(8, 8, 8, 0.92);
-            backdrop-filter: blur(14px);
-            border-bottom: 1px solid rgba(212, 175, 55, 0.12);
-        }
+.empty{
+    text-align:center;
+    padding:50px 20px;
+    color:#777;
+}
 
-        .header-inner {
-            max-width: 1200px;
-            margin: auto;
-            padding: 14px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 15px;
-        }
+@media(max-width:900px){
+    .menu-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
 
-        .brand {
-            color: #F5F5F5;
-            font-size: 22px;
-            font-weight: 850;
-            letter-spacing: -0.5px;
-        }
+@media(max-width:600px){
+    .page{
+        padding:20px 13px 100px;
+    }
 
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 9px;
-        }
+    .hero{
+        padding:22px;
+    }
 
-        .header-btn {
-            border: 1px solid rgba(212, 175, 55, 0.25);
-            background: #111111;
-            color: #D4AF37;
-            padding: 9px 13px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 700;
-        }
+    .menu-grid{
+        grid-template-columns:1fr;
+    }
 
-        .header-btn:hover {
-            border-color: #D4AF37;
-            color: #F4D77D;
-        }
+    .header-inner{
+        padding:13px;
+    }
 
-        .cart-badge {
-            display: inline-flex;
-            min-width: 19px;
-            height: 19px;
-            padding: 0 5px;
-            align-items: center;
-            justify-content: center;
-            border-radius: 20px;
-            background: #D4AF37;
-            color: #080808;
-            font-size: 11px;
-            font-weight: 900;
-            margin-left: 4px;
-        }
+    .brand{
+        font-size:21px;
+    }
 
-        @media (max-width: 1050px) {
-            .menu-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-        @media (max-width: 760px) {
-            .menu-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 13px;
-            }
-
-            .food-card {
-                padding: 16px;
-                min-height: 205px;
-            }
-
-            .food-name {
-                font-size: 16px;
-            }
-
-            .food-price {
-                font-size: 17px;
-            }
-
-            .add-food-btn {
-                padding: 9px 11px;
-                font-size: 12px;
-            }
-        }
-
-        @media (max-width: 470px) {
-            .header-inner {
-                padding: 12px 14px;
-            }
-
-            .brand {
-                font-size: 19px;
-            }
-
-            .header-btn {
-                padding: 8px 10px;
-                font-size: 12px;
-            }
-
-            .order-hero {
-                padding: 30px 14px 20px;
-            }
-
-            .food-type-section,
-            .category-section,
-            .menu-section {
-                padding-left: 14px;
-                padding-right: 14px;
-            }
-
-            .menu-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .food-card {
-                min-height: 190px;
-            }
-
-            .food-type-btn {
-                flex: 1;
-                text-align: center;
-                padding: 12px 10px;
-            }
-
-            .floating-cart {
-                bottom: 14px;
-                width: calc(100% - 28px);
-            }
-        }
-    </style>
+    .header-btn{
+        padding:8px 10px;
+        font-size:11px;
+    }
+}
+</style>
 </head>
 
 <body>
 
-<div class="order-page">
+<header class="top-header">
+    <div class="header-inner">
 
-    <header class="top-header">
+        <div class="brand">NextTurn</div>
 
-        <div class="header-inner">
+        <div class="header-actions">
 
-            <div class="brand">
-                NextTurn
-            </div>
-
-            <div class="header-actions">
-
-                <button
-                    class="header-btn"
-                    onclick="goToDashboard()">
-                    Dashboard
-                </button>
-
-                <button
-                    class="header-btn"
-                    onclick="goToCart()">
-
-                    Cart
-
-                    <span
-                        id="cartBadge"
-                        class="cart-badge">
-                        0
-                    </span>
-
-                </button>
-
-            </div>
-
-        </div>
-
-    </header>
-
-
-    <section class="order-hero">
-
-        <h1>
-            Order Your <span>Food</span>
-        </h1>
-
-        <p>
-            Choose your food type, select your favourite items and add them to your cart.
-        </p>
-
-    </section>
-
-
-    <section class="food-type-section">
-
-        <div class="food-type-tabs">
-
-            <button
-                class="food-type-btn active"
-                data-type="All"
-                onclick="selectFoodType('All')">
-
-                🍽️ All Food
-
+            <button class="header-btn"
+                    onclick="window.location.href='student.html'">
+                Dashboard
             </button>
 
-            <button
-                class="food-type-btn"
-                data-type="Veg"
-                onclick="selectFoodType('Veg')">
-
-                🥗 Veg Food
-
-            </button>
-
-            <button
-                class="food-type-btn"
-                data-type="Non-Veg"
-                onclick="selectFoodType('Non-Veg')">
-
-                🍗 Non-Veg Food
-
+            <button class="header-btn"
+                    onclick="window.location.href='cart.html'">
+                Cart
             </button>
 
         </div>
 
-    </section>
+    </div>
+</header>
+
+<main class="page">
+
+<section class="hero">
+
+    <div class="eyebrow">
+        NextTurn Canteen
+    </div>
+
+    <h1>
+        Order <span>Food.</span>
+    </h1>
+
+    <p>
+        Choose your food and select a flavor where available.
+        Your selected flavor will be preserved in your cart.
+    </p>
+
+</section>
 
 
-    <section class="category-section">
+<div class="filters" id="typeFilters">
 
-        <div class="category-bar">
+    <button class="filter active"
+            onclick="setType('All',this)">
+        All
+    </button>
 
-            <button
-                class="category-btn active"
-                onclick="filterMenu('All', this)">
-                All
-            </button>
+    <button class="filter"
+            onclick="setType('Veg',this)">
+        🟢 Veg
+    </button>
 
-            <button
-                class="category-btn"
-                onclick="filterMenu('Snacks', this)">
-                Snacks
-            </button>
+    <button class="filter"
+            onclick="setType('Non-Veg',this)">
+        🔴 Non-Veg
+    </button>
 
-            <button
-                class="category-btn"
-                onclick="filterMenu('Fast Food', this)">
-                Fast Food
-            </button>
+</div>
 
-            <button
-                class="category-btn"
-                onclick="filterMenu('Meals', this)">
-                Meals
-            </button>
 
-            <button
-                class="category-btn"
-                onclick="filterMenu('Drinks', this)">
-                Drinks
-            </button>
+<div class="filters" id="categoryFilters">
 
+    <button class="filter active"
+            onclick="setCategory('All',this)">
+        All
+    </button>
+
+    <button class="filter"
+            onclick="setCategory('Snacks',this)">
+        Snacks
+    </button>
+
+    <button class="filter"
+            onclick="setCategory('Fast Food',this)">
+        Fast Food
+    </button>
+
+    <button class="filter"
+            onclick="setCategory('Meals',this)">
+        Meals
+    </button>
+
+    <button class="filter"
+            onclick="setCategory('Drinks',this)">
+        Drinks
+    </button>
+
+</div>
+
+
+<div id="menuGrid" class="menu-grid"></div>
+
+</main>
+
+
+<div id="flavorModal"
+     class="flavor-modal"
+     onclick="closeFlavorPicker(event)">
+
+    <div class="flavor-box"
+         onclick="event.stopPropagation()">
+
+        <h2 id="flavorTitle">
+            Choose Flavor
+        </h2>
+
+        <div class="flavor-subtitle">
+            Select exactly one flavor
         </div>
 
-    </section>
-
-
-    <section class="menu-section">
-
-        <div
-            id="menuGrid"
-            class="menu-grid">
+        <div id="flavorList"
+             class="flavor-list">
         </div>
 
-    </section>
-
-
-    <div class="floating-cart">
-
-        <button onclick="goToCart()">
-
-            🛒 View Cart
-
-            <span id="cartText">
-                (0 items)
-            </span>
-
-            <span
-                id="cartTotal"
-                class="cart-total">
-                ₹0.00
-            </span>
-
+        <button class="close-btn"
+                onclick="closeFlavorPicker()">
+            Close
         </button>
 
     </div>
 
-    </div>
+</div>
+
+
+<button class="cart-float"
+        onclick="window.location.href='cart.html'">
+
+    🛒 Cart
+    <span id="cartCount">0</span>
+
+</button>
+
+
 <script>
 
-/* ==========================================
-   API
-========================================== */
+const API =
+    "https://nextturn-mgbf.onrender.com";
 
-const API = "https://nextturn-mgbf.onrender.com";
-
-
-/* ==========================================
-   MENU DATA
-========================================== */
 
 const menu = [
 
     {
-        name: "Chips",
-        price: 10,
-        category: "Snacks",
-        type: "Veg",
-        icon: "🥔",
-        available: true
+        name:"Chips",
+        category:"Snacks",
+        price:10,
+        type:"Veg"
     },
 
     {
-        name: "Kurkure",
-        price: 10,
-        category: "Snacks",
-        type: "Veg",
-        icon: "🌽",
-        available: true
+        name:"Kurkure",
+        category:"Snacks",
+        price:10,
+        type:"Veg"
     },
 
     {
-        name: "Samosa",
-        price: 15,
-        category: "Snacks",
-        type: "Veg",
-        icon: "🥟",
-        available: true
+        name:"Samosa",
+        category:"Snacks",
+        price:15,
+        type:"Veg"
     },
 
     {
-        name: "Vada Pav",
-        price: 20,
-        category: "Snacks",
-        type: "Veg",
-        icon: "🍔",
-        available: true
+        name:"Vada Pav",
+        category:"Snacks",
+        price:20,
+        type:"Veg"
     },
 
     {
-        name: "Veg Sandwich",
-        price: 40,
-        category: "Fast Food",
-        type: "Veg",
-        icon: "🥪",
-        available: true
+        name:"Veg Sandwich",
+        category:"Fast Food",
+        price:40,
+        type:"Veg"
     },
 
     {
-        name: "Cheese Sandwich",
-        price: 50,
-        category: "Fast Food",
-        type: "Veg",
-        icon: "🥪",
-        available: true
+        name:"Cheese Sandwich",
+        category:"Fast Food",
+        price:50,
+        type:"Veg"
     },
 
     {
-        name: "Veg Burger",
-        price: 60,
-        category: "Fast Food",
-        type: "Veg",
-        icon: "🍔",
-        available: true
+        name:"Veg Burger",
+        category:"Fast Food",
+        price:60,
+        type:"Veg"
     },
 
     {
-        name: "French Fries",
-        price: 50,
-        category: "Fast Food",
-        type: "Veg",
-        icon: "🍟",
-        available: true
+        name:"French Fries",
+        category:"Fast Food",
+        price:50,
+        type:"Veg"
     },
 
     {
-        name: "Veg Roll",
-        price: 45,
-        category: "Fast Food",
-        type: "Veg",
-        icon: "🌯",
-        available: true
+        name:"Veg Roll",
+        category:"Fast Food",
+        price:45,
+        type:"Veg"
     },
 
     {
-        name: "Veg Biryani",
-        price: 80,
-        category: "Meals",
-        type: "Veg",
-        icon: "🍚",
-        available: true
+        name:"Veg Biryani",
+        category:"Meals",
+        price:80,
+        type:"Veg"
     },
 
     {
-        name: "Veg Thali",
-        price: 90,
-        category: "Meals",
-        type: "Veg",
-        icon: "🍛",
-        available: true
+        name:"Veg Thali",
+        category:"Meals",
+        price:90,
+        type:"Veg"
     },
 
     {
-        name: "Misal Pav",
-        price: 45,
-        category: "Meals",
-        type: "Veg",
-        icon: "🍲",
-        available: true
+        name:"Misal Pav",
+        category:"Meals",
+        price:45,
+        type:"Veg"
     },
 
     {
-        name: "Frooti",
-        price: 20,
-        category: "Drinks",
-        type: "Veg",
-        icon: "🧃",
-        available: true
+        name:"Frooti",
+        category:"Drinks",
+        price:20,
+        type:"Veg"
     },
 
     {
-        name: "Masala Chai",
-        price: 15,
-        category: "Drinks",
-        type: "Veg",
-        icon: "☕",
-        available: true
+        name:"Masala Chai",
+        category:"Drinks",
+        price:15,
+        type:"Veg"
     },
 
     {
-        name: "Cold Coffee",
-        price: 40,
-        category: "Drinks",
-        type: "Veg",
-        icon: "🥤",
-        available: true
+        name:"Cold Coffee",
+        category:"Drinks",
+        price:40,
+        type:"Veg"
     },
 
     {
-        name: "Lemon Juice",
-        price: 25,
-        category: "Drinks",
-        type: "Veg",
-        icon: "🍋",
-        available: true
+        name:"Lemon Juice",
+        category:"Drinks",
+        price:25,
+        type:"Veg"
     },
 
     {
-        name: "Soft Drink",
-        price: 30,
-        category: "Drinks",
-        type: "Veg",
-        icon: "🥤",
-        available: true
+        name:"Soft Drink",
+        category:"Drinks",
+        price:30,
+        type:"Veg"
     },
 
     {
-        name: "Chicken Sandwich",
-        price: 70,
-        category: "Fast Food",
-        type: "Non-Veg",
-        icon: "🥪",
-        available: true
+        name:"Chicken Sandwich",
+        category:"Fast Food",
+        price:70,
+        type:"Non-Veg"
     },
 
     {
-        name: "Chicken Burger",
-        price: 90,
-        category: "Fast Food",
-        type: "Non-Veg",
-        icon: "🍔",
-        available: true
+        name:"Chicken Burger",
+        category:"Fast Food",
+        price:90,
+        type:"Non-Veg"
     },
 
     {
-        name: "Chicken Roll",
-        price: 80,
-        category: "Fast Food",
-        type: "Non-Veg",
-        icon: "🌯",
-        available: true
+        name:"Chicken Roll",
+        category:"Fast Food",
+        price:80,
+        type:"Non-Veg"
     },
 
     {
-        name: "Chicken Biryani",
-        price: 120,
-        category: "Meals",
-        type: "Non-Veg",
-        icon: "🍗",
-        available: true
+        name:"Chicken Biryani",
+        category:"Meals",
+        price:120,
+        type:"Non-Veg"
     },
 
     {
-        name: "Chicken Thali",
-        price: 130,
-        category: "Meals",
-        type: "Non-Veg",
-        icon: "🍛",
-        available: true
+        name:"Chicken Thali",
+        category:"Meals",
+        price:130,
+        type:"Non-Veg"
     },
 
     {
-        name: "Egg Roll",
-        price: 55,
-        category: "Fast Food",
-        type: "Non-Veg",
-        icon: "🌯",
-        available: true
+        name:"Egg Roll",
+        category:"Fast Food",
+        price:55,
+        type:"Non-Veg"
     },
 
     {
-        name: "Egg Sandwich",
-        price: 60,
-        category: "Fast Food",
-        type: "Non-Veg",
-        icon: "🥪",
-        available: true
+        name:"Egg Sandwich",
+        category:"Fast Food",
+        price:60,
+        type:"Non-Veg"
     }
 
 ];
 
 
-/* ==========================================
-   FILTER STATE
-========================================== */
-
 let currentType = "All";
 let currentCategory = "All";
 
+let flavorData = {};
 
-/* ==========================================
-   SERVICE CHARGE
-========================================== */
 
-function getServiceCharge(price) {
+function escapeHTML(value){
+
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+function getServiceCharge(price){
 
     return Number(price) <= 20
         ? 0.50
@@ -860,395 +679,18 @@ function getServiceCharge(price) {
 }
 
 
-/* ==========================================
-   ESCAPE HTML
-========================================== */
+function getCart(){
 
-function escapeHTML(value) {
-
-    return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-
-}
-
-
-/* ==========================================
-   FOOD TYPE
-========================================== */
-
-function selectFoodType(type) {
-
-    currentType = type;
-
-    localStorage.setItem(
-        "nextTurnFoodType",
-        type
-    );
-
-    document
-        .querySelectorAll(".food-type-btn")
-        .forEach(button => {
-
-            button.classList.toggle(
-                "active",
-                button.dataset.type === type
-            );
-
-        });
-
-    renderMenu();
-
-}
-
-
-/* ==========================================
-   CATEGORY
-========================================== */
-
-function filterMenu(category, button) {
-
-    currentCategory = category;
-
-    document
-        .querySelectorAll(".category-btn")
-        .forEach(btn => {
-
-            btn.classList.remove("active");
-
-        });
-
-
-    if (button) {
-
-        button.classList.add("active");
-
-    }
-
-
-    renderMenu();
-
-}
-
-
-/* ==========================================
-   BACKEND AVAILABILITY SYNC
-========================================== */
-
-async function syncFoodAvailability() {
-
-    try {
-
-        const response = await fetch(
-            `${API}/api/staff/food?t=${Date.now()}`,
-            {
-                method: "GET",
-                cache: "no-store"
-            }
-        );
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                "Unable to load food availability"
-            );
-
-        }
-
-
-        const backendFood =
-            await response.json();
-
-
-        if (!Array.isArray(backendFood)) {
-
-            console.warn(
-                "Backend food response is not an array"
-            );
-
-            return;
-
-        }
-
-
-        menu.forEach(studentItem => {
-
-            const studentName =
-                studentItem.name
-                    .trim()
-                    .toLowerCase();
-
-
-            const backendItem =
-                backendFood.find(food => {
-
-                    const backendName =
-                        String(
-                            food.name ||
-                            food.foodName ||
-                            ""
-                        )
-                        .trim()
-                        .toLowerCase();
-
-
-                    return backendName ===
-                        studentName;
-
-                });
-
-
-            if (backendItem) {
-
-                const value =
-                    backendItem.available;
-
-
-                studentItem.available =
-                    value === true ||
-                    value === "true" ||
-                    value === 1;
-
-            }
-
-        });
-
-
-        renderMenu();
-
-    } catch (error) {
-
-        console.error(
-            "Availability sync failed:",
-            error
-        );
-
-        /*
-         * Keep the menu visible if
-         * Render is temporarily sleeping.
-         */
-
-        renderMenu();
-
-    }
-
-}
-
-
-/* ==========================================
-   AVAILABILITY CHECK
-========================================== */
-
-function isItemAvailable(item) {
-
-    return item.available === true;
-
-}
-
-
-/* ==========================================
-   RENDER MENU
-========================================== */
-
-function renderMenu() {
-
-    const menuGrid =
-        document.getElementById("menuGrid");
-
-
-    if (!menuGrid) {
-
-        return;
-
-    }
-
-
-    const filteredMenu =
-        menu.filter(item => {
-
-            const typeMatch =
-                currentType === "All" ||
-                item.type === currentType;
-
-
-            const categoryMatch =
-                currentCategory === "All" ||
-                item.category === currentCategory;
-
-
-            return typeMatch &&
-                   categoryMatch;
-
-        });
-
-
-    if (filteredMenu.length === 0) {
-
-        menuGrid.innerHTML = `
-
-            <div class="empty-menu">
-
-                <h3>
-                    No food available
-                </h3>
-
-                <p style="margin-top:8px;">
-                    There are no items in this section right now.
-                </p>
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    menuGrid.innerHTML =
-        filteredMenu.map(item => {
-
-            const available =
-                isItemAvailable(item);
-
-
-            const serviceCharge =
-                getServiceCharge(
-                    item.price
-                );
-
-
-            return `
-
-                <div class="food-card ${
-                    available
-                        ? ""
-                        : "unavailable"
-                }">
-
-                    <div>
-
-                        <div class="food-icon">
-                            ${item.icon}
-                        </div>
-
-                        <div class="food-type-label">
-                            ${escapeHTML(item.type)}
-                        </div>
-
-                        <h3 class="food-name">
-                            ${escapeHTML(item.name)}
-                        </h3>
-
-                        <p class="food-category">
-                            ${escapeHTML(item.category)}
-                        </p>
-
-                        ${
-                            available
-                            ? ""
-                            : `
-                                <div class="unavailable-label">
-                                    NOT AVAILABLE
-                                </div>
-                            `
-                        }
-
-                    </div>
-
-
-                    <div class="food-bottom">
-
-                        <div>
-
-                            <div class="food-price">
-                                ₹${Number(item.price).toFixed(2)}
-                            </div>
-
-                            <small style="
-                                color:#777;
-                                font-size:10px;
-                                display:block;
-                                margin-top:3px;
-                            ">
-
-                                + ₹${serviceCharge.toFixed(2)}
-                                service
-
-                            </small>
-
-                        </div>
-
-
-                        ${
-                            available
-
-                            ?
-
-                            `
-
-                                <button
-                                    class="add-food-btn"
-                                    onclick='addToCart(${JSON.stringify(item.name)})'>
-
-                                    + Add
-
-                                </button>
-
-                            `
-
-                            :
-
-                            `
-
-                                <button
-                                    class="add-food-btn"
-                                    disabled>
-
-                                    Unavailable
-
-                                </button>
-
-                            `
-
-                        }
-
-                    </div>
-
-                </div>
-
-            `;
-
-        }).join("");
-
-}
-
-
-/* ==========================================
-   CART
-========================================== */
-
-function getCart() {
-
-    try {
+    try{
 
         const cart =
             JSON.parse(
-                localStorage.getItem(
-                    "nextTurnCart"
-                ) || "[]"
+                localStorage.getItem("nextTurnCart") || "[]"
             );
 
+        return Array.isArray(cart) ? cart : [];
 
-        return Array.isArray(cart)
-            ? cart
-            : [];
-
-    } catch {
+    }catch{
 
         return [];
 
@@ -1257,7 +699,7 @@ function getCart() {
 }
 
 
-function saveCart(cart) {
+function saveCart(cart){
 
     localStorage.setItem(
         "nextTurnCart",
@@ -1267,75 +709,598 @@ function saveCart(cart) {
 }
 
 
-/* ==========================================
-   ADD TO CART
-========================================== */
+function updateCartUI(){
 
-function addToCart(itemName) {
+    const cart = getCart();
+
+    const count =
+        cart.reduce(
+            (sum,item)=>
+                sum + Number(item.quantity || 1),
+            0
+        );
+
+    document.getElementById("cartCount")
+        .textContent = count;
+
+}
+
+
+function setType(type,button){
+
+    currentType = type;
+
+    document
+        .querySelectorAll("#typeFilters .filter")
+        .forEach(btn =>
+            btn.classList.remove("active")
+        );
+
+    button.classList.add("active");
+
+    renderMenu();
+
+}
+
+
+function setCategory(category,button){
+
+    currentCategory = category;
+
+    document
+        .querySelectorAll("#categoryFilters .filter")
+        .forEach(btn =>
+            btn.classList.remove("active")
+        );
+
+    button.classList.add("active");
+
+    renderMenu();
+
+}
+
+
+async function syncFoodAvailability(){
+
+    try{
+
+        const response =
+            await fetch(
+                `${API}/api/staff/food?t=${Date.now()}`,
+                {
+                    cache:"no-store"
+                }
+            );
+
+        if(!response.ok){
+            throw new Error("Food API failed");
+        }
+
+        const backendFood =
+            await response.json();
+
+        flavorData = {};
+
+        backendFood.forEach(food => {
+
+            const name =
+                String(
+                    food.name ||
+                    food.foodName ||
+                    ""
+                ).trim();
+
+            const flavor =
+                String(
+                    food.flavor ||
+                    ""
+                ).trim();
+
+            if(flavor){
+
+                if(!flavorData[name]){
+                    flavorData[name] = [];
+                }
+
+                flavorData[name].push({
+
+                    id:food.id,
+
+                    flavor:flavor,
+
+                    price:Number(
+                        food.price || 0
+                    ),
+
+                    available:
+                        food.available === true ||
+                        food.available === "true" ||
+                        food.available === 1
+
+                });
+
+            }
+
+        });
+
+
+        menu.forEach(item => {
+
+            const backendItem =
+                backendFood.find(food => {
+
+                    const name =
+                        String(
+                            food.name ||
+                            food.foodName ||
+                            ""
+                        ).trim()
+                        .toLowerCase();
+
+                    return (
+                        name ===
+                        item.name.toLowerCase()
+                    ) &&
+                    !String(food.flavor || "").trim();
+
+                });
+
+
+            if(backendItem){
+
+                item.available =
+                    backendItem.available === true ||
+                    backendItem.available === "true" ||
+                    backendItem.available === 1;
+
+            }
+
+
+            if(flavorData[item.name]){
+
+                item.available =
+                    flavorData[item.name]
+                        .some(
+                            flavor =>
+                                flavor.available
+                        );
+
+            }
+
+        });
+
+
+        renderMenu();
+
+    }catch(error){
+
+        console.error(
+            "Availability sync error:",
+            error
+        );
+
+        renderMenu();
+
+    }
+
+}
+
+
+function renderMenu(){
+
+    const container =
+        document.getElementById("menuGrid");
+
+
+    const filtered =
+        menu.filter(item => {
+
+            const typeMatch =
+                currentType === "All" ||
+                item.type === currentType;
+
+            const categoryMatch =
+                currentCategory === "All" ||
+                item.category === currentCategory;
+
+            return typeMatch &&
+                   categoryMatch;
+
+        });
+
+
+    if(!filtered.length){
+
+        container.innerHTML = `
+            <div class="empty">
+                No food items found.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        filtered.map(item => {
+
+            const available =
+                item.available !== false;
+
+            const hasFlavors =
+                item.name === "Chips" ||
+                item.name === "Kurkure";
+
+            const availableFlavors =
+                flavorData[item.name]
+                ? flavorData[item.name]
+                    .filter(f => f.available)
+                : [];
+
+
+            let actionButton;
+
+
+            if(hasFlavors){
+
+                actionButton = available
+
+                    ? `
+                        <button
+                            class="add-btn"
+                            onclick='openFlavorPicker(${JSON.stringify(item.name)})'>
+                            Choose Flavor
+                        </button>
+                      `
+
+                    : `
+                        <button
+                            class="add-btn"
+                            disabled>
+                            Unavailable
+                        </button>
+                      `;
+
+            }else{
+
+                actionButton = available
+
+                    ? `
+                        <button
+                            class="add-btn"
+                            onclick='addToCart(${JSON.stringify(item.name)})'>
+                            + Add to Cart
+                        </button>
+                      `
+
+                    : `
+                        <button
+                            class="add-btn"
+                            disabled>
+                            Unavailable
+                        </button>
+                      `;
+
+            }
+
+
+            return `
+
+                <div class="food-card">
+
+                    <div class="food-top">
+
+                        <div>
+
+                            <div class="food-icon">
+                                🍽️
+                            </div>
+
+                            <div class="food-name">
+                                ${escapeHTML(item.name)}
+                            </div>
+
+                            <div class="food-category">
+                                ${escapeHTML(item.category)}
+                            </div>
+
+                        </div>
+
+                        <div class="price">
+                            ₹${Number(item.price).toFixed(2)}
+                        </div>
+
+                    </div>
+
+
+                    ${
+                        hasFlavors
+                        ? `
+                            <div class="flavor-count">
+                                ${availableFlavors.length}
+                                flavor${availableFlavors.length === 1 ? "" : "s"}
+                                available
+                            </div>
+                          `
+                        : ""
+                    }
+
+
+                    ${
+                        !available
+                        ? `
+                            <div class="unavailable">
+                                NOT AVAILABLE
+                            </div>
+                          `
+                        : ""
+                    }
+
+
+                    ${actionButton}
+
+                </div>
+
+            `;
+
+        }).join("");
+
+}
+function addToCart(itemName){
 
     const item =
-        menu.find(food =>
-            food.name === itemName
+        menu.find(
+            food => food.name === itemName
         );
 
-
-    if (!item) {
-
+    if(!item || item.available === false){
         return;
-
     }
 
+    const cart = getCart();
 
-    /*
-     * Always check availability
-     * before adding.
-     */
-
-    if (!isItemAvailable(item)) {
-
-        alert(
-            `${item.name} is currently unavailable.`
-        );
-
-        return;
-
-    }
-
-
-    const cart =
-        getCart();
-
-
-    const existingItem =
+    const existing =
         cart.find(food =>
-            food.name === item.name
+            food.name === item.name &&
+            !food.flavor
         );
 
+    if(existing){
 
-    if (existingItem) {
+        existing.quantity =
+            Number(existing.quantity || 0) + 1;
 
-        existingItem.quantity =
-            Number(
-                existingItem.quantity || 0
-            ) + 1;
-
-    } else {
+    }else{
 
         cart.push({
 
-            name: item.name,
+            name:item.name,
 
-            price: Number(item.price),
+            flavor:null,
 
-            quantity: 1,
+            price:Number(item.price),
 
-            category: item.category,
+            quantity:1,
 
-            type: item.type,
+            category:item.category,
+
+            type:item.type,
+
+            serviceCharge:
+                getServiceCharge(item.price)
+
+        });
+
+    }
+
+    saveCart(cart);
+
+    updateCartUI();
+
+}
+
+
+function openFlavorPicker(foodName){
+
+    const modal =
+        document.getElementById("flavorModal");
+
+    const title =
+        document.getElementById("flavorTitle");
+
+    const list =
+        document.getElementById("flavorList");
+
+    const flavors =
+        flavorData[foodName] || [];
+
+    title.textContent =
+        `${foodName} — Choose Flavor`;
+
+    if(!flavors.length){
+
+        list.innerHTML = `
+            <div class="empty">
+                No flavors found.
+            </div>
+        `;
+
+    }else{
+
+        list.innerHTML =
+            flavors.map(flavor => {
+
+                const available =
+                    flavor.available;
+
+                return `
+
+                    <button
+                        class="flavor-option ${
+                            available
+                            ? ""
+                            : "unavailable"
+                        }"
+
+                        ${
+                            available
+                            ? `onclick='addFlavorToCart(
+                                ${JSON.stringify(foodName)},
+                                ${JSON.stringify(flavor.flavor)}
+                               )'`
+                            : "disabled"
+                        }>
+
+                        <span>
+
+                            <strong>
+                                ${escapeHTML(flavor.flavor)}
+                            </strong>
+
+                            <span
+                                style="
+                                    display:block;
+                                    color:#888;
+                                    font-size:11px;
+                                    margin-top:4px;
+                                ">
+
+                                ${
+                                    available
+                                    ? "Available"
+                                    : "Currently unavailable"
+                                }
+
+                            </span>
+
+                        </span>
+
+                        <span>
+
+                            ${
+                                available
+                                ? `
+                                    <span class="flavor-price">
+                                        ₹${flavor.price.toFixed(2)}
+                                    </span>
+                                  `
+                                : `
+                                    <span class="flavor-status">
+                                        UNAVAILABLE
+                                    </span>
+                                  `
+                            }
+
+                        </span>
+
+                    </button>
+
+                `;
+
+            }).join("");
+
+    }
+
+    modal.style.display = "flex";
+
+}
+
+
+function closeFlavorPicker(event){
+
+    if(
+        event &&
+        event.target !== event.currentTarget
+    ){
+        return;
+    }
+
+    document.getElementById(
+        "flavorModal"
+    ).style.display = "none";
+
+}
+
+
+function addFlavorToCart(
+    foodName,
+    flavorName
+){
+
+    const flavors =
+        flavorData[foodName] || [];
+
+    const selected =
+        flavors.find(
+            flavor =>
+                flavor.flavor === flavorName
+        );
+
+    if(
+        !selected ||
+        !selected.available
+    ){
+
+        alert(
+            `${foodName} - ${flavorName} is currently unavailable.`
+        );
+
+        return;
+
+    }
+
+    const baseItem =
+        menu.find(
+            item =>
+                item.name === foodName
+        );
+
+    const cart = getCart();
+
+
+    /*
+     * Each flavor is a separate
+     * cart item.
+     */
+
+    const existing =
+        cart.find(item =>
+            item.name === foodName &&
+            item.flavor === flavorName
+        );
+
+
+    if(existing){
+
+        existing.quantity =
+            Number(existing.quantity || 0) + 1;
+
+    }else{
+
+        cart.push({
+
+            name:foodName,
+
+            flavor:flavorName,
+
+            price:Number(selected.price),
+
+            quantity:1,
+
+            category:
+                baseItem
+                ? baseItem.category
+                : "Snacks",
+
+            type:
+                baseItem
+                ? baseItem.type
+                : "Veg",
 
             serviceCharge:
                 getServiceCharge(
-                    item.price
+                    selected.price
                 )
 
         });
@@ -1347,305 +1312,37 @@ function addToCart(itemName) {
 
     updateCartUI();
 
-
-    /*
-     * Small button feedback.
-     */
-
-    document
-        .querySelectorAll(".add-food-btn")
-        .forEach(button => {
-
-            const onclick =
-                button.getAttribute("onclick");
-
-
-            if (
-                onclick &&
-                onclick.includes(item.name)
-            ) {
-
-                const oldText =
-                    button.textContent;
-
-
-                button.textContent =
-                    "✓ Added";
-
-
-                setTimeout(() => {
-
-                    button.textContent =
-                        oldText;
-
-                }, 700);
-
-            }
-
-        });
+    closeFlavorPicker();
 
 }
 
-
-/* ==========================================
-   CART TOTAL
-========================================== */
-
-function calculateCartTotal(cart) {
-
-    let total = 0;
-
-
-    cart.forEach(item => {
-
-        const price =
-            Number(item.price || 0);
-
-
-        const quantity =
-            Number(item.quantity || 0);
-
-
-        const serviceCharge =
-            price <= 20
-                ? 0.50
-                : 1.00;
-
-
-        total +=
-            (price + serviceCharge) *
-            quantity;
-
-    });
-
-
-    return total;
-
-}
-
-
-/* ==========================================
-   CART UI
-========================================== */
-
-function updateCartUI() {
-
-    const cart =
-        getCart();
-
-
-    let itemCount = 0;
-
-
-    cart.forEach(item => {
-
-        itemCount +=
-            Number(
-                item.quantity || 0
-            );
-
-    });
-
-
-    const total =
-        calculateCartTotal(cart);
-
-
-    const badge =
-        document.getElementById(
-            "cartBadge"
-        );
-
-
-    const cartText =
-        document.getElementById(
-            "cartText"
-        );
-
-
-    const cartTotal =
-        document.getElementById(
-            "cartTotal"
-        );
-
-
-    if (badge) {
-
-        badge.textContent =
-            itemCount;
-
-    }
-
-
-    if (cartText) {
-
-        cartText.textContent =
-            `(${itemCount} ${
-                itemCount === 1
-                    ? "item"
-                    : "items"
-            })`;
-
-    }
-
-
-    if (cartTotal) {
-
-        cartTotal.textContent =
-            `₹${total.toFixed(2)}`;
-
-    }
-
-}
-
-
-/* ==========================================
-   NAVIGATION
-========================================== */
-
-function goToCart() {
-
-    window.location.href =
-        "cart.html";
-
-}
-
-
-function goToDashboard() {
-
-    window.location.href =
-        "student.html";
-
-}
-
-
-/* ==========================================
-   LOAD FOOD TYPE
-========================================== */
-
-function loadSelectedType() {
-
-    const params =
-        new URLSearchParams(
-            window.location.search
-        );
-
-
-    const urlType =
-        params.get("type");
-
-
-    const savedType =
-        localStorage.getItem(
-            "nextTurnFoodType"
-        );
-
-
-    let selectedType = "All";
-
-
-    if (
-        urlType === "Veg" ||
-        urlType === "Non-Veg"
-    ) {
-
-        selectedType =
-            urlType;
-
-    } else if (
-        savedType === "Veg" ||
-        savedType === "Non-Veg"
-    ) {
-
-        selectedType =
-            savedType;
-
-    }
-
-
-    currentType =
-        selectedType;
-
-
-    document
-        .querySelectorAll(
-            ".food-type-btn"
-        )
-        .forEach(button => {
-
-            button.classList.toggle(
-                "active",
-                button.dataset.type ===
-                    selectedType
-            );
-
-        });
-
-}
-
-
-/* ==========================================
-   CART STORAGE SYNC
-========================================== */
-
-window.addEventListener(
-    "storage",
-    function(event) {
-
-        if (
-            event.key ===
-            "nextTurnCart"
-        ) {
-
-            updateCartUI();
-
-        }
-
-    }
-);
-
-
-/* ==========================================
-   INITIALIZE
-========================================== */
 
 document.addEventListener(
     "DOMContentLoaded",
-    async function() {
+    async () => {
 
-        loadSelectedType();
+        menu.forEach(
+            item =>
+                item.available = true
+        );
 
         renderMenu();
 
         updateCartUI();
 
-        /*
-         * Get the real availability
-         * from Staff/backend.
-         */
-
         await syncFoodAvailability();
 
     }
 );
 
 
-/* ==========================================
-   AUTO REFRESH
-   Every 5 seconds
-========================================== */
-
 setInterval(
-    async function() {
-
-        await syncFoodAvailability();
-
-    },
+    syncFoodAvailability,
     5000
 );
 
 </script>
 
 </body>
-    </html>
+</html>    
     
