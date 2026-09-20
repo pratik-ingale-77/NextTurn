@@ -15,7 +15,11 @@
 
         body {
             background:
-                radial-gradient(circle at top right, rgba(212,175,55,0.08), transparent 35%),
+                radial-gradient(
+                    circle at top right,
+                    rgba(212,175,55,0.08),
+                    transparent 35%
+                ),
                 #080808;
             color: #f5f5f5;
             min-height: 100vh;
@@ -214,7 +218,11 @@
             border-radius: 13px;
             padding: 16px;
             margin-top: 22px;
-            background: linear-gradient(135deg, #D4AF37, #F4D77D);
+            background: linear-gradient(
+                135deg,
+                #D4AF37,
+                #F4D77D
+            );
             color: #090909;
             font-size: 16px;
             font-weight: 800;
@@ -289,6 +297,7 @@
         }
 
         @media (max-width: 650px) {
+
             .payment-page {
                 padding: 18px 14px 45px;
             }
@@ -332,37 +341,75 @@
 <div class="payment-page">
 
     <header class="payment-header">
-        <div class="payment-brand">NextTurn</div>
-        <div class="payment-subtitle">College Canteen</div>
+
+        <div class="payment-brand">
+            NextTurn
+        </div>
+
+        <div class="payment-subtitle">
+            College Canteen
+        </div>
+
     </header>
 
     <div class="payment-title">
-        <h1>Complete Your Order</h1>
-        <p>Submit your payment proof to confirm your canteen order.</p>
+
+        <h1>
+            Complete Your Order
+        </h1>
+
+        <p>
+            Submit your payment proof to confirm your canteen order.
+        </p>
+
     </div>
 
     <!-- ORDER SUMMARY -->
+
     <div class="payment-card">
 
-        <h2 class="section-title">Order Summary</h2>
+        <h2 class="section-title">
+            Order Summary
+        </h2>
 
         <div class="order-summary">
 
             <div id="cartItems"></div>
 
             <div class="summary-row">
-                <span>Subtotal</span>
-                <strong id="subtotal">₹0.00</strong>
+
+                <span>
+                    Subtotal
+                </span>
+
+                <strong id="subtotal">
+                    ₹0.00
+                </strong>
+
             </div>
 
             <div class="summary-row">
-                <span>Service Charge</span>
-                <strong id="serviceCharge">₹0.00</strong>
+
+                <span>
+                    Service Charge
+                </span>
+
+                <strong id="serviceCharge">
+                    ₹0.00
+                </strong>
+
             </div>
 
             <div class="summary-row total-row">
-                <span>Total</span>
-                <strong id="totalAmount">₹0.00</strong>
+
+                <span>
+                    Total
+                </span>
+
+                <strong id="totalAmount">
+                    ₹0.00
+                </strong>
+
             </div>
 
         </div>
@@ -370,50 +417,73 @@
     </div>
 
     <!-- STUDENT DETAILS -->
+
     <div class="payment-card">
 
-        <h2 class="section-title">Student Details</h2>
+        <h2 class="section-title">
+            Student Details
+        </h2>
 
         <div class="form-grid">
 
             <div class="form-group">
-                <label for="fullName">Full Name</label>
+
+                <label for="fullName">
+                    Full Name
+                </label>
+
                 <input
                     type="text"
                     id="fullName"
                     placeholder="Enter your full name"
                     required
                 >
+
             </div>
 
             <div class="form-group">
-                <label for="studentId">Student ID</label>
+
+                <label for="studentId">
+                    Student ID
+                </label>
+
                 <input
                     type="text"
                     id="studentId"
                     placeholder="Enter your student ID"
                     required
                 >
+
             </div>
 
             <div class="form-group">
-                <label for="email">College Gmail</label>
+
+                <label for="email">
+                    College Gmail
+                </label>
+
                 <input
                     type="email"
                     id="email"
                     placeholder="Enter your college Gmail"
                     required
                 >
+
             </div>
 
             <div class="form-group">
-                <label for="phone">Phone Number</label>
+
+                <label for="phone">
+                    Phone Number
+                </label>
+
                 <input
                     type="tel"
                     id="phone"
                     placeholder="Enter your phone number"
                     required
                 >
+
             </div>
 
             <div class="form-group full">
@@ -424,9 +494,13 @@
 
                 <div class="upload-box">
 
-                    <div class="upload-icon">📸</div>
+                    <div class="upload-icon">
+                        📸
+                    </div>
 
-                    <p>Upload Payment Screenshot</p>
+                    <p>
+                        Upload Payment Screenshot
+                    </p>
 
                     <small>
                         Upload a clear screenshot of your payment
@@ -461,14 +535,19 @@
     </div>
 
     <!-- SUCCESS -->
+
     <div
         class="payment-card success-card"
         id="successMessage"
     >
 
-        <div class="success-icon">✓</div>
+        <div class="success-icon">
+            ✓
+        </div>
 
-        <h2>Payment Submitted</h2>
+        <h2>
+            Payment Submitted
+        </h2>
 
         <p>
             Your payment proof has been submitted successfully.
@@ -482,7 +561,10 @@
             Your token will be generated after verification.
         </p>
 
-        <a href="student.html" class="back-btn">
+        <a
+            href="student.html"
+            class="back-btn"
+        >
             Go to Dashboard
         </a>
 
@@ -532,26 +614,44 @@ function loadCart() {
         const row =
             document.createElement("div");
 
-        row.className = "summary-item";
+        row.className =
+            "summary-item";
 
         const name =
             document.createElement("span");
 
+        /*
+         * IMPORTANT:
+         * Preserve the exact selected flavor.
+         *
+         * Example:
+         * Chips - Tangy Tomato × 2
+         * Kurkure - Masala × 1
+         */
+
+        const displayName =
+            item.flavor
+                ? `${item.name} - ${item.flavor}`
+                : item.name;
+
         name.textContent =
-            `${item.name} × ${item.quantity}`;
+            `${displayName} × ${item.quantity}`;
 
         const price =
             document.createElement("strong");
 
         price.textContent =
             `₹${(
-                item.price * item.quantity
+                item.price *
+                item.quantity
             ).toFixed(2)}`;
 
         row.appendChild(name);
+
         row.appendChild(price);
 
         cartItems.appendChild(row);
+
     });
 
     calculateTotal();
@@ -571,7 +671,10 @@ function calculateSubtotal() {
     return cart.reduce(
         (total, item) =>
             total +
-            (item.price * item.quantity),
+            (
+                item.price *
+                item.quantity
+            ),
         0
     );
 }
@@ -583,8 +686,8 @@ function calculateServiceCharge() {
         (total, item) =>
             total +
             (
-                getServiceCharge(item.price)
-                * item.quantity
+                getServiceCharge(item.price) *
+                item.quantity
             ),
         0
     );
@@ -600,7 +703,8 @@ function calculateTotal() {
         calculateServiceCharge();
 
     const total =
-        subtotal + serviceCharge;
+        subtotal +
+        serviceCharge;
 
     document.getElementById("subtotal")
         .textContent =
@@ -626,6 +730,8 @@ function loadStudentDetails() {
 
     document.getElementById("email").value =
         student.email || "";
+            student.email || "";
+
 }
 
 
@@ -705,8 +811,45 @@ async function submitPayment() {
         calculateServiceCharge();
 
     const totalAmount =
-        subtotal + serviceCharge;
+        subtotal +
+        serviceCharge;
 
+
+    /*
+     * IMPORTANT FLAVOR HANDLING
+     *
+     * The cart already contains:
+     *
+     * {
+     *     name: "Chips",
+     *     flavor: "Tangy Tomato",
+     *     price: 10,
+     *     quantity: 2
+     * }
+     *
+     * We create a clean copy before sending
+     * it to the backend.
+     *
+     * This guarantees that the selected flavor
+     * is included in foodItems.
+     */
+
+    const orderItems =
+        cart.map(item => {
+
+            return {
+                name: item.name || "",
+                flavor: item.flavor || null,
+                price: Number(item.price) || 0,
+                quantity: Number(item.quantity) || 1
+            };
+
+        });
+
+
+    /*
+     * Backend order object
+     */
 
     const order = {
 
@@ -719,8 +862,21 @@ async function submitPayment() {
         studentEmail:
             email,
 
+        /*
+         * Example backend value:
+         *
+         * [
+         *   {
+         *     "name":"Chips",
+         *     "flavor":"Tangy Tomato",
+         *     "price":10,
+         *     "quantity":2
+         *   }
+         * ]
+         */
+
         foodItems:
-            JSON.stringify(cart),
+            JSON.stringify(orderItems),
 
         subtotal:
             subtotal,
@@ -742,6 +898,7 @@ async function submitPayment() {
 
         paymentProof:
             screenshot.name
+
     };
 
 
@@ -767,6 +924,7 @@ async function submitPayment() {
 
         let data = {};
 
+
         try {
 
             data =
@@ -786,8 +944,13 @@ async function submitPayment() {
                 data.error ||
                 "Order creation failed."
             );
+
         }
 
+
+        /*
+         * Save the complete backend order.
+         */
 
         localStorage.setItem(
             "nextTurnCurrentOrder",
@@ -807,29 +970,42 @@ async function submitPayment() {
         );
 
 
+        /*
+         * Clear cart only after successful
+         * backend order creation.
+         */
+
         localStorage.removeItem(
             "nextTurnCart"
         );
 
 
-        document.querySelector(
-            ".payment-page > .payment-card:nth-of-type(2)"
-        );
-
+        /*
+         * Hide student details/payment form.
+         */
 
         const cards =
             document.querySelectorAll(
                 ".payment-card"
             );
 
+
         if (cards.length >= 2) {
-            cards[1].style.display = "none";
+
+            cards[1].style.display =
+                "none";
+
         }
 
 
+        /*
+         * Show success message.
+         */
+
         document.getElementById(
             "successMessage"
-        ).style.display = "block";
+        ).style.display =
+            "block";
 
 
     } catch (error) {
@@ -839,12 +1015,15 @@ async function submitPayment() {
             error
         );
 
+
         showError(
             error.message ||
             "Unable to submit your order right now."
         );
 
-        button.disabled = false;
+
+        button.disabled =
+            false;
 
         button.textContent =
             "Submit Payment Proof";
@@ -881,4 +1060,4 @@ document.addEventListener(
 </script>
 
 </body>
-                    </html>
+</html>
