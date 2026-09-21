@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -423,7 +422,7 @@ header {
             </div>
 
             <div class="card-subtitle">
-                Latest orders appear first
+                Verify payments and manage order status
             </div>
 
             <div id="ordersContainer">
@@ -547,47 +546,20 @@ async function loadOrders() {
             );
 
         if (!response.ok) {
-
             throw new Error(
                 "Failed to load orders"
             );
-
         }
 
         orders =
             await response.json();
 
-
-        /*
-         * IMPORTANT:
-         *
-         * Sort by createdAt in descending
-         * order so the newest order is always
-         * displayed first.
-         *
-         * Newest:
-         * 2026-09-21 21:10
-         *
-         * Older:
-         * 2026-09-21 20:55
-         */
-
-        orders.sort((a, b) => {
-
-            const dateA =
-                new Date(
-                    a.createdAt || 0
-                ).getTime();
-
-            const dateB =
-                new Date(
-                    b.createdAt || 0
-                ).getTime();
-
-            return dateB - dateA;
-
-        });
-
+        /* Latest order first */
+        orders.sort(
+            (a, b) =>
+                Number(b.id || 0) -
+                Number(a.id || 0)
+        );
 
         renderOrders();
 
@@ -628,7 +600,6 @@ function renderOrders() {
         return;
     }
 
-
     container.innerHTML =
         orders.map(order => {
 
@@ -639,14 +610,11 @@ function renderOrders() {
                 .toLowerCase()
                 .includes("verified");
 
-
             const token =
                 order.tokenNumber;
 
-
             let itemsText =
                 "No items";
-
 
             if (
                 Array.isArray(
@@ -675,7 +643,6 @@ function renderOrders() {
                                 return flavor
                                     ? `${name} - ${flavor} × ${quantity}`
                                     : `${name} × ${quantity}`;
-
                             }
 
                             return String(item);
@@ -688,31 +655,12 @@ function renderOrders() {
                 "string"
             ) {
 
-                try {
+                itemsText =
+                    order.foodItems;
 
-                    const parsedItems =
-                        JSON.parse(
-                            order.foodItems
-                        );
+            }
 
-                    if (
-                        Array.isArray(
-                            parsedItems
-                        )
-                    ) {
-
-                        itemsText =
-                            parsedItems
-                                .map(item => {
-
-                                    if (
-                                        typeof item ===
-                                        "object"
-                                    ) {
-
-                                        const name =
-                                            item
-                                                    return `
+            return `
                 <div class="order-card">
 
                     <div class="order-header">
@@ -729,7 +677,6 @@ function renderOrders() {
                         </div>
 
                     </div>
-
 
                     <div class="order-info">
 
@@ -783,7 +730,6 @@ function renderOrders() {
 
                     </div>
 
-
                     <div class="order-items">
 
                         <strong>
@@ -795,7 +741,6 @@ function renderOrders() {
                         ${itemsText}
 
                     </div>
-
 
                     <div class="action-row">
 
@@ -812,10 +757,11 @@ function renderOrders() {
                             : ""
                         }
 
-
                         ${
                             paymentVerified &&
-                            !token
+                            (!token ||
+                             token ===
+                             "Not Generated")
                             ? `
                                 <button
                                     class="action-btn primary"
@@ -827,10 +773,11 @@ function renderOrders() {
                             : ""
                         }
 
-
                         ${
                             paymentVerified &&
                             token &&
+                            token !==
+                            "Not Generated" &&
                             String(
                                 order.orderStatus || ""
                             )
@@ -846,7 +793,6 @@ function renderOrders() {
                               `
                             : ""
                         }
-
 
                         ${
                             String(
@@ -864,7 +810,6 @@ function renderOrders() {
                               `
                             : ""
                         }
-
 
                         ${
                             String(
@@ -891,109 +836,74 @@ function renderOrders() {
         }).join("");
 
 }
-
-
-/* =========================
-   VERIFY PAYMENT
+  /* =========================
+   ORDER ACTIONS
 ========================= */
 
 async function verifyPayment(id) {
 
     await updateOrder(
-        `/api/staff/payments/${id}/verify`,
-        "Payment verified successfully."
+        `/api/staff/payments/${id}/verify`
     );
 
 }
 
-
-/* =========================
-   GENERATE TOKEN
-========================= */
 
 async function generateToken(id) {
 
     await updateOrder(
-        `/api/staff/tokens/${id}/generate`,
-        "Token generated successfully."
+        `/api/staff/tokens/${id}/generate`
     );
 
 }
 
-
-/* =========================
-   START PREPARING
-========================= */
 
 async function markPreparing(id) {
 
     await updateOrder(
-        `/api/staff/orders/${id}/preparing`,
-        "Order moved to preparing."
+        `/api/staff/orders/${id}/preparing`
     );
 
 }
 
-
-/* =========================
-   MARK READY
-========================= */
 
 async function markReady(id) {
 
     await updateOrder(
-        `/api/staff/ready/${id}`,
-        "Order marked as ready."
+        `/api/staff/ready/${id}`
     );
 
 }
 
-
-/* =========================
-   COMPLETE ORDER
-========================= */
 
 async function completeOrder(id) {
 
     await updateOrder(
-        `/api/staff/orders/${id}/complete`,
-        "Order completed successfully."
+        `/api/staff/orders/${id}/complete`
     );
 
 }
 
 
-/* =========================
-   GENERIC ORDER UPDATE
-========================= */
-
-async function updateOrder(
-    endpoint,
-    successMessage
-) {
+async function updateOrder(endpoint) {
 
     try {
 
         const response =
             await fetch(
-                API + endpoint,
+                `${API}${endpoint}`,
                 {
                     method: "PUT"
                 }
             );
 
-
         if (!response.ok) {
 
             throw new Error(
-                "Request failed"
+                "Order update failed"
             );
 
         }
-
-
-        alert(successMessage);
-
 
         await loadOrders();
 
@@ -1002,7 +912,7 @@ async function updateOrder(
         console.error(error);
 
         alert(
-            "Unable to update the order."
+            "Unable to update order."
         );
 
     }
@@ -1021,7 +931,6 @@ async function loadFood() {
             "foodContainer"
         );
 
-
     try {
 
         const response =
@@ -1029,19 +938,16 @@ async function loadFood() {
                 `${API}/api/staff/food?t=${Date.now()}`
             );
 
-
         if (!response.ok) {
 
             throw new Error(
-                "Failed to load food"
+                "Failed to load menu"
             );
 
         }
 
-
         foodItems =
             await response.json();
-
 
         renderFood();
 
@@ -1071,23 +977,17 @@ function renderFood() {
             "foodContainer"
         );
 
-
     if (!foodItems.length) {
 
         container.innerHTML = `
             <div class="empty">
-                No food items available
+                No food items found
             </div>
         `;
 
         return;
-
     }
 
-
-    /*
-     * Foods with individual flavors.
-     */
 
     const flavorFoods = [
         "Chips",
@@ -1097,256 +997,246 @@ function renderFood() {
 
     const flavorGroups = {};
 
+    const normalFoods = [];
+
 
     foodItems.forEach(item => {
 
         if (
-            item.flavor &&
-            flavorFoods.includes(item.name)
+            flavorFoods.includes(item.name) &&
+            item.flavor
         ) {
 
-            if (
-                !flavorGroups[item.name]
-            ) {
+            if (!flavorGroups[item.name]) {
 
                 flavorGroups[item.name] = [];
 
             }
 
-            flavorGroups[item.name].push(
-                item
-            );
+            flavorGroups[item.name].push(item);
+
+        } else {
+
+            normalFoods.push(item);
 
         }
 
     });
 
 
-    /*
-     * Normal food.
-     *
-     * Chips and Kurkure base records
-     * are excluded because their flavors
-     * are managed separately.
-     */
-
-    const normalFoods =
-        foodItems.filter(item => {
-
-            if (
-                flavorFoods.includes(
-                    item.name
-                )
-            ) {
-
-                return false;
-
-            }
-
-            return true;
-
-        });
+    let html = `
+        <div class="menu-grid">
+    `;
 
 
-    let html = "";
+    /* =========================
+       FLAVOR GROUPS
+    ========================= */
 
-
-    /*
-     * Render flavor groups first.
-     */
-
-    Object.keys(flavorGroups)
-        .forEach(foodName => {
+    Object.keys(flavorGroups).forEach(
+        foodName => {
 
             const flavors =
                 flavorGroups[foodName];
 
 
+            const availableCount =
+                flavors.filter(
+                    item => item.available
+                ).length;
+
+
             html += `
+
                 <div class="flavor-group">
 
                     <div class="flavor-group-header">
 
-                        <div class="flavor-group-name">
-                            ${foodName}
-                        </div>
+                        <div>
 
-                        <div class="flavor-count">
-                            ${flavors.length} flavors
+                            <div class="flavor-group-name">
+                                ${foodName}
+                            </div>
+
+                            <div class="flavor-count">
+                                ${availableCount}
+                                of
+                                ${flavors.length}
+                                flavors available
+                            </div>
+
                         </div>
 
                     </div>
-            `;
 
 
-            flavors.forEach(item => {
+                    ${flavors.map(item => `
 
-                const available =
-                    item.available === true;
+                        <div class="flavor-row">
 
+                            <div class="flavor-info">
 
-                html += `
-                    <div class="flavor-row">
+                                <div class="flavor-name">
+                                    ${item.flavor}
+                                </div>
 
-                        <div class="flavor-info">
+                                <div class="flavor-price">
+                                    ₹${Number(
+                                        item.price
+                                    ).toFixed(2)}
+                                </div>
 
-                            <div class="flavor-name">
-                                ${item.flavor}
+                                <div class="
+                                    availability
+                                    ${
+                                        item.available
+                                            ? "available"
+                                            : "unavailable"
+                                    }
+                                ">
+
+                                    ${
+                                        item.available
+                                            ? "● Available"
+                                            : "● Unavailable"
+                                    }
+
+                                </div>
+
                             </div>
 
-                            <div class="flavor-price">
-                                ₹${Number(
-                                    item.price || 0
-                                ).toFixed(2)}
-                            </div>
 
-                            <div
-                                class="availability ${
-                                    available
-                                        ? "available"
-                                        : "unavailable"
+                            <button
+                                class="action-btn
+                                ${
+                                    item.available
+                                        ? "danger"
+                                        : "success"
+                                }"
+                                onclick="${
+                                    item.available
+                                        ? `makeFlavorUnavailable(${item.id})`
+                                        : `makeFlavorAvailable(${item.id})`
                                 }"
                             >
+
                                 ${
-                                    available
-                                        ? "Available"
-                                        : "Unavailable"
+                                    item.available
+                                        ? "Make Unavailable"
+                                        : "Make Available"
                                 }
-                            </div>
+
+                            </button>
 
                         </div>
 
+                    `).join("")}
 
-                        ${
-                            available
-                            ? `
-                                <button
-                                    class="action-btn danger"
-                                    onclick="makeFlavorUnavailable(${item.id})"
-                                >
-                                    Make Unavailable
-                                </button>
-                              `
-                            : `
-                                <button
-                                    class="action-btn success"
-                                    onclick="makeFlavorAvailable(${item.id})"
-                                >
-                                    Make Available
-                                </button>
-                              `
-                        }
-
-                    </div>
-                `;
-
-            });
-
-
-            html += `
                 </div>
+
             `;
 
-        });
+        }
+    );
 
 
-    /*
-     * Render normal food items.
-     */
+    html += `
+        </div>
 
-    if (normalFoods.length) {
+        <h3
+            style="
+                color:#f4d77d;
+                margin:28px 0 16px;
+            "
+        >
+            Other Food Items
+        </h3>
+
+        <div class="menu-grid">
+    `;
+
+
+    /* =========================
+       NORMAL FOOD ITEMS
+    ========================= */
+
+    normalFoods.forEach(item => {
 
         html += `
-            <div
-                style="
-                    margin-top:25px;
-                    margin-bottom:15px;
-                    color:#f4d77d;
-                    font-size:20px;
-                    font-weight:800;
-                "
-            >
-                Other Food Items
-            </div>
 
-            <div class="menu-grid">
-        `;
+            <div class="food-card">
 
+                <div class="food-name">
+                    ${item.name}
+                </div>
 
-        normalFoods.forEach(item => {
+                <div class="food-category">
+                    ${item.category || "Food"}
+                </div>
 
-            const available =
-                item.available === true;
+                <div class="food-price">
+                    ₹${Number(
+                        item.price
+                    ).toFixed(2)}
+                </div>
 
-
-            html += `
-                <div class="food-card">
-
-                    <div class="food-name">
-                        ${item.name}
-                    </div>
-
-                    <div class="food-category">
-                        ${item.category || "Food"}
-                    </div>
-
-                    <div class="food-price">
-                        ₹${Number(
-                            item.price || 0
-                        ).toFixed(2)}
-                    </div>
-
-                    <div
-                        class="availability ${
-                            available
+                <div
+                    class="
+                        availability
+                        ${
+                            item.available
                                 ? "available"
                                 : "unavailable"
-                        }"
-                    >
-                        ${
-                            available
-                                ? "Available"
-                                : "Unavailable"
                         }
-                    </div>
-
-                    <br>
+                    "
+                    style="margin-bottom:14px;"
+                >
 
                     ${
-                        available
-                        ? `
-                            <button
-                                class="action-btn danger"
-                                onclick="makeUnavailable(${item.id})"
-                            >
-                                Make Unavailable
-                            </button>
-                          `
-                        : `
-                            <button
-                                class="action-btn success"
-                                onclick="makeAvailable(${item.id})"
-                            >
-                                Make Available
-                            </button>
-                          `
+                        item.available
+                            ? "● Available"
+                            : "● Unavailable"
                     }
 
                 </div>
-            `;
 
-        });
+                <button
+                    class="
+                        action-btn
+                        ${
+                            item.available
+                                ? "danger"
+                                : "success"
+                        }
+                    "
+                    onclick="${
+                        item.available
+                            ? `makeUnavailable(${item.id})`
+                            : `makeAvailable(${item.id})`
+                    }"
+                >
 
+                    ${
+                        item.available
+                            ? "Make Unavailable"
+                            : "Make Available"
+                    }
 
-        html += `
+                </button>
+
             </div>
+
         `;
 
-    }
+    });
 
 
-    container.innerHTML =
-        html;
+    html += `
+        </div>
+    `;
+
+
+    container.innerHTML = html;
 
 }
 
@@ -1357,71 +1247,23 @@ function renderFood() {
 
 async function makeUnavailable(id) {
 
-    await updateFoodAvailability(
-        `/api/staff/food/${id}/unavailable`
-    );
-
-}
-
-
-async function makeAvailable(id) {
-
-    await updateFoodAvailability(
-        `/api/staff/food/${id}/available`
-    );
-
-}
-
-
-/* =========================
-   FLAVOR AVAILABILITY
-========================= */
-
-async function makeFlavorUnavailable(id) {
-
-    await updateFoodAvailability(
-        `/api/staff/food/${id}/flavor/unavailable`
-    );
-
-}
-
-
-async function makeFlavorAvailable(id) {
-
-    await updateFoodAvailability(
-        `/api/staff/food/${id}/flavor/available`
-    );
-
-}
-
-
-/* =========================
-   FOOD UPDATE
-========================= */
-
-async function updateFoodAvailability(
-    endpoint
-) {
-
     try {
 
         const response =
             await fetch(
-                API + endpoint,
+                `${API}/api/staff/food/${id}/unavailable`,
                 {
                     method: "PUT"
                 }
             );
 
-
         if (!response.ok) {
 
             throw new Error(
-                "Food availability update failed"
+                "Failed to update availability"
             );
 
         }
-
 
         await loadFood();
 
@@ -1430,7 +1272,7 @@ async function updateFoodAvailability(
         console.error(error);
 
         alert(
-            "Unable to update food availability."
+            "Unable to make food unavailable."
         );
 
     }
@@ -1438,15 +1280,109 @@ async function updateFoodAvailability(
 }
 
 
-/* =========================
-   AUTO REFRESH
+async function makeAvailable(id) {
+
+    try {
+
+        const response =
+            await fetch(
+                `${API}/api/staff/food/${id}/available`,
+                {
+                    method: "PUT"
+                }
+            );
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to update availability"
+            );
+
+        }
+
+        await loadFood();
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Unable to make food available."
+        );
+
+    }
+
+    }
+    /* =========================
+   FLAVOR AVAILABILITY
 ========================= */
 
-async function refreshDashboard() {
+async function makeFlavorUnavailable(id) {
 
-    await loadOrders();
+    try {
 
-    await loadFood();
+        const response =
+            await fetch(
+                `${API}/api/staff/food/${id}/flavor/unavailable`,
+                {
+                    method: "PUT"
+                }
+            );
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to update flavor"
+            );
+
+        }
+
+        await loadFood();
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Unable to make flavor unavailable."
+        );
+
+    }
+
+}
+
+
+async function makeFlavorAvailable(id) {
+
+    try {
+
+        const response =
+            await fetch(
+                `${API}/api/staff/food/${id}/flavor/available`,
+                {
+                    method: "PUT"
+                }
+            );
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to update flavor"
+            );
+
+        }
+
+        await loadFood();
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Unable to make flavor available."
+        );
+
+    }
 
 }
 
@@ -1457,29 +1393,42 @@ async function refreshDashboard() {
 
 document.addEventListener(
     "DOMContentLoaded",
-    function() {
+    () => {
 
         loadOrders();
 
         loadFood();
 
-        /*
-         * Refresh every 10 seconds.
-         * Newest order will always be
-         * re-sorted to the top.
-         */
-
-        setInterval(
-            refreshDashboard,
-            10000
-        );
-
     }
 );
+
+
+/* =========================
+   AUTO REFRESH
+========================= */
+
+setInterval(
+    () => {
+
+        loadOrders();
+
+    },
+    10000
+);
+
+
+setInterval(
+    () => {
+
+        loadFood();
+
+    },
+    10000
+);
+
 
 </script>
 
 </body>
 
 </html>
-                   
