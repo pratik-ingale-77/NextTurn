@@ -1,7 +1,9 @@
 package com.nextturn.config;
 
 import com.nextturn.model.FoodItem;
+import com.nextturn.model.Partner;
 import com.nextturn.repository.FoodItemRepository;
+import com.nextturn.repository.PartnerRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +12,10 @@ import org.springframework.context.annotation.Configuration;
 public class DataInitializer {
 
     @Bean
-    CommandLineRunner loadFoodItems(FoodItemRepository repository) {
+    CommandLineRunner loadFoodItems(
+            FoodItemRepository repository,
+            PartnerRepository partnerRepository
+    ) {
 
         return args -> {
 
@@ -43,8 +48,6 @@ public class DataInitializer {
 
             /*
              * Add Chips flavors if they don't already exist.
-             *
-             * Existing database records are NOT deleted.
              */
             addFlavorIfMissing(
                     repository,
@@ -112,6 +115,21 @@ public class DataInitializer {
                     10,
                     "Wonder"
             );
+
+            /*
+             * Create the default Partner account
+             * if it does not already exist.
+             */
+            if (!partnerRepository.existsByPartnerId("partner01")) {
+
+                partnerRepository.save(
+                        new Partner(
+                                "Principal",
+                                "partner01",
+                                "partner123"
+                        )
+                );
+            }
         };
     }
 
@@ -135,4 +153,4 @@ public class DataInitializer {
             );
         }
     }
-        }
+                    }
