@@ -1,686 +1,1253 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>NextTurn - Partner Dashboard</title>
+<meta charset="UTF-8">
 
-  <link rel="stylesheet" href="styles.css">
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-  <style>
-    /* ==============================
-       PARTNER DASHBOARD
-       PREMIUM BLACK + GOLD
-       ============================== */
+<title>NextTurn - Partner Dashboard</title>
 
-    body {
-      background:
-        radial-gradient(circle at 85% 0%, rgba(212,175,55,0.08), transparent 30%),
+<style>
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background:
+        radial-gradient(
+            circle at 85% 0%,
+            rgba(212,175,55,0.08),
+            transparent 30%
+        ),
         #080808;
-      color: #f5f5f5;
+    color: #f5f5f5;
+    min-height: 100vh;
+}
+
+.partner-page {
+    width: min(1180px, 92%);
+    margin: 0 auto;
+    padding: 30px 0 60px;
+}
+
+.partner-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 18px 0 32px;
+}
+
+.partner-brand {
+    font-size: 27px;
+    font-weight: 800;
+    color: #f5f5f5;
+}
+
+.partner-brand span {
+    color: #d4af37;
+}
+
+.partner-subtitle {
+    color: #9a9a9a;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+.partner-logout {
+    border: 1px solid rgba(212,175,55,0.5);
+    background: #111;
+    color: #f4d77d;
+    padding: 11px 20px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.partner-logout:hover {
+    background: #d4af37;
+    color: #080808;
+}
+
+.partner-welcome {
+    margin-bottom: 28px;
+}
+
+.partner-welcome h1 {
+    font-size: clamp(27px, 4vw, 38px);
+    margin-bottom: 8px;
+}
+
+.partner-welcome p {
+    color: #9a9a9a;
+    line-height: 1.6;
+}
+
+.partner-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.partner-stat {
+    background: linear-gradient(
+        145deg,
+        #141414,
+        #0d0d0d
+    );
+    border: 1px solid rgba(212,175,55,0.18);
+    border-radius: 16px;
+    padding: 22px;
+    min-height: 125px;
+}
+
+.partner-stat-label {
+    color: #999;
+    font-size: 13px;
+    margin-bottom: 13px;
+}
+
+.partner-stat-value {
+    color: #f4d77d;
+    font-size: 28px;
+    font-weight: 800;
+}
+
+.partner-section {
+    background: linear-gradient(
+        145deg,
+        #121212,
+        #0c0c0c
+    );
+    border: 1px solid rgba(212,175,55,0.16);
+    border-radius: 18px;
+    padding: 25px;
+    margin-bottom: 20px;
+}
+
+.partner-section-title {
+    font-size: 21px;
+    margin-bottom: 20px;
+}
+
+.partner-section-title::after {
+    content: "";
+    display: block;
+    width: 42px;
+    height: 2px;
+    background: #d4af37;
+    margin-top: 9px;
+}
+
+.partner-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.partner-card {
+    background: #0a0a0a;
+    border: 1px solid #242424;
+    border-radius: 14px;
+    padding: 20px;
+}
+
+.partner-card h3 {
+    font-size: 18px;
+    margin-bottom: 7px;
+}
+
+.partner-card p {
+    color: #909090;
+    font-size: 13px;
+    margin-bottom: 13px;
+}
+
+.active-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    border: 1px solid rgba(212,175,55,0.3);
+    background: rgba(212,175,55,0.08);
+    color: #f4d77d;
+    padding: 6px 11px;
+    border-radius: 30px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.active-badge::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    background: #d4af37;
+    border-radius: 50%;
+}
+
+.revenue-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 12px;
+    border: 1px solid #242424;
+}
+
+.revenue-table {
+    width: 100%;
+    min-width: 500px;
+    border-collapse: collapse;
+}
+
+.revenue-table th,
+.revenue-table td {
+    padding: 15px 16px;
+    text-align: left;
+    border-bottom: 1px solid #222;
+}
+
+.revenue-table th {
+    background: #171717;
+    color: #d4af37;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.revenue-table td {
+    color: #d0d0d0;
+    font-size: 14px;
+}
+
+.partner-info {
+    background: rgba(212,175,55,0.055);
+    border: 1px solid rgba(212,175,55,0.2);
+    border-left: 3px solid #d4af37;
+    border-radius: 10px;
+    padding: 17px;
+    color: #bdbdbd;
+    line-height: 1.7;
+    font-size: 13px;
+}
+
+.partner-info strong {
+    color: #f4d77d;
+}
+
+.orders-container {
+    display: grid;
+    gap: 14px;
+}
+
+.order-card {
+    background: #0a0a0a;
+    border: 1px solid #242424;
+    border-radius: 14px;
+    padding: 18px;
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 12px;
+}
+
+.order-id {
+    color: #f4d77d;
+    font-weight: 800;
+}
+
+.order-status {
+    color: #8cffaa;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.order-info {
+    color: #999;
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+.order-items {
+    color: #ddd;
+    margin-top: 12px;
+    line-height: 1.7;
+}
+
+.order-total {
+    color: #f4d77d;
+    font-weight: 800;
+    margin-top: 12px;
+}
+
+.loading {
+    color: #888;
+    text-align: center;
+    padding: 25px;
+}
+
+.empty {
+    color: #777;
+    text-align: center;
+    padding: 30px;
+}
+
+.error {
+    color: #ff8c8c;
+    text-align: center;
+    padding: 25px;
+}
+
+@media (max-width: 900px) {
+
+    .partner-stats {
+        grid-template-columns: repeat(2, 1fr);
     }
 
+}
+
+@media (max-width: 650px) {
+
     .partner-page {
-      width: min(1180px, 92%);
-      margin: 0 auto;
-      padding: 35px 0 60px;
+        width: 94%;
+        padding-top: 20px;
     }
 
     .partner-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
-      padding: 18px 0 32px;
+        align-items: flex-start;
     }
 
     .partner-brand {
-      font-size: 27px;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-      color: #f5f5f5;
-    }
-
-    .partner-brand span {
-      color: #d4af37;
-    }
-
-    .partner-subtitle {
-      color: #9a9a9a;
-      font-size: 13px;
-      margin-top: 5px;
+        font-size: 23px;
     }
 
     .partner-logout {
-      border: 1px solid rgba(212,175,55,0.5);
-      background: #111;
-      color: #f4d77d;
-      padding: 11px 20px;
-      border-radius: 10px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: 0.2s ease;
+        padding: 9px 14px;
     }
 
-    .partner-logout:hover {
-      background: #d4af37;
-      color: #080808;
-      transform: translateY(-1px);
+    .partner-list {
+        grid-template-columns: 1fr;
     }
 
-    .partner-welcome {
-      margin-bottom: 28px;
+    .partner-section {
+        padding: 19px;
     }
 
-    .partner-welcome h1 {
-      font-size: clamp(27px, 4vw, 38px);
-      margin-bottom: 8px;
-      letter-spacing: -1px;
+    .order-header {
+        flex-direction: column;
     }
 
-    .partner-welcome p {
-      color: #9a9a9a;
-      line-height: 1.6;
-    }
+}
 
-    /* ==============================
-       STATS
-       ============================== */
+@media (max-width: 480px) {
 
     .partner-stats {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-      margin-bottom: 24px;
+        grid-template-columns: 1fr;
     }
 
     .partner-stat {
-      background: linear-gradient(145deg, #141414, #0d0d0d);
-      border: 1px solid rgba(212,175,55,0.18);
-      border-radius: 16px;
-      padding: 22px;
-      min-height: 125px;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.28);
-    }
-
-    .partner-stat-label {
-      color: #999;
-      font-size: 13px;
-      margin-bottom: 13px;
-    }
-
-    .partner-stat-value {
-      color: #f4d77d;
-      font-size: 28px;
-      font-weight: 800;
-    }
-
-    /* ==============================
-       SECTIONS
-       ============================== */
-
-    .partner-section {
-      background: linear-gradient(145deg, #121212, #0c0c0c);
-      border: 1px solid rgba(212,175,55,0.16);
-      border-radius: 18px;
-      padding: 25px;
-      margin-bottom: 20px;
-      box-shadow: 0 14px 35px rgba(0,0,0,0.3);
-    }
-
-    .partner-section-title {
-      font-size: 21px;
-      margin-bottom: 20px;
-      color: #f5f5f5;
-    }
-
-    .partner-section-title::after {
-      content: "";
-      display: block;
-      width: 42px;
-      height: 2px;
-      background: #d4af37;
-      margin-top: 9px;
-      border-radius: 10px;
-    }
-
-    /* ==============================
-       PARTNER CARDS
-       ============================== */
-
-    .partner-list {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
-    }
-
-    .partner-card {
-      background: #0a0a0a;
-      border: 1px solid #242424;
-      border-radius: 14px;
-      padding: 20px;
-      transition: 0.2s ease;
-    }
-
-    .partner-card:hover {
-      border-color: rgba(212,175,55,0.45);
-      transform: translateY(-2px);
-    }
-
-    .partner-card h3 {
-      font-size: 18px;
-      margin-bottom: 7px;
-      color: #f5f5f5;
-    }
-
-    .partner-card p {
-      color: #909090;
-      font-size: 13px;
-      margin-bottom: 13px;
-    }
-
-    .active-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      border: 1px solid rgba(212,175,55,0.3);
-      background: rgba(212,175,55,0.08);
-      color: #f4d77d;
-      padding: 6px 11px;
-      border-radius: 30px;
-      font-size: 11px;
-      font-weight: 700;
-    }
-
-    .active-badge::before {
-      content: "";
-      width: 6px;
-      height: 6px;
-      background: #d4af37;
-      border-radius: 50%;
-    }
-
-    /* ==============================
-       TABLE
-       ============================== */
-
-    .revenue-table-wrap {
-      width: 100%;
-      overflow-x: auto;
-      border-radius: 12px;
-      border: 1px solid #242424;
-    }
-
-    .revenue-table {
-      width: 100%;
-      min-width: 500px;
-      border-collapse: collapse;
-    }
-
-    .revenue-table th,
-    .revenue-table td {
-      padding: 15px 16px;
-      text-align: left;
-      border-bottom: 1px solid #222;
-    }
-
-    .revenue-table th {
-      background: #171717;
-      color: #d4af37;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.7px;
-    }
-
-    .revenue-table td {
-      color: #d0d0d0;
-      font-size: 14px;
-    }
-
-    .revenue-table tbody tr:last-child td {
-      border-bottom: none;
-    }
-
-    .revenue-table tbody tr:hover {
-      background: rgba(212,175,55,0.035);
-    }
-
-    /* ==============================
-       INFO BOX
-       ============================== */
-
-    .partner-info {
-      background: rgba(212,175,55,0.055);
-      border: 1px solid rgba(212,175,55,0.2);
-      border-left: 3px solid #d4af37;
-      border-radius: 10px;
-      padding: 17px;
-      color: #bdbdbd;
-      line-height: 1.7;
-      font-size: 13px;
-    }
-
-    .partner-info strong {
-      color: #f4d77d;
-    }
-
-    /* ==============================
-       RESPONSIVE
-       ============================== */
-
-    @media (max-width: 900px) {
-      .partner-stats {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (max-width: 650px) {
-      .partner-page {
-        width: 94%;
-        padding-top: 20px;
-      }
-
-      .partner-header {
-        align-items: flex-start;
-      }
-
-      .partner-brand {
-        font-size: 23px;
-      }
-
-      .partner-logout {
-        padding: 9px 14px;
-      }
-
-      .partner-list {
-        grid-template-columns: 1fr;
-      }
-
-      .partner-section {
-        padding: 19px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .partner-stats {
-        grid-template-columns: 1fr;
-      }
-
-      .partner-stat {
         min-height: auto;
-        padding: 19px;
-      }
-
-      .partner-stat-value {
-        font-size: 25px;
-      }
-
-      .partner-welcome h1 {
-        font-size: 27px;
-      }
-
-      .partner-header {
-        gap: 10px;
-      }
     }
-  </style>
+
+}
+
+</style>
+
 </head>
 
 <body>
 
-  <main class="partner-page">
+<main class="partner-page">
 
-    <!-- HEADER -->
+<header class="partner-header">
 
-    <header class="partner-header">
-      <div>
+    <div>
+
         <div class="partner-brand">
-          Next<span>Turn</span>
+            Next<span>Turn</span>
         </div>
 
         <div class="partner-subtitle">
-          College Canteen • Partner Dashboard
+            College Canteen • Partner Dashboard
         </div>
-      </div>
 
-      <button
+    </div>
+
+    <button
         class="partner-logout"
-        onclick="logout()">
+        onclick="logout()"
+    >
         Logout
-      </button>
-    </header>
+    </button>
 
-    <!-- WELCOME -->
+</header>
 
-    <section class="partner-welcome">
-      <h1 id="welcomeTitle">
+
+<section class="partner-welcome">
+
+    <h1 id="welcomeTitle">
         Partner Dashboard
-      </h1>
+    </h1>
 
-      <p>
+    <p>
         Monitor the college canteen's overall business performance.
-      </p>
-    </section>
+    </p>
 
-    <!-- STATS -->
+</section>
 
-    <section class="partner-stats">
 
-      <div class="partner-stat">
+<section class="partner-stats">
+
+    <div class="partner-stat">
+
         <div class="partner-stat-label">
-          Today's Revenue
+            Today's Revenue
         </div>
 
         <div
-          class="partner-stat-value"
-          id="todayRevenue">
-          ₹0
+            class="partner-stat-value"
+            id="todayRevenue"
+        >
+            ₹0
         </div>
-      </div>
 
-      <div class="partner-stat">
+    </div>
+
+
+    <div class="partner-stat">
+
         <div class="partner-stat-label">
-          This Month
+            This Month
         </div>
 
         <div
-          class="partner-stat-value"
-          id="monthlyRevenue">
-          ₹0
+            class="partner-stat-value"
+            id="monthlyRevenue"
+        >
+            ₹0
         </div>
-      </div>
 
-      <div class="partner-stat">
+    </div>
+
+
+    <div class="partner-stat">
+
         <div class="partner-stat-label">
-          Total Orders
+            Total Orders
         </div>
 
         <div
-          class="partner-stat-value"
-          id="totalOrders">
-          0
+            class="partner-stat-value"
+            id="totalOrders"
+        >
+            0
         </div>
-      </div>
 
-      <div class="partner-stat">
+    </div>
+
+
+    <div class="partner-stat">
+
         <div class="partner-stat-label">
-          Total Revenue
+            Total Revenue
         </div>
 
         <div
-          class="partner-stat-value"
-          id="totalRevenue">
-          ₹0
+            class="partner-stat-value"
+            id="totalRevenue"
+        >
+            ₹0
         </div>
-      </div>
 
-    </section>
+    </div>
 
-    <!-- PARTNERS -->
+</section>
 
-    <section class="partner-section">
 
-      <h2 class="partner-section-title">
+<section class="partner-section">
+
+    <h2 class="partner-section-title">
         Canteen Partners
-      </h2>
+    </h2>
 
-      <div class="partner-list">
-
-        <div class="partner-card">
-          <h3>Principal</h3>
-
-          <p>
-            College Canteen Partner
-          </p>
-
-          <span class="active-badge">
-            Active
-          </span>
-        </div>
+    <div class="partner-list">
 
         <div class="partner-card">
-          <h3>Pratik</h3>
 
-          <p>
-            College Canteen Partner
-          </p>
+            <h3>Principal</h3>
 
-          <span class="active-badge">
-            Active
-          </span>
+            <p>
+                College Canteen Partner
+            </p>
+
+            <span class="active-badge">
+                Active
+            </span>
+
         </div>
 
-      </div>
 
-    </section>
+        <div class="partner-card">
 
-    <!-- REVENUE -->
+            <h3>Pratik</h3>
 
-    <section class="partner-section">
+            <p>
+                College Canteen Partner
+            </p>
 
-      <h2 class="partner-section-title">
+            <span class="active-badge">
+                Active
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="partner-section">
+
+    <h2 class="partner-section-title">
         Revenue Overview
-      </h2>
+    </h2>
 
-      <div class="revenue-table-wrap">
+    <div class="revenue-table-wrap">
 
         <table class="revenue-table">
 
-          <thead>
-            <tr>
-              <th>Period</th>
-              <th>Revenue</th>
-              <th>Orders</th>
-            </tr>
-          </thead>
+            <thead>
 
-          <tbody>
+                <tr>
+                    <th>Period</th>
+                    <th>Revenue</th>
+                    <th>Orders</th>
+                </tr>
 
-            <tr>
-              <td>Today</td>
-              <td id="tableTodayRevenue">₹0</td>
-              <td id="tableTodayOrders">0</td>
-            </tr>
+            </thead>
 
-            <tr>
-              <td>This Month</td>
-              <td id="tableMonthRevenue">₹0</td>
-              <td id="tableMonthOrders">0</td>
-            </tr>
+            <tbody>
 
-            <tr>
-              <td>Total</td>
-              <td id="tableTotalRevenue">₹0</td>
-              <td id="tableTotalOrders">0</td>
-            </tr>
+                <tr>
+                    <td>Today</td>
+                    <td id="tableTodayRevenue">₹0</td>
+                    <td id="tableTodayOrders">0</td>
+                </tr>
 
-          </tbody>
+                <tr>
+                    <td>This Month</td>
+                    <td id="tableMonthRevenue">₹0</td>
+                    <td id="tableMonthOrders">0</td>
+                </tr>
+
+                <tr>
+                    <td>Total</td>
+                    <td id="tableTotalRevenue">₹0</td>
+                    <td id="tableTotalOrders">0</td>
+                </tr>
+
+            </tbody>
 
         </table>
 
-      </div>
+    </div>
 
-    </section>
+</section>
 
-    <!-- PARTNER ACCESS -->
 
-    <section class="partner-section">
+<section class="partner-section">
 
-      <h2 class="partner-section-title">
+    <h2 class="partner-section-title">
+        Completed Orders
+    </h2>
+
+    <div
+        id="ordersContainer"
+        class="orders-container"
+    >
+
+        <div class="loading">
+            Loading completed orders...
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="partner-section">
+
+    <h2 class="partner-section-title">
         Partner Access
-      </h2>
+    </h2>
 
-      <div class="partner-info">
+    <div class="partner-info">
+
         Partner accounts are private and are not visible to students.
+
         Business and revenue information is available only to
         <strong>authorized partner accounts</strong>.
-        Partners cannot remove another partner.
-      </div>
 
-    </section>
+    </div>
 
-    <!-- PART 2 WILL CONTINUE HERE -->
-    </main>
+</section>
 
-  <script>
 
-    // ==============================
-    // LOAD ORDERS
-    // ==============================
+</main>
 
-    const history =
-      JSON.parse(
-        localStorage.getItem("nextTurnOrderHistory") || "[]"
-      );
 
-    const current =
-      JSON.parse(
-        localStorage.getItem("nextTurnCurrentOrder") || "null"
-      );
+<script>
 
-    let orders = [...history];
+const API =
+    "https://nextturn-mgbf.onrender.com";
 
-    if (
-      current &&
-      (
-        current.orderStatus === "Completed" ||
-        current.orderStatus === "Collected"
-      )
-    ) {
-      orders.push(current);
+
+let partnerOrders = [];
+
+
+/* =========================
+   LOAD PARTNER SUMMARY
+========================= */
+
+async function loadSummary() {
+
+    try {
+
+        const response =
+            await fetch(
+                `${API}/api/partner/summary?t=${Date.now()}`
+            );
+
+        if (!response.ok) {
+            throw new Error(
+                "Summary request failed"
+            );
+        }
+
+        const data =
+            await response.json();
+
+        document.getElementById(
+            "totalOrders"
+        ).textContent =
+            data.totalOrders || 0;
+
+        document.getElementById(
+            "totalRevenue"
+        ).textContent =
+            "₹" +
+            Number(
+                data.totalRevenue || 0
+            ).toFixed(2);
+
+        document.getElementById(
+            "tableTotalRevenue"
+        ).textContent =
+            "₹" +
+            Number(
+                data.totalRevenue || 0
+            ).toFixed(2);
+
+        document.getElementById(
+            "tableTotalOrders"
+        ).textContent =
+            data.totalOrders || 0;
+
+    } catch (error) {
+
+        console.error(
+            "Summary error:",
+            error
+        );
+
     }
 
-    // ==============================
-    // REVENUE CALCULATION
-    // ==============================
+}
 
-    function getRevenue(order) {
-      return Number(
-        order.total ||
-        order.grandTotal ||
-        0
-      );
+
+/* =========================
+   LOAD TODAY REVENUE
+========================= */
+
+async function loadTodayRevenue() {
+
+    try {
+
+        const response =
+            await fetch(
+                `${API}/api/partner/revenue/today?t=${Date.now()}`
+            );
+
+        if (!response.ok) {
+            throw new Error(
+                "Today revenue request failed"
+            );
+        }
+
+        const revenue =
+            await response.json();
+
+        document.getElementById(
+            "todayRevenue"
+        ).textContent =
+            "₹" +
+            Number(revenue || 0).toFixed(2);
+
+        document.getElementById(
+            "tableTodayRevenue"
+        ).textContent =
+            "₹" +
+            Number(revenue || 0).toFixed(2);
+
+    } catch (error) {
+
+        console.error(
+            "Today revenue error:",
+            error
+        );
+
     }
 
-    function getOrderDate(order) {
+}
 
-      if (order.createdAt) {
-        return new Date(order.createdAt);
-      }
 
-      return new Date();
+/* =========================
+   LOAD MONTH REVENUE
+========================= */
+
+async function loadMonthlyRevenue() {
+
+    try {
+
+        const response =
+            await fetch(
+                `${API}/api/partner/revenue/month?t=${Date.now()}`
+            );
+
+        if (!response.ok) {
+            throw new Error(
+                "Monthly revenue request failed"
+            );
+        }
+
+        const revenue =
+            await response.json();
+
+        document.getElementById(
+            "monthlyRevenue"
+        ).textContent =
+            "₹" +
+            Number(revenue || 0).toFixed(2);
+
+        document.getElementById(
+            "tableMonthRevenue"
+        ).textContent =
+            "₹" +
+            Number(revenue || 0).toFixed(2);
+
+    } catch (error) {
+
+        console.error(
+            "Monthly revenue error:",
+            error
+        );
+
     }
 
-    const now = new Date();
+}
+  /* =========================
+   LOAD PARTNER ORDERS
+========================= */
 
-    let todayRevenue = 0;
-    let monthlyRevenue = 0;
-    let totalRevenue = 0;
+async function loadPartnerOrders() {
 
-    let todayOrders = 0;
-    let monthlyOrders = 0;
+    const container =
+        document.getElementById(
+            "ordersContainer"
+        );
 
-    orders.forEach(order => {
+    try {
 
-      const revenue = getRevenue(order);
-      const date = getOrderDate(order);
+        const response =
+            await fetch(
+                `${API}/api/partner/orders?t=${Date.now()}`
+            );
 
-      totalRevenue += revenue;
+        if (!response.ok) {
+            throw new Error(
+                "Orders request failed"
+            );
+        }
 
-      // TODAY
+        partnerOrders =
+            await response.json();
 
-      if (
-        date.getDate() === now.getDate() &&
-        date.getMonth() === now.getMonth() &&
-        date.getFullYear() === now.getFullYear()
-      ) {
 
-        todayRevenue += revenue;
-        todayOrders++;
+        /* =========================
+           LATEST ORDER FIRST
+        ========================= */
 
-      }
+        partnerOrders.sort(
+            (a, b) =>
+                Number(b.id || 0) -
+                Number(a.id || 0)
+        );
 
-      // THIS MONTH
 
-      if (
-        date.getMonth() === now.getMonth() &&
-        date.getFullYear() === now.getFullYear()
-      ) {
+        document.getElementById(
+            "tableTodayOrders"
+        ).textContent =
+            countTodayOrders();
 
-        monthlyRevenue += revenue;
-        monthlyOrders++;
 
-      }
+        document.getElementById(
+            "tableMonthOrders"
+        ).textContent =
+            countMonthlyOrders();
 
-    });
 
-    // ==============================
-    // TOP STATISTICS
-    // ==============================
+        renderPartnerOrders();
 
-    document.getElementById("todayRevenue").textContent =
-      "₹" + todayRevenue.toFixed(2);
+    } catch (error) {
 
-    document.getElementById("monthlyRevenue").textContent =
-      "₹" + monthlyRevenue.toFixed(2);
+        console.error(
+            "Partner orders error:",
+            error
+        );
 
-    document.getElementById("totalOrders").textContent =
-      orders.length;
+        container.innerHTML = `
+            <div class="error">
+                Unable to load completed orders
+            </div>
+        `;
 
-    document.getElementById("totalRevenue").textContent =
-      "₹" + totalRevenue.toFixed(2);
+    }
 
-    // ==============================
-    // REVENUE TABLE
-    // ==============================
+}
 
-    document.getElementById("tableTodayRevenue").textContent =
-      "₹" + todayRevenue.toFixed(2);
 
-    document.getElementById("tableTodayOrders").textContent =
-      todayOrders;
+/* =========================
+   COUNT TODAY ORDERS
+========================= */
 
-    document.getElementById("tableMonthRevenue").textContent =
-      "₹" + monthlyRevenue.toFixed(2);
+function countTodayOrders() {
 
-    document.getElementById("tableMonthOrders").textContent =
-      monthlyOrders;
+    const now =
+        new Date();
 
-    document.getElementById("tableTotalRevenue").textContent =
-      "₹" + totalRevenue.toFixed(2);
+    return partnerOrders.filter(
+        order => {
 
-    document.getElementById("tableTotalOrders").textContent =
-      orders.length;
+            if (!order.createdAt) {
+                return false;
+            }
 
-    // ==============================
-    // PARTNER NAME
-    // ==============================
+            const date =
+                new Date(
+                    order.createdAt
+                );
+
+            return (
+                date.getDate() ===
+                    now.getDate() &&
+                date.getMonth() ===
+                    now.getMonth() &&
+                date.getFullYear() ===
+                    now.getFullYear()
+            );
+
+        }
+    ).length;
+
+}
+
+
+/* =========================
+   COUNT MONTHLY ORDERS
+========================= */
+
+function countMonthlyOrders() {
+
+    const now =
+        new Date();
+
+    return partnerOrders.filter(
+        order => {
+
+            if (!order.createdAt) {
+                return false;
+            }
+
+            const date =
+                new Date(
+                    order.createdAt
+                );
+
+            return (
+                date.getMonth() ===
+                    now.getMonth() &&
+                date.getFullYear() ===
+                    now.getFullYear()
+            );
+
+        }
+    ).length;
+
+}
+
+
+/* =========================
+   RENDER ORDERS
+========================= */
+
+function renderPartnerOrders() {
+
+    const container =
+        document.getElementById(
+            "ordersContainer"
+        );
+
+
+    if (!partnerOrders.length) {
+
+        container.innerHTML = `
+            <div class="empty">
+                No completed orders yet.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        partnerOrders.map(
+            order => {
+
+                let items =
+                    order.foodItems;
+
+
+                /*
+                 * foodItems is stored as JSON
+                 * by the payment page.
+                 */
+
+                try {
+
+                    if (
+                        typeof items ===
+                        "string"
+                    ) {
+
+                        items =
+                            JSON.parse(items);
+
+                    }
+
+                } catch (error) {
+
+                    console.error(
+                        "Food item parsing error:",
+                        error
+                    );
+
+                }
+
+
+                let itemsText =
+                    "No items";
+
+
+                if (
+                    Array.isArray(items)
+                ) {
+
+                    itemsText =
+                        items
+                            .map(item => {
+
+                                if (
+                                    typeof item ===
+                                    "object"
+                                ) {
+
+                                    const name =
+                                        item.name ||
+                                        "";
+
+                                    const flavor =
+                                        item.flavor ||
+                                        "";
+
+                                    const quantity =
+                                        item.quantity ||
+                                        1;
+
+                                    return flavor
+                                        ? `${name} - ${flavor} × ${quantity}`
+                                        : `${name} × ${quantity}`;
+
+                                }
+
+                                return String(item);
+
+                            })
+                            .join("<br>");
+
+                } else if (
+                    typeof items ===
+                    "string"
+                ) {
+
+                    itemsText =
+                        items;
+
+                }
+
+
+                return `
+
+                    <div class="order-card">
+
+                        <div class="order-header">
+
+                            <div class="order-id">
+                                Order #${order.id}
+                            </div>
+
+                            <div class="order-status">
+                                ${
+                                    order.orderStatus ||
+                                    "Completed"
+                                }
+                            </div>
+
+                        </div>
+
+
+                        <div class="order-info">
+
+                            <strong>
+                                Student:
+                            </strong>
+
+                            ${
+                                order.studentName ||
+                                "N/A"
+                            }
+
+                            <br>
+
+                            <strong>
+                                Student ID:
+                            </strong>
+
+                            ${
+                                order.studentId ||
+                                "N/A"
+                            }
+
+                            <br>
+
+                            <strong>
+                                Email:
+                            </strong>
+
+                            ${
+                                order.studentEmail ||
+                                "N/A"
+                            }
+
+                            <br>
+
+                            <strong>
+                                Token:
+                            </strong>
+
+                            ${
+                                order.tokenNumber ||
+                                "N/A"
+                            }
+
+                        </div>
+
+
+                        <div class="order-items">
+
+                            <strong>
+                                Items
+                            </strong>
+
+                            <br>
+
+                            ${itemsText}
+
+                        </div>
+
+
+                        <div class="order-total">
+
+                            Total:
+                            ₹${Number(
+                                order.totalAmount ||
+                                0
+                            ).toFixed(2)}
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }
+        ).join("");
+
+}
+
+
+/* =========================
+   LOAD EVERYTHING
+========================= */
+
+async function loadDashboard() {
+
+    await Promise.all([
+
+        loadSummary(),
+
+        loadTodayRevenue(),
+
+        loadMonthlyRevenue(),
+
+        loadPartnerOrders()
+
+    ]);
+
+}
+
+
+/* =========================
+   PARTNER NAME
+========================= */
+
+async function loadPartnerProfile() {
 
     const partnerId =
-      localStorage.getItem("nextTurnPartnerId");
+        localStorage.getItem(
+            "nextTurnPartnerId"
+        );
 
-    if (partnerId) {
 
-      document.getElementById("welcomeTitle").textContent =
-        "Welcome, " + partnerId;
+    if (!partnerId) {
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                `${API}/api/partners/${encodeURIComponent(partnerId)}`
+            );
+
+        if (!response.ok) {
+            return;
+        }
+
+        const partner =
+            await response.json();
+
+
+        const name =
+            partner.name ||
+            partner.partnerName ||
+            partner.partnerId ||
+            partnerId;
+
+
+        document.getElementById(
+            "welcomeTitle"
+        ).textContent =
+            "Welcome, " + name;
+
+    } catch (error) {
+
+        console.error(
+            "Partner profile error:",
+            error
+        );
 
     }
 
-    // ==============================
-    // LOGOUT
-    // ==============================
+}
 
-    function logout() {
 
-      localStorage.removeItem("nextTurnUserRole");
-      localStorage.removeItem("nextTurnPartnerId");
+/* =========================
+   LOGOUT
+========================= */
 
-      window.location.href = "login.html";
+function logout() {
+
+    localStorage.removeItem(
+        "nextTurnUserRole"
+    );
+
+    localStorage.removeItem(
+        "nextTurnPartnerId"
+    );
+
+    localStorage.removeItem(
+        "nextTurnUser"
+    );
+
+    window.location.href =
+        "login.html";
+
+}
+
+
+/* =========================
+   INITIAL LOAD
+========================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        loadDashboard();
+
+        loadPartnerProfile();
 
     }
+);
 
-  </script>
+
+/* =========================
+   AUTO REFRESH
+========================= */
+
+setInterval(
+    () => {
+
+        loadDashboard();
+
+    },
+    10000
+);
+
+</script>
 
 </body>
+
 </html>
