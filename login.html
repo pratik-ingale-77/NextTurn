@@ -2,463 +2,472 @@
 <html lang="en">
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-    <title>NextTurn - Login</title>
+<title>NextTurn - Account Login</title>
 
-    <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css">
 
-    <style>
+<style>
 
-        * {
-            box-sizing: border-box;
-        }
+* {
+    box-sizing: border-box;
+}
 
-        body {
+body {
 
-            min-height: 100vh;
+    min-height: 100vh;
 
-            background:
-                radial-gradient(
-                    circle at top left,
-                    rgba(212,175,55,0.12),
-                    transparent 35%
-                ),
-                radial-gradient(
-                    circle at bottom right,
-                    rgba(212,175,55,0.06),
-                    transparent 35%
-                ),
-                #080808;
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(212,175,55,0.12),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at bottom right,
+            rgba(212,175,55,0.06),
+            transparent 35%
+        ),
+        #080808;
 
-            color: #f5f5f5;
+    color: #f5f5f5;
 
-            display: flex;
+    display: flex;
 
-            align-items: center;
+    align-items: center;
 
-            justify-content: center;
+    justify-content: center;
 
-            padding: 20px;
+    padding: 20px;
 
-        }
+}
 
 
-        .login-wrapper {
+.login-wrapper {
 
-            width: 100%;
+    width: 100%;
 
-            max-width: 440px;
+    max-width: 440px;
 
-        }
+}
 
 
-        .brand-area {
+.brand-area {
 
-            text-align: center;
+    text-align: center;
 
-            margin-bottom: 25px;
+    margin-bottom: 25px;
 
-        }
+}
 
 
-        .brand {
+.brand {
 
-            font-size: 34px;
+    font-size: 34px;
 
-            font-weight: 900;
+    font-weight: 900;
 
-            letter-spacing: -1px;
+    letter-spacing: -1px;
 
-            color: #D4AF37;
+    color: #D4AF37;
 
-            margin-bottom: 8px;
+    margin-bottom: 8px;
 
-        }
+}
 
 
-        .tagline {
+.tagline {
 
-            color: #858585;
+    color: #858585;
 
-            font-size: 14px;
+    font-size: 14px;
 
-        }
+}
 
 
-        .login-card {
+.login-card {
 
-            background:
-                linear-gradient(
-                    145deg,
-                    #151515,
-                    #0d0d0d
-                );
+    background:
+        linear-gradient(
+            145deg,
+            #151515,
+            #0d0d0d
+        );
 
-            border: 1px solid
-                rgba(212,175,55,0.24);
+    border: 1px solid
+        rgba(212,175,55,0.24);
 
-            border-radius: 24px;
+    border-radius: 24px;
 
-            padding: 30px;
+    padding: 30px;
 
-            box-shadow:
-                0 25px 70px
-                rgba(0,0,0,0.55);
+    box-shadow:
+        0 25px 70px
+        rgba(0,0,0,0.55);
 
-        }
+}
 
 
-        .welcome {
+.welcome {
 
-            margin-bottom: 24px;
+    margin-bottom: 24px;
 
-        }
+}
 
 
-        .welcome h1 {
+.welcome h1 {
 
-            font-size: 25px;
+    font-size: 25px;
 
-            margin-bottom: 7px;
+    margin-bottom: 7px;
 
-            color: #f5f5f5;
+    color: #f5f5f5;
 
-        }
+}
 
 
-        .welcome p {
+.welcome p {
 
-            color: #888;
+    color: #888;
 
-            font-size: 14px;
+    font-size: 14px;
 
-            line-height: 1.5;
+    line-height: 1.5;
 
-        }
+}
 
 
-        .role-title {
+.role-title {
 
-            font-size: 13px;
+    font-size: 13px;
 
-            color: #999;
+    color: #999;
 
-            margin-bottom: 10px;
+    margin-bottom: 10px;
 
-            font-weight: 600;
+    font-weight: 600;
 
-        }
+}
 
 
-        .roles {
+.roles {
 
-            display: grid;
+    display: grid;
 
-            grid-template-columns:
-                repeat(3, 1fr);
+    grid-template-columns:
+        repeat(3, 1fr);
 
-            gap: 8px;
+    gap: 8px;
 
-            margin-bottom: 23px;
+    margin-bottom: 23px;
 
-        }
+}
 
 
-        .role-btn {
+.role-btn {
 
-            border: 1px solid #292929;
+    border: 1px solid #292929;
 
-            background: #0b0b0b;
+    background: #0b0b0b;
 
-            color: #aaa;
+    color: #aaa;
 
-            border-radius: 11px;
+    border-radius: 11px;
 
-            padding: 12px 6px;
+    padding: 12px 6px;
 
-            font-size: 13px;
+    font-size: 13px;
 
-            font-weight: 700;
+    font-weight: 700;
 
-            cursor: pointer;
+    cursor: pointer;
 
-            transition: 0.2s ease;
+    transition: 0.2s ease;
 
-        }
+}
 
 
-        .role-btn:hover {
+.role-btn:hover {
 
-            border-color:
-                rgba(212,175,55,0.5);
+    border-color:
+        rgba(212,175,55,0.5);
 
-            color: #F4D77D;
+    color: #F4D77D;
 
-        }
+}
 
 
-        .role-btn.active {
+.role-btn.active {
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #D4AF37,
-                    #F4D77D
-                );
+    background:
+        linear-gradient(
+            135deg,
+            #D4AF37,
+            #F4D77D
+        );
 
-            color: #090909;
+    color: #090909;
 
-            border-color: #D4AF37;
+    border-color: #D4AF37;
 
-            box-shadow:
-                0 7px 20px
-                rgba(212,175,55,0.14);
+    box-shadow:
+        0 7px 20px
+        rgba(212,175,55,0.14);
 
-        }
+}
 
 
-        .form-group {
+.form-group {
 
-            margin-bottom: 17px;
+    margin-bottom: 17px;
 
-        }
+}
 
 
-        .form-group label {
+.form-group label {
 
-            display: block;
+    display: block;
 
-            margin-bottom: 8px;
+    margin-bottom: 8px;
 
-            font-size: 14px;
+    font-size: 14px;
 
-            color: #d5d5d5;
+    color: #d5d5d5;
 
-            font-weight: 600;
+    font-weight: 600;
 
-        }
+}
 
 
-        .form-group input {
+.form-group input {
 
-            width: 100%;
+    width: 100%;
 
-            padding: 14px 15px;
+    padding: 14px 15px;
 
-            background: #090909;
+    background: #090909;
 
-            border: 1px solid #292929;
+    border: 1px solid #292929;
 
-            border-radius: 11px;
+    border-radius: 11px;
 
-            color: #f5f5f5;
+    color: #f5f5f5;
 
-            font-size: 15px;
+    font-size: 15px;
 
-            outline: none;
+    outline: none;
 
-            transition: 0.2s ease;
+    transition: 0.2s ease;
 
-        }
+}
 
 
-        .form-group input::placeholder {
+.form-group input::placeholder {
 
-            color: #606060;
+    color: #606060;
 
-        }
+}
 
 
-        .form-group input:focus {
+.form-group input:focus {
 
-            border-color: #D4AF37;
+    border-color: #D4AF37;
 
-            box-shadow:
-                0 0 0 3px
-                rgba(212,175,55,0.08);
+    box-shadow:
+        0 0 0 3px
+        rgba(212,175,55,0.08);
 
-        }
+}
 
 
-        .login-btn {
+.login-btn {
 
-            width: 100%;
+    width: 100%;
 
-            padding: 15px;
+    padding: 15px;
 
-            margin-top: 4px;
+    margin-top: 4px;
 
-            border: none;
+    border: none;
 
-            border-radius: 12px;
+    border-radius: 12px;
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #D4AF37,
-                    #F4D77D
-                );
+    background:
+        linear-gradient(
+            135deg,
+            #D4AF37,
+            #F4D77D
+        );
 
-            color: #090909;
+    color: #090909;
 
-            font-size: 16px;
+    font-size: 16px;
 
-            font-weight: 800;
+    font-weight: 800;
 
-            cursor: pointer;
+    cursor: pointer;
 
-            transition: 0.2s ease;
+    transition: 0.2s ease;
 
-        }
+}
 
 
-        .login-btn:hover {
+.login-btn:hover {
 
-            transform: translateY(-1px);
+    transform: translateY(-1px);
 
-            box-shadow:
-                0 12px 28px
-                rgba(212,175,55,0.18);
+    box-shadow:
+        0 12px 28px
+        rgba(212,175,55,0.18);
 
-        }
+}
 
 
-        .login-btn:disabled {
+.login-btn:disabled {
 
-            opacity: 0.55;
+    opacity: 0.55;
 
-            cursor: not-allowed;
+    cursor: not-allowed;
 
-            transform: none;
+    transform: none;
 
-        }
+}
 
 
-        .message {
+.message {
 
-            display: none;
+    display: none;
 
-            margin-top: 15px;
+    margin-top: 15px;
 
-            padding: 12px;
+    padding: 12px;
 
-            border-radius: 10px;
+    border-radius: 10px;
 
-            text-align: center;
+    text-align: center;
 
-            font-size: 13px;
+    font-size: 13px;
 
-            line-height: 1.4;
+    line-height: 1.4;
 
-        }
+}
 
 
-        .message.success {
+.message.success {
 
-            display: block;
+    display: block;
 
-            background:
-                rgba(212,175,55,0.09);
+    background:
+        rgba(212,175,55,0.09);
 
-            border: 1px solid
-                rgba(212,175,55,0.25);
+    border: 1px solid
+        rgba(212,175,55,0.25);
 
-            color: #F4D77D;
+    color: #F4D77D;
 
-        }
+}
 
 
-        .message.error {
+.message.error {
 
-            display: block;
+    display: block;
 
-            background:
-                rgba(180,40,40,0.10);
+    background:
+        rgba(180,40,40,0.10);
 
-            border: 1px solid
-                rgba(220,70,70,0.22);
+    border: 1px solid
+        rgba(220,70,70,0.22);
 
-            color: #ff9b9b;
+    color: #ff9b9b;
 
-        }
+}
 
 
-        .back-home {
+.back-home {
 
-            display: block;
+    display: block;
 
-            text-align: center;
+    text-align: center;
 
-            margin-top: 20px;
+    margin-top: 20px;
 
-            color: #777;
+    color: #777;
 
-            text-decoration: none;
+    text-decoration: none;
 
-            font-size: 13px;
+    font-size: 13px;
 
-            transition: 0.2s ease;
+    transition: 0.2s ease;
 
-        }
+}
 
 
-        .back-home:hover {
+.back-home:hover {
 
-            color: #D4AF37;
+    color: #D4AF37;
 
-        }
+}
 
 
-        .security-note {
+.security-note {
 
-            text-align: center;
+    text-align: center;
 
-            margin-top: 18px;
+    margin-top: 18px;
 
-            color: #555;
+    color: #666;
 
-            font-size: 11px;
+    font-size: 11px;
 
-        }
+    line-height: 1.5;
 
+}
 
-        @media (max-width: 500px) {
 
-            body {
-                padding: 14px;
-            }
+.security-note strong {
 
-            .login-card {
-                padding: 21px;
-                border-radius: 19px;
-            }
+    color: #888;
 
-            .brand {
-                font-size: 30px;
-            }
+}
 
-            .welcome h1 {
-                font-size: 23px;
-            }
 
-        }
+@media (max-width: 500px) {
 
+    body {
+        padding: 14px;
+    }
 
-        @media (max-width: 360px) {
+    .login-card {
+        padding: 21px;
+        border-radius: 19px;
+    }
 
-            .roles {
-                grid-template-columns: 1fr;
-            }
+    .brand {
+        font-size: 30px;
+    }
 
-        }
+    .welcome h1 {
+        font-size: 23px;
+    }
 
-    </style>
+}
+
+
+@media (max-width: 360px) {
+
+    .roles {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+</style>
 
 </head>
 
@@ -491,8 +500,8 @@
             </h1>
 
             <p>
-                Sign in to manage your canteen
-                experience.
+                Sign in to your NextTurn account
+                to manage your canteen experience.
             </p>
 
         </div>
@@ -542,13 +551,13 @@
             <div class="form-group">
 
                 <label id="emailLabel">
-                    Gmail
+                    College Email
                 </label>
 
                 <input
-                    type="text"
+                    type="email"
                     id="email"
-                    placeholder="Enter your Gmail"
+                    placeholder="Enter your registered email"
                     required
                     autocomplete="username"
                 >
@@ -559,13 +568,13 @@
             <div class="form-group">
 
                 <label>
-                    Password
+                    NextTurn Password
                 </label>
 
                 <input
                     type="password"
                     id="password"
-                    placeholder="Enter password"
+                    placeholder="Enter your NextTurn password"
                     required
                     autocomplete="current-password"
                 >
@@ -600,7 +609,12 @@
 
 
         <div class="security-note">
-            NextTurn • College Canteen
+
+            <strong>NextTurn Account Login</strong><br>
+
+            This is the official login page for
+            the NextTurn college canteen system.
+
         </div>
 
 
@@ -666,11 +680,15 @@ function selectRole(role, button) {
 
 
         emailLabel.textContent =
-            "Gmail";
+            "College Email";
+
+
+        emailInput.type =
+            "email";
 
 
         emailInput.placeholder =
-            "Enter your Gmail";
+            "Enter your registered email";
 
 
         loginBtn.textContent =
@@ -685,6 +703,10 @@ function selectRole(role, button) {
 
         emailLabel.textContent =
             "Staff ID";
+
+
+        emailInput.type =
+            "text";
 
 
         emailInput.placeholder =
@@ -703,6 +725,10 @@ function selectRole(role, button) {
 
         emailLabel.textContent =
             "Partner ID";
+
+
+        emailInput.type =
+            "text";
 
 
         emailInput.placeholder =
@@ -1095,4 +1121,5 @@ function hideMessage() {
 </script>
 
 </body>
-        </html>
+
+</html>
