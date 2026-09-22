@@ -12,23 +12,29 @@ public class StudentCreateOrderController {
 
     private final OrderRepository orderRepository;
 
-    public StudentCreateOrderController(OrderRepository orderRepository) {
+    public StudentCreateOrderController(
+            OrderRepository orderRepository
+    ) {
         this.orderRepository = orderRepository;
     }
 
     @PostMapping
     public ResponseEntity<Order> createOrder(
-            @RequestBody Order order) {
+            @RequestBody Order order
+    ) {
 
-        // Set initial order status
-        order.setPaymentStatus("Pending Verification");
-        order.setOrderStatus("Payment Submitted");
+        order.setPaymentStatus(
+                "Pending Verification"
+        );
 
-        // Token is generated only after staff verifies payment
+        order.setOrderStatus(
+                "Payment Submitted"
+        );
+
         order.setTokenNumber(null);
 
-        // Save order to MySQL
-        Order savedOrder = orderRepository.save(order);
+        Order savedOrder =
+                orderRepository.save(order);
 
         return ResponseEntity.ok(savedOrder);
     }
