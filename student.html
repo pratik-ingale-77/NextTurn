@@ -4,16 +4,14 @@
 <head>
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>NextTurn - Student Dashboard</title>
 
     <link rel="stylesheet" href="styles.css">
 
     <style>
+
         .food-type-grid {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -24,6 +22,7 @@
         .food-type-card {
             position: relative;
             overflow: hidden;
+
             background:
                 radial-gradient(
                     circle at top right,
@@ -48,11 +47,13 @@
         .food-type-icon {
             width: 58px;
             height: 58px;
+
             display: flex;
             align-items: center;
             justify-content: center;
 
             border-radius: 16px;
+
             background: rgba(212,175,55,.09);
             border: 1px solid rgba(212,175,55,.22);
 
@@ -89,17 +90,21 @@
             font-size: 22px;
         }
 
-        /* ONLY FOR HISTORY */
-
         .history-modal {
             display: none;
+
             position: fixed;
             inset: 0;
+
             z-index: 9999;
+
             background: rgba(0,0,0,.82);
+
             backdrop-filter: blur(8px);
+
             align-items: center;
             justify-content: center;
+
             padding: 18px;
         }
 
@@ -111,11 +116,16 @@
             width: 100%;
             max-width: 850px;
             max-height: 90vh;
+
             overflow-y: auto;
+
             background: #111;
+
             border: 1px solid #d4af37;
             border-radius: 20px;
+
             padding: 22px;
+
             box-shadow: 0 20px 60px rgba(0,0,0,.6);
         }
 
@@ -123,6 +133,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+
             margin-bottom: 20px;
         }
 
@@ -134,26 +145,38 @@
         .history-close {
             width: 38px;
             height: 38px;
+
             border-radius: 50%;
+
             border: 1px solid #d4af37;
+
             background: transparent;
+
             color: #f4d77d;
+
             font-size: 22px;
+
             cursor: pointer;
         }
 
         .history-card {
             background: #080808;
+
             border: 1px solid rgba(212,175,55,.25);
+
             border-radius: 15px;
+
             padding: 18px;
+
             margin-bottom: 14px;
         }
 
         .history-card-title {
             display: flex;
             justify-content: space-between;
+
             gap: 10px;
+
             margin-bottom: 14px;
         }
 
@@ -164,17 +187,25 @@
 
         .history-status {
             color: #f4d77d;
+
             border: 1px solid #d4af37;
+
             border-radius: 20px;
+
             padding: 5px 10px;
+
             font-size: 12px;
         }
 
         .history-line {
             display: flex;
+
             justify-content: space-between;
+
             gap: 15px;
+
             padding: 7px 0;
+
             color: #eee;
         }
 
@@ -188,11 +219,14 @@
 
         .history-empty {
             text-align: center;
+
             color: #999;
+
             padding: 35px 10px;
         }
 
         @media (max-width: 650px) {
+
             .food-type-grid {
                 grid-template-columns: 1fr;
                 gap: 13px;
@@ -218,8 +252,11 @@
             .history-card-title {
                 flex-direction: column;
             }
+
         }
+
     </style>
+
 </head>
 
 
@@ -494,9 +531,7 @@
         <div id="currentOrder">
 
             <div class="empty">
-
                 Checking your current order...
-
             </div>
 
         </div>
@@ -558,6 +593,7 @@
 
 
 </div>
+
 
 
 <!-- HISTORY MODAL -->
@@ -626,7 +662,7 @@ if (student.fullName) {
 
 
 /* =========================
-   OPEN VEG / NON-VEG
+   OPEN FOOD
 ========================= */
 
 function openFood(type) {
@@ -661,7 +697,7 @@ function updateCartBadge() {
                 ) || "[]"
             );
 
-    } catch (e) {
+    } catch (error) {
 
         cart = [];
 
@@ -684,6 +720,9 @@ function updateCartBadge() {
         document.getElementById(
             "cartBadge"
         );
+
+
+    if (!badge) return;
 
 
     if (count > 0) {
@@ -761,7 +800,6 @@ async function loadCurrentOrder() {
         }
 
 
-
         if (!response.ok) {
 
             throw new Error(
@@ -769,7 +807,6 @@ async function loadCurrentOrder() {
             );
 
         }
-
 
 
         const order =
@@ -781,7 +818,10 @@ async function loadCurrentOrder() {
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "Current order error:",
+            error
+        );
 
 
         container.innerHTML = `
@@ -830,7 +870,10 @@ function displayCurrentOrder(order) {
         "pending";
 
 
-    if (status === "Preparing") {
+    if (
+        status.toLowerCase() ===
+        "preparing"
+    ) {
 
         statusClass =
             "preparing";
@@ -838,7 +881,10 @@ function displayCurrentOrder(order) {
     }
 
 
-    if (status === "Ready") {
+    if (
+        status.toLowerCase() ===
+        "ready"
+    ) {
 
         statusClass =
             "ready";
@@ -846,8 +892,10 @@ function displayCurrentOrder(order) {
     }
 
 
-
-    if (status === "Ready") {
+    if (
+        status.toLowerCase() ===
+        "ready"
+    ) {
 
         readyAlert.innerHTML = `
 
@@ -873,11 +921,12 @@ function displayCurrentOrder(order) {
     }
 
 
-
     let tokenHTML = "";
 
 
-    if (order.tokenNumber != null) {
+    if (
+        order.tokenNumber != null
+    ) {
 
         tokenHTML = `
 
@@ -894,7 +943,6 @@ function displayCurrentOrder(order) {
         `;
 
     }
-
 
 
     container.innerHTML = `
@@ -968,7 +1016,8 @@ function displayCurrentOrder(order) {
     `;
 
 }
-  <script>
+
+
 
 /* =========================
    TRACK ORDER
@@ -976,11 +1025,19 @@ function displayCurrentOrder(order) {
 
 function showCurrentOrder() {
 
-    document
-        .querySelector(".active-order")
-        .scrollIntoView({
-            behavior: "smooth"
-        });
+    const section =
+        document.querySelector(
+            ".active-order"
+        );
+
+
+    if (!section) return;
+
+
+    section.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
 
 }
 
@@ -1018,24 +1075,29 @@ async function fetchStudentOrders() {
         await response.json();
 
 
-    /*
-       Latest order first
-       Backend already does this,
-       but we sort again here so the
-       frontend always displays latest first.
-    */
+    if (!Array.isArray(orders)) {
+
+        return [];
+
+    }
+
 
     orders.sort(
         (a, b) => {
 
             const dateA =
                 a.createdAt
-                    ? new Date(a.createdAt).getTime()
+                    ? new Date(
+                        a.createdAt
+                    ).getTime()
                     : 0;
+
 
             const dateB =
                 b.createdAt
-                    ? new Date(b.createdAt).getTime()
+                    ? new Date(
+                        b.createdAt
+                    ).getTime()
                     : 0;
 
 
@@ -1050,8 +1112,10 @@ async function fetchStudentOrders() {
             }
 
 
-            return Number(b.id || 0) -
-                   Number(a.id || 0);
+            return (
+                Number(b.id || 0) -
+                Number(a.id || 0)
+            );
 
         }
     );
@@ -1129,7 +1193,9 @@ function formatHistoryFood(foodItems) {
 
         if (!Array.isArray(items)) {
 
-            return String(foodItems);
+            return String(
+                foodItems
+            );
 
         }
 
@@ -1138,7 +1204,8 @@ function formatHistoryFood(foodItems) {
             .map(item => {
 
                 let name =
-                    item.name || "Food";
+                    item.name ||
+                    "Food";
 
 
                 if (item.flavor) {
@@ -1167,36 +1234,27 @@ function formatHistoryFood(foodItems) {
 
     } catch (error) {
 
-        return String(foodItems);
+        return String(
+            foodItems
+        );
 
     }
 
 }
-
-
-
-/* =========================
+  /* =========================
    ORDER HISTORY
 ========================= */
 
 async function showHistory() {
 
     const modal =
-        document.getElementById(
-            "historyModal"
-        );
-
+        document.getElementById("historyModal");
 
     const title =
-        document.getElementById(
-            "historyTitle"
-        );
-
+        document.getElementById("historyTitle");
 
     const content =
-        document.getElementById(
-            "historyContent"
-        );
+        document.getElementById("historyContent");
 
 
     title.textContent =
@@ -1207,11 +1265,9 @@ async function showHistory() {
 
 
     content.innerHTML = `
-
         <div class="history-empty">
             Loading your orders...
         </div>
-
     `;
 
 
@@ -1224,17 +1280,12 @@ async function showHistory() {
         if (!orders.length) {
 
             content.innerHTML = `
-
                 <div class="history-empty">
-
                     No orders found.
-
                 </div>
-
             `;
 
             return;
-
         }
 
 
@@ -1369,11 +1420,13 @@ async function showHistory() {
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "Order history error:",
+            error
+        );
 
 
         content.innerHTML = `
-
             <div class="history-empty">
 
                 Unable to load order history.
@@ -1383,7 +1436,6 @@ async function showHistory() {
                 Please try again.
 
             </div>
-
         `;
 
     }
@@ -1399,21 +1451,13 @@ async function showHistory() {
 async function showPaymentHistory() {
 
     const modal =
-        document.getElementById(
-            "historyModal"
-        );
-
+        document.getElementById("historyModal");
 
     const title =
-        document.getElementById(
-            "historyTitle"
-        );
-
+        document.getElementById("historyTitle");
 
     const content =
-        document.getElementById(
-            "historyContent"
-        );
+        document.getElementById("historyContent");
 
 
     title.textContent =
@@ -1424,13 +1468,9 @@ async function showPaymentHistory() {
 
 
     content.innerHTML = `
-
         <div class="history-empty">
-
             Loading your payment history...
-
         </div>
-
     `;
 
 
@@ -1443,17 +1483,12 @@ async function showPaymentHistory() {
         if (!orders.length) {
 
             content.innerHTML = `
-
                 <div class="history-empty">
-
                     No payment history found.
-
                 </div>
-
             `;
 
             return;
-
         }
 
 
@@ -1512,6 +1547,19 @@ async function showPaymentHistory() {
 
                             <span>
                                 ${order.orderStatus || "Unknown"}
+                            </span>
+
+                        </div>
+
+
+                        <div class="history-line">
+
+                            <span>
+                                Payment Status
+                            </span>
+
+                            <span>
+                                ${order.paymentStatus || "Unknown"}
                             </span>
 
                         </div>
@@ -1586,11 +1634,13 @@ async function showPaymentHistory() {
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "Payment history error:",
+            error
+        );
 
 
         content.innerHTML = `
-
             <div class="history-empty">
 
                 Unable to load payment history.
@@ -1600,7 +1650,6 @@ async function showPaymentHistory() {
                 Please try again.
 
             </div>
-
         `;
 
     }
@@ -1615,21 +1664,36 @@ async function showPaymentHistory() {
 
 function closeHistory() {
 
-    document
-        .getElementById("historyModal")
-        .classList.remove("show");
+    const modal =
+        document.getElementById(
+            "historyModal"
+        );
+
+
+    if (!modal) return;
+
+
+    modal.classList.remove(
+        "show"
+    );
 
 }
 
 
 
 /* =========================
-   CLOSE MODAL OUTSIDE
+   CLOSE OUTSIDE MODAL
 ========================= */
 
-document
-    .getElementById("historyModal")
-    .addEventListener(
+const historyModal =
+    document.getElementById(
+        "historyModal"
+    );
+
+
+if (historyModal) {
+
+    historyModal.addEventListener(
         "click",
         function(event) {
 
@@ -1643,6 +1707,8 @@ document
 
         }
     );
+
+}
 
 
 
@@ -1659,20 +1725,23 @@ function showNotifications() {
 
 
     if (
+        alertBox &&
         alertBox.innerHTML.trim() !== ""
     ) {
 
         alertBox.scrollIntoView({
-            behavior: "smooth"
+            behavior: "smooth",
+            block: "center"
         });
 
-    } else {
-
-        alert(
-            "No new notifications."
-        );
+        return;
 
     }
+
+
+    alert(
+        "No new notifications."
+    );
 
 }
 
@@ -1685,15 +1754,19 @@ function showNotifications() {
 function showProfile() {
 
     const name =
-        student.fullName || "Student";
+        student.fullName ||
+        "Student";
 
 
     const id =
-        student.studentId || "-";
+        student.studentId ||
+        "-";
 
 
     const email =
-        student.email || "-";
+        student.email ||
+        student.studentEmail ||
+        "-";
 
 
     alert(
@@ -1723,7 +1796,8 @@ function showProfile() {
 
 function goTo(page) {
 
-    window.location.href = page;
+    window.location.href =
+        page;
 
 }
 
@@ -1748,8 +1822,9 @@ function logout() {
     window.location.href =
         "login.html";
 
-   } 
-   <script>
+}
+
+
 
 /* =========================
    START
@@ -1758,6 +1833,7 @@ function logout() {
 updateCartBadge();
 
 loadCurrentOrder();
+
 
 
 /* =========================
@@ -1770,6 +1846,7 @@ setInterval(
 );
 
 
+
 /* =========================
    AUTO REFRESH CART
 ========================= */
@@ -1778,6 +1855,7 @@ setInterval(
     updateCartBadge,
     1000
 );
+
 
 
 /* =========================
@@ -1804,4 +1882,4 @@ document.addEventListener(
 
 </body>
 
-</html>
+</html>  
