@@ -36,7 +36,6 @@ header{
     color:#d4af37;
     font-size:25px;
     font-weight:800;
-    letter-spacing:.5px;
 }
 
 .staff-label{
@@ -198,7 +197,6 @@ header{
     color:#080808;
     font-weight:800;
     cursor:pointer;
-    margin-top:5px;
 }
 
 .view-btn:hover{
@@ -428,6 +426,51 @@ header{
     background:#f4d77d;
 }
 
+.generate-btn{
+    flex:1;
+    padding:13px;
+    border:none;
+    border-radius:9px;
+    background:#d4af37;
+    color:#080808;
+    font-weight:800;
+    cursor:pointer;
+}
+
+.generate-btn:hover{
+    background:#f4d77d;
+}
+
+.ready-btn{
+    flex:1;
+    padding:13px;
+    border:none;
+    border-radius:9px;
+    background:#d4af37;
+    color:#080808;
+    font-weight:800;
+    cursor:pointer;
+}
+
+.ready-btn:hover{
+    background:#f4d77d;
+}
+
+.complete-btn{
+    flex:1;
+    padding:13px;
+    border:none;
+    border-radius:9px;
+    background:#d4af37;
+    color:#080808;
+    font-weight:800;
+    cursor:pointer;
+}
+
+.complete-btn:hover{
+    background:#f4d77d;
+}
+
 .cancel-btn{
     padding:13px 18px;
     border:1px solid #555;
@@ -437,29 +480,39 @@ header{
     cursor:pointer;
 }
 
+.token-display{
+    background:#0b0b0b;
+    border:1px solid #5b4916;
+    border-radius:10px;
+    padding:15px;
+    text-align:center;
+    margin-top:12px;
+}
+
+.token-label{
+    color:#777;
+    font-size:11px;
+    margin-bottom:5px;
+}
+
+.token-number{
+    color:#f4d77d;
+    font-size:30px;
+    font-weight:900;
+    letter-spacing:2px;
+}
+
+.preparing-text{
+    text-align:center;
+    color:#d4af37;
+    font-size:13px;
+    margin-top:8px;
+}
+
 .action-row{
     display:flex;
-    gap:8px;
-    margin-top:12px;
-    flex-wrap:wrap;
-}
-
-.action-btn{
-    flex:1;
-    min-width:120px;
-    padding:10px;
-    border-radius:8px;
-    border:1px solid #d4af37;
-    background:transparent;
-    color:#d4af37;
-    cursor:pointer;
-    font-weight:700;
-    font-size:12px;
-}
-
-.action-btn:hover{
-    background:#d4af37;
-    color:#080808;
+    gap:10px;
+    margin-top:15px;
 }
 
 .flavor-list{
@@ -521,7 +574,8 @@ header{
         border-radius:13px;
     }
 
-    .modal-actions{
+    .modal-actions,
+    .action-row{
         flex-direction:column;
     }
 
@@ -540,30 +594,50 @@ header{
         <div class="staff-label">Staff Dashboard</div>
     </div>
 
-    <button class="logout-btn" onclick="logout()">Logout</button>
+    <button class="logout-btn" onclick="logout()">
+        Logout
+    </button>
 </header>
 
 <div class="container">
 
     <div class="tabs">
-        <button class="tab active" onclick="showSection('orders',this)">
+
+        <button
+            class="tab active"
+            onclick="showSection('orders',this)"
+        >
             Orders
         </button>
 
-        <button class="tab" onclick="showSection('menu',this)">
+        <button
+            class="tab"
+            onclick="showSection('menu',this)"
+        >
             Menu
         </button>
+
     </div>
 
     <section id="orders" class="section active">
 
         <div class="section-title">
+
             <h2>Incoming Orders</h2>
-            <div class="refresh-text">Auto refresh: 10 sec</div>
+
+            <div class="refresh-text">
+                Auto refresh: 10 sec
+            </div>
+
         </div>
 
-        <div id="ordersContainer" class="orders-grid">
-            <div class="loading">Loading orders...</div>
+        <div
+            id="ordersContainer"
+            class="orders-grid"
+        >
+            <div class="loading">
+                Loading orders...
+            </div>
         </div>
 
     </section>
@@ -571,17 +645,25 @@ header{
     <section id="menu" class="section">
 
         <div class="section-title">
+
             <h2>Food Menu</h2>
-            <div class="refresh-text">Live availability</div>
+
+            <div class="refresh-text">
+                Live availability
+            </div>
+
         </div>
 
-        <div id="menuContainer" class="menu-grid">
-            <div class="loading">Loading menu...</div>
+        <div
+            id="menuContainer"
+            class="menu-grid"
+        >
+            <div class="loading">
+                Loading menu...
+            </div>
         </div>
 
     </section>
-
-    </div>
     <!-- ORDER DETAILS MODAL -->
 
 <div id="orderModal" class="modal-overlay">
@@ -594,13 +676,17 @@ header{
                 Order Details
             </h2>
 
-            <button class="close-btn" onclick="closeOrderModal()">
+            <button
+                class="close-btn"
+                onclick="closeOrderModal()"
+            >
                 ×
             </button>
 
         </div>
 
-        <!-- STUDENT DETAILS -->
+
+        <!-- STUDENT INFORMATION -->
 
         <div class="details-section">
 
@@ -609,48 +695,72 @@ header{
             <div class="details-grid">
 
                 <div class="detail-box">
+
                     <div class="detail-label">
                         Name
                     </div>
 
-                    <div class="detail-value" id="studentName">
+                    <div
+                        class="detail-value"
+                        id="studentName"
+                    >
                         -
                     </div>
+
                 </div>
 
+
                 <div class="detail-box">
+
                     <div class="detail-label">
                         Student ID
                     </div>
 
-                    <div class="detail-value" id="studentId">
+                    <div
+                        class="detail-value"
+                        id="studentId"
+                    >
                         -
                     </div>
+
                 </div>
 
+
                 <div class="detail-box">
+
                     <div class="detail-label">
                         Email
                     </div>
 
-                    <div class="detail-value" id="studentEmail">
+                    <div
+                        class="detail-value"
+                        id="studentEmail"
+                    >
                         -
                     </div>
+
                 </div>
 
+
                 <div class="detail-box">
+
                     <div class="detail-label">
                         Phone Number
                     </div>
 
-                    <div class="detail-value" id="studentPhone">
+                    <div
+                        class="detail-value"
+                        id="studentPhone"
+                    >
                         -
                     </div>
+
                 </div>
 
             </div>
 
         </div>
+
 
         <!-- ORDER INFORMATION -->
 
@@ -661,59 +771,116 @@ header{
             <div class="details-grid">
 
                 <div class="detail-box">
+
                     <div class="detail-label">
                         Order ID
                     </div>
 
-                    <div class="detail-value" id="detailOrderId">
+                    <div
+                        class="detail-value"
+                        id="detailOrderId"
+                    >
                         -
                     </div>
+
                 </div>
 
+
                 <div class="detail-box">
+
                     <div class="detail-label">
                         Order Status
                     </div>
 
-                    <div class="detail-value" id="detailOrderStatus">
+                    <div
+                        class="detail-value"
+                        id="detailOrderStatus"
+                    >
                         -
                     </div>
+
                 </div>
 
+
                 <div class="detail-box">
+
                     <div class="detail-label">
                         Payment Status
                     </div>
 
-                    <div class="detail-value" id="detailPaymentStatus">
+                    <div
+                        class="detail-value"
+                        id="detailPaymentStatus"
+                    >
                         -
                     </div>
+
                 </div>
 
+
                 <div class="detail-box">
+
                     <div class="detail-label">
                         Token Number
                     </div>
 
-                    <div class="detail-value" id="detailToken">
-                        -
+                    <div
+                        class="detail-value"
+                        id="detailToken"
+                    >
+                        Not generated
                     </div>
+
                 </div>
 
             </div>
 
         </div>
 
-        <!-- FOOD ITEMS -->
+
+        <!-- TOKEN DISPLAY -->
+
+        <div
+            id="tokenDisplay"
+            class="token-display"
+            style="display:none;"
+        >
+
+            <div class="token-label">
+                TOKEN NUMBER
+            </div>
+
+            <div
+                id="tokenNumber"
+                class="token-number"
+            >
+                ----
+            </div>
+
+            <div
+                id="preparingText"
+                class="preparing-text"
+            >
+                Order is preparing
+            </div>
+
+        </div>
+
+
+        <!-- ORDERED ITEMS -->
 
         <div class="details-section">
 
             <h3>Ordered Items</h3>
 
-            <div id="detailItems" class="items-list">
+            <div
+                id="detailItems"
+                class="items-list"
+            >
             </div>
 
         </div>
+
 
         <!-- BILL -->
 
@@ -722,21 +889,48 @@ header{
             <h3>Bill Details</h3>
 
             <div class="info-row">
-                <span>Subtotal</span>
-                <span id="detailSubtotal">₹0.00</span>
+
+                <span>
+                    Subtotal
+                </span>
+
+                <span id="detailSubtotal">
+                    ₹0.00
+                </span>
+
             </div>
 
-            <div class="info-row">
-                <span>Service Charge</span>
-                <span id="detailServiceCharge">₹0.00</span>
-            </div>
 
             <div class="info-row">
-                <span>Total Amount</span>
-                <span id="detailTotal" class="total">₹0.00</span>
+
+                <span>
+                    Service Charge
+                </span>
+
+                <span id="detailServiceCharge">
+                    ₹0.00
+                </span>
+
+            </div>
+
+
+            <div class="info-row">
+
+                <span>
+                    Total Amount
+                </span>
+
+                <span
+                    id="detailTotal"
+                    class="total"
+                >
+                    ₹0.00
+                </span>
+
             </div>
 
         </div>
+
 
         <!-- PAYMENT SCREENSHOT -->
 
@@ -745,46 +939,42 @@ header{
             <h3>Payment Screenshot</h3>
 
             <div id="paymentProofContainer">
+
                 <div class="no-image">
                     No payment screenshot available
                 </div>
+
             </div>
 
         </div>
 
-        <!-- MODAL ACTIONS -->
 
-        <div class="modal-actions">
+        <!-- ACTION BUTTONS -->
 
-            <button
-                id="verifyPaymentBtn"
-                class="verify-btn"
-                onclick="verifyCurrentPayment()"
-            >
-                Verify Payment
-            </button>
-
-            <button
-                class="cancel-btn"
-                onclick="closeOrderModal()"
-            >
-                Close
-            </button>
-
+        <div
+            id="modalActions"
+            class="modal-actions"
+        >
         </div>
 
-        <!-- ORDER ACTIONS -->
 
-        <div id="modalOrderActions" class="action-row">
-        </div>
+        <button
+            class="cancel-btn"
+            style="width:100%;margin-top:10px;"
+            onclick="closeOrderModal()"
+        >
+            Close
+        </button>
 
     </div>
 
 </div>
 
+
 <script>
 
-const API = "https://nextturn-mgbf.onrender.com";
+const API =
+    "https://nextturn-mgbf.onrender.com";
 
 let orders = [];
 let menuItems = [];
@@ -795,19 +985,22 @@ let currentOrder = null;
    SECTION SWITCH
 ========================= */
 
-function showSection(sectionId, button){
+function showSection(sectionId,button){
 
-    document.querySelectorAll(".section")
+    document
+        .querySelectorAll(".section")
         .forEach(section => {
             section.classList.remove("active");
         });
 
-    document.querySelectorAll(".tab")
+    document
+        .querySelectorAll(".tab")
         .forEach(tab => {
             tab.classList.remove("active");
         });
 
-    document.getElementById(sectionId)
+    document
+        .getElementById(sectionId)
         .classList.add("active");
 
     if(button){
@@ -831,22 +1024,27 @@ function showSection(sectionId, button){
 async function loadOrders(){
 
     const container =
-        document.getElementById("ordersContainer");
+        document.getElementById(
+            "ordersContainer"
+        );
 
     try{
 
         const response =
-            await fetch(`${API}/api/staff/orders`);
+            await fetch(
+                `${API}/api/staff/orders`
+            );
 
         if(!response.ok){
-            throw new Error("Unable to load orders");
+            throw new Error(
+                "Unable to load orders"
+            );
         }
 
-        orders = await response.json();
+        orders =
+            await response.json();
 
-        /*
-         * Latest order first.
-         */
+        /* Latest order first */
         orders.sort(
             (a,b) =>
                 Number(b.id || 0) -
@@ -877,9 +1075,14 @@ async function loadOrders(){
 function renderOrders(){
 
     const container =
-        document.getElementById("ordersContainer");
+        document.getElementById(
+            "ordersContainer"
+        );
 
-    if(!orders || orders.length === 0){
+    if(
+        !orders ||
+        orders.length === 0
+    ){
 
         container.innerHTML = `
             <div class="empty">
@@ -893,79 +1096,115 @@ function renderOrders(){
     container.innerHTML =
         orders.map(order => {
 
-            const status =
-                order.orderStatus ||
-                "Pending";
-
             return `
+
                 <div class="order-card">
 
                     <div class="order-top">
 
                         <div>
+
                             <div class="order-id">
                                 Order #${escapeHtml(order.id)}
                             </div>
 
                             <div class="order-date">
-                                ${formatDate(order.createdAt)}
+                                ${formatDate(
+                                    order.createdAt
+                                )}
                             </div>
+
                         </div>
 
                         <div class="status">
-                            ${escapeHtml(status)}
+                            ${escapeHtml(
+                                order.orderStatus ||
+                                "Pending"
+                            )}
                         </div>
 
                     </div>
+
 
                     <div class="order-info">
 
                         <div class="info-row">
-                            <span>Student</span>
+
+                            <span>
+                                Student
+                            </span>
+
                             <span>
                                 ${escapeHtml(
-                                    order.studentName || "-"
+                                    order.studentName ||
+                                    "-"
                                 )}
                             </span>
+
                         </div>
 
+
                         <div class="info-row">
-                            <span>Student ID</span>
+
+                            <span>
+                                Student ID
+                            </span>
+
                             <span>
                                 ${escapeHtml(
-                                    order.studentId || "-"
+                                    order.studentId ||
+                                    "-"
                                 )}
                             </span>
+
                         </div>
 
+
                         <div class="info-row">
-                            <span>Payment</span>
+
+                            <span>
+                                Payment
+                            </span>
+
                             <span>
                                 ${escapeHtml(
-                                    order.paymentStatus || "-"
+                                    order.paymentStatus ||
+                                    "-"
                                 )}
                             </span>
+
                         </div>
 
+
                         <div class="info-row">
-                            <span>Total</span>
+
+                            <span>
+                                Total
+                            </span>
+
                             <span class="total">
                                 ₹${Number(
-                                    order.totalAmount || 0
+                                    order.totalAmount ||
+                                    0
                                 ).toFixed(2)}
                             </span>
+
                         </div>
 
                     </div>
 
+
                     <button
                         class="view-btn"
-                        onclick="openOrderModal(${Number(order.id)})"
+                        onclick="openOrderModal(
+                            ${Number(order.id)}
+                        )"
                     >
                         View Order
                     </button>
 
                 </div>
+
             `;
 
         }).join("");
@@ -981,60 +1220,101 @@ function openOrderModal(orderId){
     currentOrder =
         orders.find(
             order =>
-                Number(order.id) === Number(orderId)
+                Number(order.id) ===
+                Number(orderId)
         );
 
     if(!currentOrder){
         return;
     }
 
-    document.getElementById("modalTitle").textContent =
+    document.getElementById(
+        "modalTitle"
+    ).textContent =
         `Order #${currentOrder.id}`;
 
-    document.getElementById("studentName").textContent =
+
+    document.getElementById(
+        "studentName"
+    ).textContent =
         currentOrder.studentName || "-";
 
-    document.getElementById("studentId").textContent =
+
+    document.getElementById(
+        "studentId"
+    ).textContent =
         currentOrder.studentId || "-";
 
-    document.getElementById("studentEmail").textContent =
+
+    document.getElementById(
+        "studentEmail"
+    ).textContent =
         currentOrder.studentEmail || "-";
 
-    document.getElementById("studentPhone").textContent =
+
+    document.getElementById(
+        "studentPhone"
+    ).textContent =
         currentOrder.studentPhone || "-";
 
-    document.getElementById("detailOrderId").textContent =
+
+    document.getElementById(
+        "detailOrderId"
+    ).textContent =
         currentOrder.id || "-";
 
-    document.getElementById("detailOrderStatus").textContent =
+
+    document.getElementById(
+        "detailOrderStatus"
+    ).textContent =
         currentOrder.orderStatus || "-";
 
-    document.getElementById("detailPaymentStatus").textContent =
+
+    document.getElementById(
+        "detailPaymentStatus"
+    ).textContent =
         currentOrder.paymentStatus || "-";
 
-    document.getElementById("detailToken").textContent =
-        currentOrder.tokenNumber || "Not generated";
 
-    document.getElementById("detailSubtotal").textContent =
+    document.getElementById(
+        "detailToken"
+    ).textContent =
+        currentOrder.tokenNumber ||
+        "Not generated";
+
+
+    document.getElementById(
+        "detailSubtotal"
+    ).textContent =
         `₹${Number(
             currentOrder.subtotal || 0
         ).toFixed(2)}`;
 
-    document.getElementById("detailServiceCharge").textContent =
+
+    document.getElementById(
+        "detailServiceCharge"
+    ).textContent =
         `₹${Number(
             currentOrder.serviceCharge || 0
         ).toFixed(2)}`;
 
-    document.getElementById("detailTotal").textContent =
+
+    document.getElementById(
+        "detailTotal"
+    ).textContent =
         `₹${Number(
             currentOrder.totalAmount || 0
         ).toFixed(2)}`;
+
 
     renderOrderItems(currentOrder);
 
     renderPaymentProof(currentOrder);
 
-    renderModalActions(currentOrder);
+    renderActionButtons(currentOrder);
+
+    updateTokenDisplay(currentOrder);
+
 
     document
         .getElementById("orderModal")
@@ -1063,16 +1343,32 @@ function closeOrderModal(){
 function renderOrderItems(order){
 
     const container =
-        document.getElementById("detailItems");
+        document.getElementById(
+            "detailItems"
+        );
 
     let items = [];
 
     try{
 
-        if(typeof order.foodItems === "string"){
-            items = JSON.parse(order.foodItems);
-        }else if(Array.isArray(order.foodItems)){
-            items = order.foodItems;
+        if(
+            typeof order.foodItems ===
+            "string"
+        ){
+
+            items =
+                JSON.parse(
+                    order.foodItems
+                );
+
+        }else if(
+            Array.isArray(
+                order.foodItems
+            )
+        ){
+
+            items =
+                order.foodItems;
         }
 
     }catch(error){
@@ -1083,7 +1379,11 @@ function renderOrderItems(order){
         );
     }
 
-    if(!Array.isArray(items) || items.length === 0){
+
+    if(
+        !Array.isArray(items) ||
+        items.length === 0
+    ){
 
         container.innerHTML = `
             <div class="no-image">
@@ -1094,6 +1394,7 @@ function renderOrderItems(order){
         return;
     }
 
+
     container.innerHTML =
         items.map(item => {
 
@@ -1102,7 +1403,11 @@ function renderOrderItems(order){
             let price = 0;
             let flavor = "";
 
-            if(typeof item === "string"){
+
+            if(
+                typeof item ===
+                "string"
+            ){
 
                 name = item;
 
@@ -1114,17 +1419,22 @@ function renderOrderItems(order){
                     "Food Item";
 
                 quantity =
-                    Number(item.quantity || 1);
+                    Number(
+                        item.quantity || 1
+                    );
 
                 price =
-                    Number(item.price || 0);
+                    Number(
+                        item.price || 0
+                    );
 
                 flavor =
-                    item.flavor ||
-                    "";
+                    item.flavor || "";
             }
 
+
             return `
+
                 <div class="item-row">
 
                     <div class="item-name">
@@ -1133,26 +1443,38 @@ function renderOrderItems(order){
 
                         ${
                             flavor
-                            ? `<br>
-                               <small style="color:#d4af37">
-                                   Flavor: ${escapeHtml(flavor)}
-                               </small>`
+                            ? `
+                                <br>
+                                <small
+                                    style="color:#d4af37"
+                                >
+                                    Flavor:
+                                    ${escapeHtml(flavor)}
+                                </small>
+                              `
                             : ""
                         }
 
-                        <small style="color:#777">
+                        <small
+                            style="color:#777"
+                        >
                             × ${quantity}
                         </small>
 
                     </div>
 
+
                     <div class="item-price">
+
                         ₹${(
-                            price * quantity
+                            price *
+                            quantity
                         ).toFixed(2)}
+
                     </div>
 
                 </div>
+
             `;
 
         }).join("");
@@ -1160,7 +1482,7 @@ function renderOrderItems(order){
 
 
 /* =========================
-   PAYMENT SCREENSHOT
+   PAYMENT PROOF
 ========================= */
 
 function renderPaymentProof(order){
@@ -1173,22 +1495,31 @@ function renderPaymentProof(order){
     const proof =
         order.paymentProof;
 
+
     if(
         proof &&
         typeof proof === "string" &&
         (
-            proof.startsWith("data:image") ||
-            proof.startsWith("http://") ||
-            proof.startsWith("https://")
+            proof.startsWith(
+                "data:image"
+            ) ||
+            proof.startsWith(
+                "http://"
+            ) ||
+            proof.startsWith(
+                "https://"
+            )
         )
     ){
 
         container.innerHTML = `
+
             <img
                 src="${escapeAttribute(proof)}"
                 class="payment-image"
                 alt="Payment Screenshot"
             >
+
         `;
 
     }else{
@@ -1203,33 +1534,251 @@ function renderPaymentProof(order){
 
 
 /* =========================
+   TOKEN DISPLAY
+========================= */
+
+function updateTokenDisplay(order){
+
+    const tokenBox =
+        document.getElementById(
+            "tokenDisplay"
+        );
+
+    const tokenNumber =
+        document.getElementById(
+            "tokenNumber"
+        );
+
+    const status =
+        String(
+            order.orderStatus || ""
+        ).toLowerCase();
+
+
+    if(order.tokenNumber){
+
+        tokenBox.style.display =
+            "block";
+
+        tokenNumber.textContent =
+            order.tokenNumber;
+
+    }else{
+
+        tokenBox.style.display =
+            "none";
+    }
+
+
+    const preparingText =
+        document.getElementById(
+            "preparingText"
+        );
+
+
+    if(
+        status === "preparing"
+    ){
+
+        preparingText.textContent =
+            "Order is preparing";
+
+    }else if(
+        status === "ready"
+    ){
+
+        preparingText.textContent =
+            "Order is ready";
+
+    }else if(
+        status === "completed"
+    ){
+
+        preparingText.textContent =
+            "Order completed";
+
+    }else{
+
+        preparingText.textContent =
+            "Order is preparing";
+    }
+}
+
+
+/* =========================
+   ACTION BUTTONS
+========================= */
+
+function renderActionButtons(order){
+
+    const container =
+        document.getElementById(
+            "modalActions"
+        );
+
+    const paymentStatus =
+        String(
+            order.paymentStatus || ""
+        ).toLowerCase();
+
+    const status =
+        String(
+            order.orderStatus || ""
+        ).toLowerCase();
+
+
+    /*
+     * 1. Payment not verified
+     *    -> Verify Payment
+     */
+
+    if(
+        !paymentStatus.includes(
+            "verified"
+        )
+    ){
+
+        container.innerHTML = `
+
+            <button
+                class="verify-btn"
+                onclick="verifyPayment()"
+            >
+                Verify Payment
+            </button>
+
+        `;
+
+        return;
+    }
+
+
+    /*
+     * 2. Payment verified but
+     *    token not generated
+     */
+
+    if(
+        paymentStatus.includes(
+            "verified"
+        ) &&
+        !order.tokenNumber
+    ){
+
+        container.innerHTML = `
+
+            <button
+                class="generate-btn"
+                onclick="generateToken()"
+            >
+                Generate Token
+            </button>
+
+        `;
+
+        return;
+    }
+
+
+    /*
+     * 3. Token generated and
+     *    order is preparing
+     */
+
+    if(
+        order.tokenNumber &&
+        status === "preparing"
+    ){
+
+        container.innerHTML = `
+
+            <button
+                class="ready-btn"
+     onclick="markOrderReady()"
+            >
+                Order Ready
+            </button>
+
+        `;
+
+        return;
+    }
+
+
+    /*
+     * 4. Order ready
+     */
+
+    if(
+        status === "ready"
+    ){
+
+        container.innerHTML = `
+
+            <button
+                class="complete-btn"
+                onclick="completeCurrentOrder()"
+            >
+                Order Completed
+            </button>
+
+        `;
+
+        return;
+    }
+
+
+    /*
+     * 5. Completed
+     */
+
+    if(
+        status === "completed"
+    ){
+
+        container.innerHTML = `
+
+            <button
+                class="complete-btn"
+                disabled
+                style="
+                    opacity:.55;
+                    cursor:not-allowed;
+                "
+            >
+                Order Completed
+            </button>
+
+        `;
+
+        return;
+    }
+
+
+    container.innerHTML = "";
+    }
+    /* =========================
    VERIFY PAYMENT
 ========================= */
 
-async function verifyCurrentPayment(){
+async function verifyPayment(){
 
     if(!currentOrder){
         return;
     }
 
     const button =
-        document.getElementById(
-            "verifyPaymentBtn"
+        document.querySelector(
+            "#modalActions .verify-btn"
         );
 
-    if(
-        currentOrder.paymentStatus &&
-        currentOrder.paymentStatus
-            .toLowerCase()
-            .includes("verified")
-    ){
+    if(button){
 
-        alert("Payment is already verified.");
-        return;
+        button.disabled = true;
+        button.textContent =
+            "Verifying...";
     }
 
-    button.disabled = true;
-    button.textContent = "Verifying...";
 
     try{
 
@@ -1241,17 +1790,41 @@ async function verifyCurrentPayment(){
                 }
             );
 
+
         if(!response.ok){
+
             throw new Error(
                 "Payment verification failed"
             );
         }
 
-        alert("Payment verified successfully.");
 
-        closeOrderModal();
+        const updatedOrder =
+            await response.json();
 
-        await loadOrders();
+
+        /*
+         * Update local order.
+         */
+
+        replaceOrder(updatedOrder);
+
+
+        currentOrder =
+            updatedOrder;
+
+
+        /*
+         * Re-render modal.
+         *
+         * This now shows
+         * Generate Token.
+         */
+
+        openOrderModal(
+            updatedOrder.id
+        );
+
 
     }catch(error){
 
@@ -1261,154 +1834,303 @@ async function verifyCurrentPayment(){
             "Unable to verify payment. Please try again."
         );
 
-    }finally{
+        if(button){
 
-        button.disabled = false;
-        button.textContent = "Verify Payment";
-    }
-}
+            button.disabled = false;
 
-
-/* =========================
-   MODAL ORDER ACTIONS
-========================= */
-
-function renderModalActions(order){
-
-    const container =
-        document.getElementById(
-            "modalOrderActions"
-        );
-
-    const status =
-        String(order.orderStatus || "")
-            .toLowerCase();
-
-    let html = "";
-
-    if(
-        status.includes("verified") ||
-        status.includes("payment")
-    ){
-
-        if(
-            !status.includes("preparing") &&
-            !status.includes("ready") &&
-            !status.includes("completed")
-        ){
-
-            html += `
-                <button
-                    class="action-btn"
-                    onclick="startPreparing(${order.id})"
-                >
-                    Start Preparing
-                </button>
-            `;
+            button.textContent =
+                "Verify Payment";
         }
     }
+}
 
-    if(status.includes("preparing")){
 
-        html += `
-            <button
-                class="action-btn"
-                onclick="markReady(${order.id})"
-            >
-                Mark Ready
-            </button>
-        `;
+/* =========================
+   GENERATE TOKEN
+========================= */
+
+async function generateToken(){
+
+    if(!currentOrder){
+        return;
     }
 
-    if(status.includes("ready")){
 
-        html += `
-            <button
-                class="action-btn"
-                onclick="completeOrder(${order.id})"
-            >
-                Complete Order
-            </button>
-        `;
+    const button =
+        document.querySelector(
+            "#modalActions .generate-btn"
+        );
+
+
+    if(button){
+
+        button.disabled = true;
+
+        button.textContent =
+            "Generating...";
     }
 
-    container.innerHTML = html;
-}
-
-
-/* =========================
-   START PREPARING
-========================= */
-
-async function startPreparing(id){
-
-    await orderAction(
-        `/api/staff/orders/${id}/preparing`,
-        "Order moved to preparing."
-    );
-}
-
-
-/* =========================
-   MARK READY
-========================= */
-
-async function markReady(id){
-
-    await orderAction(
-        `/api/staff/ready/${id}`,
-        "Order marked ready."
-    );
-}
-
-
-/* =========================
-   COMPLETE
-========================= */
-
-async function completeOrder(id){
-
-    await orderAction(
-        `/api/staff/orders/${id}/complete`,
-        "Order completed."
-    );
-}
-
-
-/* =========================
-   COMMON ORDER ACTION
-========================= */
-
-async function orderAction(endpoint,message){
 
     try{
 
         const response =
             await fetch(
-                API + endpoint,
+                `${API}/api/staff/tokens/${currentOrder.id}/generate`,
                 {
                     method:"PUT"
                 }
             );
 
+
         if(!response.ok){
-            throw new Error("Action failed");
+
+            throw new Error(
+                "Token generation failed"
+            );
         }
 
-        alert(message);
 
-        closeOrderModal();
+        const updatedOrder =
+            await response.json();
 
-        await loadOrders();
+
+        /*
+         * Backend already changes
+         * status to Preparing.
+         */
+
+        replaceOrder(updatedOrder);
+
+        currentOrder =
+            updatedOrder;
+
+
+        alert(
+            `Token generated: ${updatedOrder.tokenNumber}`
+        );
+
+
+        openOrderModal(
+            updatedOrder.id
+        );
+
 
     }catch(error){
 
         console.error(error);
 
         alert(
-            "Unable to update order."
+            "Unable to generate token. Please try again."
+        );
+
+        if(button){
+
+            button.disabled = false;
+
+            button.textContent =
+                "Generate Token";
+        }
+    }
+}
+
+
+/* =========================
+   ORDER READY
+========================= */
+
+async function markOrderReady(){
+
+    if(!currentOrder){
+        return;
+    }
+
+
+    const button =
+        document.querySelector(
+            "#modalActions .ready-btn"
+        );
+
+
+    if(button){
+
+        button.disabled = true;
+
+        button.textContent =
+            "Updating...";
+    }
+
+
+    try{
+
+        const response =
+            await fetch(
+                `${API}/api/staff/ready/${currentOrder.id}`,
+                {
+                    method:"PUT"
+                }
+            );
+
+
+        if(!response.ok){
+
+            throw new Error(
+                "Ready update failed"
+            );
+        }
+
+
+        const updatedOrder =
+            await response.json();
+
+
+        replaceOrder(updatedOrder);
+
+        currentOrder =
+            updatedOrder;
+
+
+        openOrderModal(
+            updatedOrder.id
+        );
+
+
+    }catch(error){
+
+        console.error(error);
+
+        alert(
+            "Unable to mark order ready."
+        );
+
+        if(button){
+
+            button.disabled = false;
+
+            button.textContent =
+                "Order Ready";
+        }
+    }
+}
+
+
+/* =========================
+   ORDER COMPLETED
+========================= */
+
+async function completeCurrentOrder(){
+
+    if(!currentOrder){
+        return;
+    }
+
+
+    const button =
+        document.querySelector(
+            "#modalActions .complete-btn"
+        );
+
+
+    if(button){
+
+        button.disabled = true;
+
+        button.textContent =
+            "Completing...";
+    }
+
+
+    try{
+
+        const response =
+            await fetch(
+                `${API}/api/staff/orders/${currentOrder.id}/complete`,
+                {
+                    method:"PUT"
+                }
+            );
+
+
+        if(!response.ok){
+
+            throw new Error(
+                "Completion failed"
+            );
+        }
+
+
+        const updatedOrder =
+            await response.json();
+
+
+        replaceOrder(updatedOrder);
+
+        currentOrder =
+            updatedOrder;
+
+
+        openOrderModal(
+            updatedOrder.id
+        );
+
+
+    }catch(error){
+
+        console.error(error);
+
+        alert(
+            "Unable to complete order."
+        );
+
+        if(button){
+
+            button.disabled = false;
+
+            button.textContent =
+                "Order Completed";
+        }
+    }
+}
+
+
+/* =========================
+   UPDATE LOCAL ORDER
+========================= */
+
+function replaceOrder(updatedOrder){
+
+    const index =
+        orders.findIndex(
+            order =>
+                Number(order.id) ===
+                Number(updatedOrder.id)
+        );
+
+
+    if(index !== -1){
+
+        orders[index] =
+            updatedOrder;
+
+    }else{
+
+        orders.push(
+            updatedOrder
         );
     }
+
+
+    /*
+     * Keep newest order first.
+     */
+
+    orders.sort(
+        (a,b) =>
+            Number(b.id || 0) -
+            Number(a.id || 0)
+    );
+
+
+    renderOrders();
 }
 
 
@@ -1423,6 +2145,7 @@ async function loadMenu(){
             "menuContainer"
         );
 
+
     try{
 
         const response =
@@ -1430,18 +2153,26 @@ async function loadMenu(){
                 `${API}/api/staff/food`
             );
 
+
         if(!response.ok){
-            throw new Error("Unable to load menu");
+
+            throw new Error(
+                "Unable to load menu"
+            );
         }
+
 
         menuItems =
             await response.json();
 
+
         renderMenu();
+
 
     }catch(error){
 
         console.error(error);
+
 
         container.innerHTML = `
             <div class="empty">
@@ -1463,6 +2194,7 @@ function renderMenu(){
             "menuContainer"
         );
 
+
     if(
         !menuItems ||
         menuItems.length === 0
@@ -1477,24 +2209,28 @@ function renderMenu(){
         return;
     }
 
-    /*
-     * Group flavor rows visually
-     * under the same food name.
-     */
 
     const grouped = {};
+
 
     menuItems.forEach(item => {
 
         const name =
-            item.name || "Food";
+            item.name ||
+            "Food";
+
 
         if(!grouped[name]){
+
             grouped[name] = [];
         }
 
-        grouped[name].push(item);
+
+        grouped[name].push(
+            item
+        );
     });
+
 
     container.innerHTML =
         Object.keys(grouped)
@@ -1503,18 +2239,26 @@ function renderMenu(){
                 const rows =
                     grouped[name];
 
+
                 const first =
                     rows[0];
 
+
                 const hasFlavors =
                     rows.some(
-                        item => item.flavor
+                        item =>
+                            item.flavor
                     );
-                  let flavorHtml = "";
+
+
+                let flavorHtml =
+                    "";
+
 
                 if(hasFlavors){
 
                     flavorHtml = `
+
                         <div class="flavor-list">
 
                             <div class="flavor-title">
@@ -1529,23 +2273,36 @@ function renderMenu(){
                                     )
                                     .map(item => `
 
-                                        <div class="flavor-row">
+                                        <div
+                                            class="flavor-row"
+                                        >
 
                                             <span>
+
                                                 ${escapeHtml(
                                                     item.flavor
                                                 )}
 
                                                 ${
                                                     item.available
-                                                    ? `<span class="available">
-                                                         Available
-                                                       </span>`
-                                                    : `<span class="unavailable">
-                                                         Unavailable
-                                                       </span>`
+                                                    ? `
+                                                        <span
+                                                            class="available"
+                                                        >
+                                                            Available
+                                                        </span>
+                                                      `
+                                                    : `
+                                                        <span
+                                                            class="unavailable"
+                                                        >
+                                                            Unavailable
+                                                        </span>
+                                                      `
                                                 }
+
                                             </span>
+
 
                                             <button
                                                 class="small-btn"
@@ -1571,6 +2328,7 @@ function renderMenu(){
                     `;
                 }
 
+
                 return `
 
                     <div class="food-card">
@@ -1578,6 +2336,7 @@ function renderMenu(){
                         <div class="food-name">
                             ${escapeHtml(name)}
                         </div>
+
 
                         <div class="food-meta">
 
@@ -1588,22 +2347,28 @@ function renderMenu(){
                             •
 
                             ${escapeHtml(
-                                first.category || "-"
+                                first.category ||
+                                "-"
                             )}
 
                             <br>
 
                             ${
                                 first.available
-                                ? `<span class="available">
-                                     Available
-                                   </span>`
-                                : `<span class="unavailable">
-                                     Unavailable
-                                   </span>`
+                                ? `
+                                    <span class="available">
+                                        Available
+                                    </span>
+                                  `
+                                : `
+                                    <span class="unavailable">
+                                        Unavailable
+                                    </span>
+                                  `
                             }
 
                         </div>
+
 
                         <div class="food-actions">
 
@@ -1623,6 +2388,7 @@ function renderMenu(){
 
                         </div>
 
+
                         ${flavorHtml}
 
                     </div>
@@ -1638,12 +2404,16 @@ function renderMenu(){
    TOGGLE FOOD
 ========================= */
 
-async function toggleFood(id,available){
+async function toggleFood(
+    id,
+    available
+){
 
     const endpoint =
         available
         ? `/api/staff/food/${id}/unavailable`
         : `/api/staff/food/${id}/available`;
+
 
     try{
 
@@ -1655,13 +2425,17 @@ async function toggleFood(id,available){
                 }
             );
 
+
         if(!response.ok){
+
             throw new Error(
                 "Food update failed"
             );
         }
 
+
         await loadMenu();
+
 
     }catch(error){
 
@@ -1678,12 +2452,16 @@ async function toggleFood(id,available){
    TOGGLE FLAVOR
 ========================= */
 
-async function toggleFlavor(id,available){
+async function toggleFlavor(
+    id,
+    available
+){
 
     const endpoint =
         available
         ? `/api/staff/food/${id}/flavor/unavailable`
         : `/api/staff/food/${id}/flavor/available`;
+
 
     try{
 
@@ -1695,13 +2473,17 @@ async function toggleFlavor(id,available){
                 }
             );
 
+
         if(!response.ok){
+
             throw new Error(
                 "Flavor update failed"
             );
         }
 
+
         await loadMenu();
+
 
     }catch(error){
 
@@ -1721,8 +2503,10 @@ async function toggleFlavor(id,available){
 function formatDate(value){
 
     if(!value){
+
         return "Date unavailable";
     }
+
 
     try{
 
@@ -1751,16 +2535,36 @@ function formatDate(value){
 
 function escapeHtml(value){
 
-    if(value === null || value === undefined){
+    if(
+        value === null ||
+        value === undefined
+    ){
+
         return "";
     }
 
+
     return String(value)
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 }
 
 
@@ -1788,6 +2592,7 @@ function logout(){
         "nextTurnPartnerId"
     );
 
+
     window.location.href =
         "login.html";
 }
@@ -1803,10 +2608,13 @@ document
         "click",
         function(event){
 
-            if(event.target === this){
+            if(
+                event.target ===
+                this
+            ){
+
                 closeOrderModal();
             }
-
         }
     );
 
@@ -1829,17 +2637,18 @@ setInterval(
 
         loadOrders();
 
-        /*
-         * Only refresh menu data
-         * when Menu tab is active.
-         */
 
         const menuSection =
-            document.getElementById("menu");
+            document.getElementById(
+                "menu"
+            );
+
 
         if(
-            menuSection.classList.contains("active")
+            menuSection.classList
+                .contains("active")
         ){
+
             loadMenu();
         }
 
