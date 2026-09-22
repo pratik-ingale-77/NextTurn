@@ -1,294 +1,582 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
 
-<title>NextTurn - Student Dashboard</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-<link rel="stylesheet" href="styles.css">
+    <title>NextTurn - Student Dashboard</title>
 
-<style>
-/* ===============================
-   NEXTTURN STUDENT DASHBOARD
-   =============================== */
+    <link rel="stylesheet" href="styles.css">
 
-.history-modal {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.82);
-    backdrop-filter: blur(8px);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-    padding: 20px;
-}
+    <style>
+        .food-type-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+            margin-bottom: 28px;
+        }
 
-.history-modal.show {
-    display: flex;
-}
+        .food-type-card {
+            position: relative;
+            overflow: hidden;
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(212,175,55,.12),
+                    transparent 40%
+                ),
+                #111111;
 
-.history-box {
-    width: 100%;
-    max-width: 850px;
-    max-height: 88vh;
-    overflow-y: auto;
-    background: #111;
-    border: 1px solid #D4AF37;
-    border-radius: 18px;
-    padding: 24px;
-    box-shadow: 0 0 40px rgba(212,175,55,0.18);
-}
+            border: 1px solid rgba(212,175,55,.22);
+            border-radius: 22px;
+            padding: 25px;
+            cursor: pointer;
+            transition: .25s ease;
+        }
 
-.history-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
+        .food-type-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(212,175,55,.65);
+            box-shadow: 0 15px 40px rgba(0,0,0,.4);
+        }
 
-.history-header h2 {
-    color: #F4D77D;
-    margin: 0;
-}
+        .food-type-icon {
+            width: 58px;
+            height: 58px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-.close-history {
-    background: transparent;
-    border: 1px solid #D4AF37;
-    color: #F4D77D;
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    font-size: 20px;
-    cursor: pointer;
-}
+            border-radius: 16px;
+            background: rgba(212,175,55,.09);
+            border: 1px solid rgba(212,175,55,.22);
 
-.history-item {
-    background: #080808;
-    border: 1px solid rgba(212,175,55,0.25);
-    border-radius: 14px;
-    padding: 18px;
-    margin-bottom: 14px;
-}
+            font-size: 29px;
+            margin-bottom: 16px;
+        }
 
-.history-item h3 {
-    color: #F4D77D;
-    margin-top: 0;
-}
+        .food-type-card h3 {
+            margin: 0 0 8px;
+            color: #f5f5f5;
+            font-size: 21px;
+        }
 
-.history-row {
-    display: flex;
-    justify-content: space-between;
-    gap: 15px;
-    margin: 8px 0;
-    color: #ddd;
-}
+        .food-type-card p {
+            margin: 0;
+            color: #999;
+            font-size: 14px;
+            line-height: 1.6;
+        }
 
-.history-label {
-    color: #999;
-}
+        .food-type-arrow {
+            position: absolute;
+            right: 22px;
+            bottom: 22px;
 
-.history-value {
-    color: #fff;
-    text-align: right;
-}
+            color: #d4af37;
+            font-size: 24px;
+            font-weight: 700;
+        }
 
-.status-badge {
-    display: inline-block;
-    padding: 5px 10px;
-    border-radius: 20px;
-    font-size: 12px;
-    border: 1px solid #D4AF37;
-    color: #F4D77D;
-}
+        .section-title {
+            color: #f5f5f5;
+            margin: 0 0 15px;
+            font-size: 22px;
+        }
 
-.empty-history {
-    text-align: center;
-    color: #999;
-    padding: 35px 10px;
-}
+        /* ONLY FOR HISTORY */
 
-.dashboard-card {
-    cursor: pointer;
-}
+        .history-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(0,0,0,.82);
+            backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+            padding: 18px;
+        }
 
-.dashboard-card:hover {
-    transform: translateY(-3px);
-}
+        .history-modal.show {
+            display: flex;
+        }
 
-@media (max-width: 600px) {
-    .history-box {
-        padding: 17px;
-        max-height: 92vh;
-    }
+        .history-box {
+            width: 100%;
+            max-width: 850px;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: #111;
+            border: 1px solid #d4af37;
+            border-radius: 20px;
+            padding: 22px;
+            box-shadow: 0 20px 60px rgba(0,0,0,.6);
+        }
 
-    .history-row {
-        flex-direction: column;
-        gap: 3px;
-    }
+        .history-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
 
-    .history-value {
-        text-align: left;
-    }
-}
-</style>
+        .history-top h2 {
+            margin: 0;
+            color: #f4d77d;
+        }
+
+        .history-close {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 1px solid #d4af37;
+            background: transparent;
+            color: #f4d77d;
+            font-size: 22px;
+            cursor: pointer;
+        }
+
+        .history-card {
+            background: #080808;
+            border: 1px solid rgba(212,175,55,.25);
+            border-radius: 15px;
+            padding: 18px;
+            margin-bottom: 14px;
+        }
+
+        .history-card-title {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .history-card-title h3 {
+            margin: 0;
+            color: #f4d77d;
+        }
+
+        .history-status {
+            color: #f4d77d;
+            border: 1px solid #d4af37;
+            border-radius: 20px;
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+
+        .history-line {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 7px 0;
+            color: #eee;
+        }
+
+        .history-line span:first-child {
+            color: #999;
+        }
+
+        .history-line span:last-child {
+            text-align: right;
+        }
+
+        .history-empty {
+            text-align: center;
+            color: #999;
+            padding: 35px 10px;
+        }
+
+        @media (max-width: 650px) {
+            .food-type-grid {
+                grid-template-columns: 1fr;
+                gap: 13px;
+            }
+
+            .food-type-card {
+                padding: 21px;
+            }
+
+            .history-box {
+                padding: 17px;
+            }
+
+            .history-line {
+                flex-direction: column;
+                gap: 3px;
+            }
+
+            .history-line span:last-child {
+                text-align: left;
+            }
+
+            .history-card-title {
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
+
 
 <body>
 
+
 <header>
-    <div class="logo">
-        <span>NextTurn</span>
+
+    <div>
+
+        <h1>NextTurn</h1>
+
+        <p>
+            Student Dashboard • College Canteen
+        </p>
+
     </div>
 
-    <div class="header-right">
-        <button class="cart-btn" onclick="goToCart()">
-            🛒
-            <span id="cartBadge">0</span>
-        </button>
 
-        <button class="logout-btn" onclick="logout()">
-            Logout
-        </button>
-    </div>
+    <button
+        class="logout"
+        onclick="logout()"
+    >
+        Logout
+    </button>
+
 </header>
 
 
-<main class="student-container">
 
-    <section class="welcome-section">
-        <p class="small-heading">WELCOME BACK</p>
+<div class="container">
 
-        <h1>
-            Hello,
-            <span id="studentName">Student</span>
-        </h1>
 
-        <p class="welcome-text">
-            Order your favourite food and skip the queue.
+    <!-- WELCOME -->
+
+    <div class="welcome">
+
+        <h2 id="welcomeText">
+            Welcome!
+        </h2>
+
+        <p>
+            Choose your food type, place your order,
+            and skip the canteen queue.
         </p>
-    </section>
+
+    </div>
 
 
-    <!-- CURRENT ORDER -->
 
-    <section class="current-order-section">
+    <!-- FOOD TYPE -->
 
-        <div class="section-heading">
-            <h2>Current Order</h2>
-        </div>
+    <h2 class="section-title">
+        🍽 Choose Food Type
+    </h2>
 
-        <div id="currentOrderCard" class="current-order-card">
 
-            <div class="loading-text">
-                Checking current orders...
+    <div class="food-type-grid">
+
+
+        <div
+            class="food-type-card"
+            onclick="openFood('Veg')"
+        >
+
+            <div class="food-type-icon">
+                🥗
+            </div>
+
+            <h3>
+                Veg Food
+            </h3>
+
+            <p>
+                Browse vegetarian snacks, fast food,
+                meals and drinks.
+            </p>
+
+            <div class="food-type-arrow">
+                →
             </div>
 
         </div>
 
-    </section>
+
+
+        <div
+            class="food-type-card"
+            onclick="openFood('Non-Veg')"
+        >
+
+            <div class="food-type-icon">
+                🍗
+            </div>
+
+            <h3>
+                Non-Veg Food
+            </h3>
+
+            <p>
+                Browse chicken, egg and other
+                non-vegetarian food options.
+            </p>
+
+            <div class="food-type-arrow">
+                →
+            </div>
+
+        </div>
+
+
+    </div>
+
 
 
     <!-- DASHBOARD OPTIONS -->
 
-    <section class="dashboard-grid">
+    <div class="dashboard-grid">
 
-        <div class="dashboard-card" onclick="goToOrder()">
 
-            <div class="card-icon">
-                🍔
+        <div
+            class="dashboard-card"
+            onclick="goTo('cart.html')"
+        >
+
+            <div class="icon">
+                🛒
             </div>
 
-            <h3>Order Food</h3>
+            <span
+                id="cartBadge"
+                class="cart-badge"
+            >
+                0
+            </span>
+
+            <h3>
+                My Cart
+            </h3>
 
             <p>
-                Browse the menu and place a new order.
+                Review selected items, change quantity
+                and checkout.
             </p>
 
         </div>
 
 
-        <div class="dashboard-card" onclick="showHistory()">
 
-            <div class="card-icon">
-                📋
+        <div
+            class="dashboard-card"
+            onclick="showCurrentOrder()"
+        >
+
+            <div class="icon">
+                📦
             </div>
 
-            <h3>Order History</h3>
+            <h3>
+                Track Order
+            </h3>
 
             <p>
-                View all your previous and current orders.
+                Track your order status and token
+                in real time.
             </p>
 
         </div>
 
 
-        <div class="dashboard-card" onclick="showPaymentHistory()">
 
-            <div class="card-icon">
+        <div
+            class="dashboard-card"
+            onclick="showHistory()"
+        >
+
+            <div class="icon">
+                🧾
+            </div>
+
+            <h3>
+                Order History
+            </h3>
+
+            <p>
+                View your previous completed orders.
+            </p>
+
+        </div>
+
+
+
+        <div
+            class="dashboard-card"
+            onclick="showPaymentHistory()"
+        >
+
+            <div class="icon">
                 💳
             </div>
 
-            <h3>Payment History</h3>
+            <h3>
+                Payment History
+            </h3>
 
             <p>
-                View all your payment records.
+                View your previous payment details.
             </p>
 
         </div>
 
 
-        <div class="dashboard-card" onclick="showProfile()">
 
-            <div class="card-icon">
-                👤
-            </div>
+        <div
+            class="dashboard-card"
+            onclick="showNotifications()"
+        >
 
-            <h3>Profile</h3>
-
-            <p>
-                View your student information.
-            </p>
-
-        </div>
-
-
-        <div class="dashboard-card" onclick="showNotifications()">
-
-            <div class="card-icon">
+            <div class="icon">
                 🔔
             </div>
 
-            <h3>Notifications</h3>
+            <h3>
+                Notifications
+            </h3>
 
             <p>
-                Check your latest order updates.
+                Check important updates about
+                your orders.
             </p>
 
         </div>
 
-    </section>
-
-</main>
 
 
-<!-- ===============================
-     HISTORY MODAL
-     =============================== -->
+        <div
+            class="dashboard-card"
+            onclick="showProfile()"
+        >
 
-<div id="historyModal" class="history-modal">
+            <div class="icon">
+                👤
+            </div>
+
+            <h3>
+                My Profile
+            </h3>
+
+            <p>
+                View your student account information.
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- CURRENT ORDER -->
+
+    <div class="active-order">
+
+        <h2>
+            📦 Current Order
+        </h2>
+
+
+        <div id="readyAlert"></div>
+
+
+        <div id="currentOrder">
+
+            <div class="empty">
+
+                Checking your current order...
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- QUICK INFO -->
+
+    <div class="info-grid">
+
+
+        <div class="info-card">
+
+            <h3>
+                ⚡ Quick Ordering
+            </h3>
+
+            <p>
+                Order directly from your classroom
+                instead of waiting in a canteen queue.
+            </p>
+
+        </div>
+
+
+
+        <div class="info-card">
+
+            <h3>
+                🎟 Smart Token
+            </h3>
+
+            <p>
+                After payment verification, your unique
+                token is generated for collection.
+            </p>
+
+        </div>
+
+
+
+        <div class="info-card">
+
+            <h3>
+                🔔 Ready Notification
+            </h3>
+
+            <p>
+                Know when your food is ready so you
+                can collect it at the right time.
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- HISTORY MODAL -->
+
+<div
+    id="historyModal"
+    class="history-modal"
+>
 
     <div class="history-box">
 
-        <div class="history-header">
+        <div class="history-top">
 
             <h2 id="historyTitle">
                 Order History
             </h2>
 
             <button
-                class="close-history"
+                class="history-close"
                 onclick="closeHistory()"
             >
                 ×
@@ -298,7 +586,7 @@
 
         <div id="historyContent">
 
-            <div class="empty-history">
+            <div class="history-empty">
                 Loading...
             </div>
 
@@ -309,330 +597,499 @@
 </div>
 
 
+
 <script>
 
-const API = "https://nextturn-mgbf.onrender.com";
+const API =
+    "https://nextturn-mgbf.onrender.com";
 
 
-/* ===============================
-   STUDENT INFORMATION
-   =============================== */
+/* =========================
+   STUDENT
+========================= */
 
-const studentId =
-    localStorage.getItem("nextTurnStudentId") ||
-    localStorage.getItem("studentId");
-
-const studentName =
-    localStorage.getItem("nextTurnStudentName") ||
-    localStorage.getItem("studentName") ||
-    "Student";
+const student =
+    JSON.parse(
+        localStorage.getItem("nextTurnUser") || "{}"
+    );
 
 
-document.getElementById("studentName").textContent =
-    studentName;
+if (student.fullName) {
 
+    document
+        .getElementById("welcomeText")
+        .textContent =
+        "Welcome, " + student.fullName + "!";
 
-/* ===============================
-   NAVIGATION
-   =============================== */
-
-function goToOrder() {
-    window.location.href = "order.html";
 }
 
 
-function goToCart() {
-    window.location.href = "cart.html";
+
+/* =========================
+   OPEN VEG / NON-VEG
+========================= */
+
+function openFood(type) {
+
+    localStorage.setItem(
+        "nextTurnFoodType",
+        type
+    );
+
+    window.location.href =
+        "order.html?type=" +
+        encodeURIComponent(type);
+
 }
 
 
-/* ===============================
-   LOGOUT
-   =============================== */
 
-function logout() {
-
-    localStorage.removeItem("nextTurnUserRole");
-    localStorage.removeItem("nextTurnStudentId");
-    localStorage.removeItem("nextTurnStudentName");
-    localStorage.removeItem("nextTurnUser");
-
-    localStorage.removeItem("studentId");
-    localStorage.removeItem("studentName");
-
-    window.location.href = "login.html";
-}
-
-
-/* ===============================
-   CART BADGE
-   =============================== */
+/* =========================
+   CART COUNT
+========================= */
 
 function updateCartBadge() {
 
+    let cart = [];
+
     try {
 
-        const cart =
+        cart =
             JSON.parse(
-                localStorage.getItem("nextTurnCart") || "[]"
+                localStorage.getItem(
+                    "nextTurnCart"
+                ) || "[]"
             );
 
-        const count = cart.reduce(
-            (total, item) =>
-                total + Number(item.quantity || 1),
-            0
-        );
+    } catch (e) {
 
-        document.getElementById("cartBadge").textContent =
-            count;
-
-    } catch (error) {
-
-        document.getElementById("cartBadge").textContent =
-            "0";
+        cart = [];
 
     }
+
+
+    let count = 0;
+
+
+    cart.forEach(item => {
+
+        count += Number(
+            item.quantity || 1
+        );
+
+    });
+
+
+    const badge =
+        document.getElementById(
+            "cartBadge"
+        );
+
+
+    if (count > 0) {
+
+        badge.textContent = count;
+
+        badge.style.display = "flex";
+
+    } else {
+
+        badge.style.display = "none";
+
+    }
+
 }
 
 
-updateCartBadge();
 
-
-/* ===============================
+/* =========================
    CURRENT ORDER
-   =============================== */
+========================= */
 
 async function loadCurrentOrder() {
 
-    const card =
-        document.getElementById("currentOrderCard");
+    const studentId =
+        student.studentId || "STU001";
 
-    if (!studentId) {
 
-        card.innerHTML = `
-            <div class="empty-history">
-                Student information not found.
-            </div>
-        `;
+    const container =
+        document.getElementById(
+            "currentOrder"
+        );
 
-        return;
-    }
 
     try {
 
-        const response = await fetch(
-            `${API}/api/student/orders/current/${encodeURIComponent(studentId)}?t=${Date.now()}`,
-            {
-                cache: "no-store"
-            }
-        );
+        const response =
+            await fetch(
+                `${API}/api/student/orders/current/${encodeURIComponent(studentId)}?t=${Date.now()}`,
+                {
+                    cache: "no-store"
+                }
+            );
+
 
         if (response.status === 404) {
 
-            card.innerHTML = `
-                <div class="empty-history">
+            container.innerHTML = `
+
+                <div class="empty">
+
                     No active order right now.
+
+                    <br><br>
+
+                    Choose
+                    <b>🥗 Veg Food</b>
+                    or
+                    <b>🍗 Non-Veg Food</b>
+                    to place an order.
+
                 </div>
+
             `;
 
+
+            document
+                .getElementById(
+                    "readyAlert"
+                )
+                .innerHTML = "";
+
             return;
+
         }
+
+
 
         if (!response.ok) {
-            throw new Error("Failed to load current order");
+
+            throw new Error(
+                "Unable to load order"
+            );
+
         }
 
-        const order = await response.json();
 
-        renderCurrentOrder(order);
+
+        const order =
+            await response.json();
+
+
+        displayCurrentOrder(order);
+
 
     } catch (error) {
 
         console.error(error);
 
-        card.innerHTML = `
-            <div class="empty-history">
-                Unable to load current order.
+
+        container.innerHTML = `
+
+            <div class="empty">
+
+                Unable to load your current order.
+
+                <br><br>
+
+                Please try again.
+
             </div>
+
         `;
+
     }
+
 }
 
 
-function renderCurrentOrder(order) {
 
-    const card =
-        document.getElementById("currentOrderCard");
+/* =========================
+   DISPLAY CURRENT ORDER
+========================= */
 
-    let foodText = order.foodItems || "Food order";
+function displayCurrentOrder(order) {
 
-    try {
+    const container =
+        document.getElementById(
+            "currentOrder"
+        );
 
-        const items =
-            JSON.parse(order.foodItems);
 
-        if (Array.isArray(items)) {
+    const readyAlert =
+        document.getElementById(
+            "readyAlert"
+        );
 
-            foodText = items.map(item => {
 
-                let name = item.name || "Food";
+    const status =
+        order.orderStatus || "Unknown";
 
-                if (item.flavor) {
-                    name += ` - ${item.flavor}`;
-                }
 
-                const quantity =
-                    Number(item.quantity || 1);
+    let statusClass =
+        "pending";
 
-                return `${name} × ${quantity}`;
 
-            }).join(", ");
-        }
+    if (status === "Preparing") {
 
-    } catch (error) {
-        // Keep original text
+        statusClass =
+            "preparing";
+
     }
 
-    card.innerHTML = `
 
-        <div class="current-order-top">
+    if (status === "Ready") {
 
-            <div>
-                <span class="small-heading">
-                    ORDER #${order.id ?? "—"}
-                </span>
+        statusClass =
+            "ready";
 
-                <h3>
-                    ${foodText}
-                </h3>
+    }
+
+
+
+    if (status === "Ready") {
+
+        readyAlert.innerHTML = `
+
+            <div class="ready-alert">
+
+                <div class="big">
+
+                    🔔 Your food is ready!
+
+                </div>
+
+                Please collect your order from the
+                canteen using your token.
+
             </div>
 
-            <span class="status-badge">
-                ${order.orderStatus || "Processing"}
-            </span>
+        `;
 
-        </div>
+    } else {
 
+        readyAlert.innerHTML = "";
 
-        <div class="history-row">
-
-            <span class="history-label">
-                Payment
-            </span>
-
-            <span class="history-value">
-                ${order.paymentStatus || "Pending"}
-            </span>
-
-        </div>
+    }
 
 
-        <div class="history-row">
 
-            <span class="history-label">
-                Token
-            </span>
-
-            <span class="history-value">
-                ${order.tokenNumber || "Not generated"}
-            </span>
-
-        </div>
+    let tokenHTML = "";
 
 
-        <div class="history-row">
+    if (order.tokenNumber != null) {
 
-            <span class="history-label">
-                Total
-            </span>
+        tokenHTML = `
 
-            <span class="history-value">
-                ₹${Number(order.totalAmount || 0).toFixed(2)}
-            </span>
+            <div class="token">
+
+                Your Token
+
+                <strong>
+                    #${order.tokenNumber}
+                </strong>
+
+            </div>
+
+        `;
+
+    }
+
+
+
+    container.innerHTML = `
+
+        <div class="order-box">
+
+
+            <div class="order-row">
+
+                <span>
+                    Order ID
+                </span>
+
+                <strong>
+                    #${order.id || "-"}
+                </strong>
+
+            </div>
+
+
+
+            <div class="order-row">
+
+                <span>
+                    Payment
+                </span>
+
+                <strong>
+                    ${order.paymentStatus || "-"}
+                </strong>
+
+            </div>
+
+
+
+            <div class="order-row">
+
+                <span>
+                    Order Status
+                </span>
+
+                <span class="status ${statusClass}">
+                    ${status}
+                </span>
+
+            </div>
+
+
+
+            <div class="order-row">
+
+                <span>
+                    Total Amount
+                </span>
+
+                <strong>
+                    ₹${Number(
+                        order.totalAmount || 0
+                    ).toFixed(2)}
+                </strong>
+
+            </div>
+
+
+
+            ${tokenHTML}
+
 
         </div>
 
     `;
+
+}
+  <script>
+
+/* =========================
+   TRACK ORDER
+========================= */
+
+function showCurrentOrder() {
+
+    document
+        .querySelector(".active-order")
+        .scrollIntoView({
+            behavior: "smooth"
+        });
+
 }
 
 
-loadCurrentOrder();
 
-setInterval(loadCurrentOrder, 5000);
-
-setInterval(updateCartBadge, 1000);
-
-                </script>
-    <script>
-
-/* ===============================
-   LOAD ALL STUDENT ORDERS
-   =============================== */
+/* =========================
+   FETCH ALL STUDENT ORDERS
+========================= */
 
 async function fetchStudentOrders() {
 
-    if (!studentId) {
-        throw new Error("Student ID not found");
+    const studentId =
+        student.studentId || "STU001";
+
+
+    const response =
+        await fetch(
+            `${API}/api/student/orders/${encodeURIComponent(studentId)}?t=${Date.now()}`,
+            {
+                cache: "no-store"
+            }
+        );
+
+
+    if (!response.ok) {
+
+        throw new Error(
+            "Unable to load student orders"
+        );
+
     }
 
-    const response = await fetch(
-        `${API}/api/student/orders/${encodeURIComponent(studentId)}?t=${Date.now()}`,
-        {
-            cache: "no-store"
+
+    const orders =
+        await response.json();
+
+
+    /*
+       Latest order first
+       Backend already does this,
+       but we sort again here so the
+       frontend always displays latest first.
+    */
+
+    orders.sort(
+        (a, b) => {
+
+            const dateA =
+                a.createdAt
+                    ? new Date(a.createdAt).getTime()
+                    : 0;
+
+            const dateB =
+                b.createdAt
+                    ? new Date(b.createdAt).getTime()
+                    : 0;
+
+
+            if (
+                dateA &&
+                dateB &&
+                dateA !== dateB
+            ) {
+
+                return dateB - dateA;
+
+            }
+
+
+            return Number(b.id || 0) -
+                   Number(a.id || 0);
+
         }
     );
 
-    if (!response.ok) {
-        throw new Error("Unable to load student orders");
-    }
-
-    const orders = await response.json();
-
-
-    /* ===============================
-       LATEST → OLDEST
-       =============================== */
-
-    orders.sort((a, b) => {
-
-        const dateA =
-            a.createdAt
-                ? new Date(a.createdAt).getTime()
-                : 0;
-
-        const dateB =
-            b.createdAt
-                ? new Date(b.createdAt).getTime()
-                : 0;
-
-        if (dateA && dateB && dateA !== dateB) {
-            return dateB - dateA;
-        }
-
-        return Number(b.id || 0) -
-               Number(a.id || 0);
-    });
 
     return orders;
+
 }
 
 
-/* ===============================
+
+/* =========================
    DATE FORMAT
-   =============================== */
+========================= */
 
-function formatDate(dateValue) {
+function formatHistoryDate(value) {
 
-    if (!dateValue) {
+    if (!value) {
+
         return "Date unavailable";
+
     }
+
 
     const date =
-        new Date(dateValue);
+        new Date(value);
 
-    if (Number.isNaN(date.getTime())) {
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+
         return "Date unavailable";
+
     }
+
 
     return date.toLocaleString(
         "en-IN",
@@ -644,18 +1101,23 @@ function formatDate(dateValue) {
             minute: "2-digit"
         }
     );
+
 }
 
 
-/* ===============================
-   FOOD ITEMS FORMATTER
-   =============================== */
 
-function formatFoodItems(foodItems) {
+/* =========================
+   FOOD FORMAT
+========================= */
+
+function formatHistoryFood(foodItems) {
 
     if (!foodItems) {
+
         return "No food information";
+
     }
+
 
     try {
 
@@ -664,58 +1126,92 @@ function formatFoodItems(foodItems) {
                 ? JSON.parse(foodItems)
                 : foodItems;
 
+
         if (!Array.isArray(items)) {
+
             return String(foodItems);
+
         }
 
-        return items.map(item => {
 
-            let name =
-                item.name || "Food";
+        return items
+            .map(item => {
 
-            if (item.flavor) {
-                name +=
-                    ` - ${item.flavor}`;
-            }
+                let name =
+                    item.name || "Food";
 
-            const quantity =
-                Number(item.quantity || 1);
 
-            return `${name} × ${quantity}`;
+                if (item.flavor) {
 
-        }).join("<br>");
+                    name +=
+                        " - " +
+                        item.flavor;
+
+                }
+
+
+                const quantity =
+                    Number(
+                        item.quantity || 1
+                    );
+
+
+                return (
+                    name +
+                    " × " +
+                    quantity
+                );
+
+            })
+            .join("<br>");
 
     } catch (error) {
 
         return String(foodItems);
+
     }
+
 }
 
 
-/* ===============================
+
+/* =========================
    ORDER HISTORY
-   =============================== */
+========================= */
 
 async function showHistory() {
 
     const modal =
-        document.getElementById("historyModal");
+        document.getElementById(
+            "historyModal"
+        );
+
 
     const title =
-        document.getElementById("historyTitle");
+        document.getElementById(
+            "historyTitle"
+        );
+
 
     const content =
-        document.getElementById("historyContent");
+        document.getElementById(
+            "historyContent"
+        );
+
 
     title.textContent =
         "Order History";
 
+
     modal.classList.add("show");
 
+
     content.innerHTML = `
-        <div class="empty-history">
+
+        <div class="history-empty">
             Loading your orders...
         </div>
+
     `;
 
 
@@ -728,168 +1224,213 @@ async function showHistory() {
         if (!orders.length) {
 
             content.innerHTML = `
-                <div class="empty-history">
+
+                <div class="history-empty">
+
                     No orders found.
+
                 </div>
+
             `;
 
             return;
+
         }
 
 
         content.innerHTML =
-            orders.map(order => `
+            orders
+                .map(order => `
 
-                <div class="history-item">
+                    <div class="history-card">
 
-                    <div class="history-header">
+                        <div class="history-card-title">
 
-                        <h3>
-                            Order #${order.id ?? "—"}
-                        </h3>
+                            <h3>
+                                Order #${order.id || "-"}
+                            </h3>
 
-                        <span class="status-badge">
-                            ${order.orderStatus || "Unknown"}
-                        </span>
+                            <span class="history-status">
+                                ${order.orderStatus || "Unknown"}
+                            </span>
+
+                        </div>
+
+
+                        <div class="history-line">
+
+                            <span>
+                                Date
+                            </span>
+
+                            <span>
+                                ${formatHistoryDate(
+                                    order.createdAt
+                                )}
+                            </span>
+
+                        </div>
+
+
+                        <div class="history-line">
+
+                            <span>
+                                Food
+                            </span>
+
+                            <span>
+                                ${formatHistoryFood(
+                                    order.foodItems
+                                )}
+                            </span>
+
+                        </div>
+
+
+                        <div class="history-line">
+
+                            <span>
+                                Payment
+                            </span>
+
+                            <span>
+                                ${order.paymentStatus || "Unknown"}
+                            </span>
+
+                        </div>
+
+
+                        <div class="history-line">
+
+                            <span>
+                                Token
+                            </span>
+
+                            <span>
+                                ${
+                                    order.tokenNumber != null
+                                        ? "#" + order.tokenNumber
+                                        : "Not generated"
+                                }
+                            </span>
+
+                        </div>
+
+
+                        <div class="history-line">
+
+                            <span>
+                                Subtotal
+                            </span>
+
+                            <span>
+                                ₹${Number(
+                                    order.subtotal || 0
+                                ).toFixed(2)}
+                            </span>
+
+                        </div>
+
+
+                        <div class="history-line">
+
+                            <span>
+                                Service Charge
+                            </span>
+
+                            <span>
+                                ₹${Number(
+                                    order.serviceCharge || 0
+                                ).toFixed(2)}
+                            </span>
+
+                        </div>
+
+
+                        <div class="history-line">
+
+                            <span>
+                                Total
+                            </span>
+
+                            <span>
+                                ₹${Number(
+                                    order.totalAmount || 0
+                                ).toFixed(2)}
+                            </span>
+
+                        </div>
 
                     </div>
 
+                `)
+                .join("");
 
-                    <div class="history-row">
-
-                        <span class="history-label">
-                            Date
-                        </span>
-
-                        <span class="history-value">
-                            ${formatDate(order.createdAt)}
-                        </span>
-
-                    </div>
-
-
-                    <div class="history-row">
-
-                        <span class="history-label">
-                            Food
-                        </span>
-
-                        <span class="history-value">
-                            ${formatFoodItems(order.foodItems)}
-                        </span>
-
-                    </div>
-
-
-                    <div class="history-row">
-
-                        <span class="history-label">
-                            Payment
-                        </span>
-
-                        <span class="history-value">
-                            ${order.paymentStatus || "Unknown"}
-                        </span>
-
-                    </div>
-
-
-                    <div class="history-row">
-
-                        <span class="history-label">
-                            Token
-                        </span>
-
-                        <span class="history-value">
-                            ${order.tokenNumber || "Not generated"}
-                        </span>
-
-                    </div>
-
-
-                    <div class="history-row">
-
-                        <span class="history-label">
-                            Subtotal
-                        </span>
-
-                        <span class="history-value">
-                            ₹${Number(order.subtotal || 0).toFixed(2)}
-                        </span>
-
-                    </div>
-
-
-                    <div class="history-row">
-
-                        <span class="history-label">
-                            Service Charge
-                        </span>
-
-                        <span class="history-value">
-                            ₹${Number(order.serviceCharge || 0).toFixed(2)}
-                        </span>
-
-                    </div>
-
-
-                    <div class="history-row">
-
-                        <span class="history-label">
-                            Total
-                        </span>
-
-                        <span class="history-value">
-                            ₹${Number(order.totalAmount || 0).toFixed(2)}
-                        </span>
-
-                    </div>
-
-                </div>
-
-            `).join("");
 
     } catch (error) {
 
         console.error(error);
 
+
         content.innerHTML = `
-            <div class="empty-history">
+
+            <div class="history-empty">
+
                 Unable to load order history.
+
                 <br><br>
+
                 Please try again.
+
             </div>
+
         `;
+
     }
+
 }
 
 
-/* ===============================
+
+/* =========================
    PAYMENT HISTORY
-   =============================== */
+========================= */
 
 async function showPaymentHistory() {
 
     const modal =
-        document.getElementById("historyModal");
+        document.getElementById(
+            "historyModal"
+        );
+
 
     const title =
-        document.getElementById("historyTitle");
+        document.getElementById(
+            "historyTitle"
+        );
+
 
     const content =
-        document.getElementById("historyContent");
+        document.getElementById(
+            "historyContent"
+        );
 
 
     title.textContent =
         "Payment History";
 
+
     modal.classList.add("show");
 
 
     content.innerHTML = `
-        <div class="empty-history">
-            Loading payment history...
+
+        <div class="history-empty">
+
+            Loading your payment history...
+
         </div>
+
     `;
 
 
@@ -902,144 +1443,189 @@ async function showPaymentHistory() {
         if (!orders.length) {
 
             content.innerHTML = `
-                <div class="empty-history">
+
+                <div class="history-empty">
+
                     No payment history found.
+
                 </div>
+
             `;
 
             return;
+
         }
 
 
         content.innerHTML =
-            orders.map(order => `
+            orders
+                .map(order => `
 
-                <div class="history-item">
+                    <div class="history-card">
 
-                    <div class="history-header">
+                        <div class="history-card-title">
 
-                        <h3>
-                            Payment #${order.id ?? "—"}
-                        </h3>
+                            <h3>
+                                Payment #${order.id || "-"}
+                            </h3>
 
-                        <span class="status-badge">
-                            ${order.paymentStatus || "Unknown"}
-                        </span>
+                            <span class="history-status">
+                                ${order.paymentStatus || "Unknown"}
+                            </span>
+
+                        </div>
+
+
+                        <div class="history-line">
+
+                            <span>
+                                Date
+                            </span>
+
+                            <span>
+                                ${formatHistoryDate(
+                                    order.createdAt
+                                )}
+                            </span>
+
+                        </div>
+
+
+                        <div class="history-line">
+
+                            <span>
+                                Order ID
+                            </span>
+
+                            <span>
+                                #${order.id || "-"}
+                            </span>
+
+                        </div>
+
+
+                        <div class="history-line">
+
+                            <span>
+                                Order Status
+                            </span>
+
+                            <span>
+                                ${order.orderStatus || "Unknown"}
+                            </span>
+
+                        </div>
+
+
+                        <div class="history-line">
+
+                            <span>
+                                Subtotal
+                            </span>
+
+                            <span>
+                                ₹${Number(
+                                    order.subtotal || 0
+                                ).toFixed(2)}
+                            </span>
+
+                        </div>
+
+
+                        <div class="history-line">
+
+                            <span>
+                                Service Charge
+                            </span>
+
+                            <span>
+                                ₹${Number(
+                                    order.serviceCharge || 0
+                                ).toFixed(2)}
+                            </span>
+
+                        </div>
+
+
+                        <div class="history-line">
+
+                            <span>
+                                Total Paid
+                            </span>
+
+                            <span>
+                                ₹${Number(
+                                    order.totalAmount || 0
+                                ).toFixed(2)}
+                            </span>
+
+                        </div>
+
+
+                        <div class="history-line">
+
+                            <span>
+                                Token
+                            </span>
+
+                            <span>
+                                ${
+                                    order.tokenNumber != null
+                                        ? "#" + order.tokenNumber
+                                        : "Not generated"
+                                }
+                            </span>
+
+                        </div>
 
                     </div>
 
+                `)
+                .join("");
 
-                    <div class="history-row">
-
-                        <span class="history-label">
-                            Date
-                        </span>
-
-                        <span class="history-value">
-                            ${formatDate(order.createdAt)}
-                        </span>
-
-                    </div>
-
-
-                    <div class="history-row">
-
-                        <span class="history-label">
-                            Order Status
-                        </span>
-
-                        <span class="history-value">
-                            ${order.orderStatus || "Unknown"}
-                        </span>
-
-                    </div>
-
-
-                    <div class="history-row">
-
-                        <span class="history-label">
-                            Subtotal
-                        </span>
-
-                        <span class="history-value">
-                            ₹${Number(order.subtotal || 0).toFixed(2)}
-                        </span>
-
-                    </div>
-
-
-                    <div class="history-row">
-
-                        <span class="history-label">
-                            Service Charge
-                        </span>
-
-                        <span class="history-value">
-                            ₹${Number(order.serviceCharge || 0).toFixed(2)}
-                        </span>
-
-                    </div>
-
-
-                    <div class="history-row">
-
-                        <span class="history-label">
-                            Total Paid
-                        </span>
-
-                        <span class="history-value">
-                            ₹${Number(order.totalAmount || 0).toFixed(2)}
-                        </span>
-
-                    </div>
-
-
-                    <div class="history-row">
-
-                        <span class="history-label">
-                            Token
-                        </span>
-
-                        <span class="history-value">
-                            ${order.tokenNumber || "Not generated"}
-                        </span>
-
-                    </div>
-
-                </div>
-
-            `).join("");
 
     } catch (error) {
 
         console.error(error);
 
+
         content.innerHTML = `
-            <div class="empty-history">
+
+            <div class="history-empty">
+
                 Unable to load payment history.
+
                 <br><br>
+
                 Please try again.
+
             </div>
+
         `;
+
     }
+
 }
 
 
-/* ===============================
-   CLOSE HISTORY MODAL
-   =============================== */
+
+/* =========================
+   CLOSE HISTORY
+========================= */
 
 function closeHistory() {
 
     document
         .getElementById("historyModal")
         .classList.remove("show");
+
 }
 
 
-/* ===============================
-   CLOSE WHEN CLICKING OUTSIDE
-   =============================== */
+
+/* =========================
+   CLOSE MODAL OUTSIDE
+========================= */
 
 document
     .getElementById("historyModal")
@@ -1047,106 +1633,167 @@ document
         "click",
         function(event) {
 
-            if (event.target === this) {
+            if (
+                event.target === this
+            ) {
+
                 closeHistory();
+
             }
 
         }
     );
 
 
-/* ===============================
+
+/* =========================
+   NOTIFICATIONS
+========================= */
+
+function showNotifications() {
+
+    const alertBox =
+        document.getElementById(
+            "readyAlert"
+        );
+
+
+    if (
+        alertBox.innerHTML.trim() !== ""
+    ) {
+
+        alertBox.scrollIntoView({
+            behavior: "smooth"
+        });
+
+    } else {
+
+        alert(
+            "No new notifications."
+        );
+
+    }
+
+}
+
+
+
+/* =========================
    PROFILE
-   =============================== */
+========================= */
 
 function showProfile() {
 
+    const name =
+        student.fullName || "Student";
+
+
+    const id =
+        student.studentId || "-";
+
+
+    const email =
+        student.email || "-";
+
+
     alert(
-        "Student Profile\n\n" +
-        "Name: " + studentName + "\n" +
-        "Student ID: " + (studentId || "Not available")
+
+        "My Profile\n\n" +
+
+        "Name: " +
+        name +
+        "\n" +
+
+        "Student ID: " +
+        id +
+        "\n" +
+
+        "Email: " +
+        email
+
     );
+
 }
 
 
-/* ===============================
-   NOTIFICATIONS
-   =============================== */
 
-async function showNotifications() {
+/* =========================
+   NAVIGATION
+========================= */
 
-    try {
+function goTo(page) {
 
-        const orders =
-            await fetchStudentOrders();
+    window.location.href = page;
 
-        if (!orders.length) {
-
-            alert("No notifications available.");
-
-            return;
-        }
-
-        const latest =
-            orders[0];
-
-        alert(
-            "Latest Order Update\n\n" +
-            "Order #" + (latest.id || "—") +
-            "\nStatus: " +
-            (latest.orderStatus || "Unknown") +
-            "\nPayment: " +
-            (latest.paymentStatus || "Unknown") +
-            (latest.tokenNumber
-                ? "\nToken: " + latest.tokenNumber
-                : "")
-        );
-
-    } catch (error) {
-
-        alert(
-            "Unable to load notifications."
-        );
-    }
 }
 
-    </script>
-    <script>
 
-/* ===============================
-   AUTO REFRESH
-   =============================== */
+
+/* =========================
+   LOGOUT
+========================= */
+
+function logout() {
+
+    localStorage.removeItem(
+        "nextTurnUser"
+    );
+
+
+    localStorage.removeItem(
+        "nextTurnCurrentOrder"
+    );
+
+
+    window.location.href =
+        "login.html";
+
+   } 
+   <script>
+
+/* =========================
+   START
+========================= */
+
+updateCartBadge();
+
+loadCurrentOrder();
+
+
+/* =========================
+   AUTO REFRESH CURRENT ORDER
+========================= */
 
 setInterval(
-    () => {
-        loadCurrentOrder();
-    },
+    loadCurrentOrder,
     5000
 );
 
 
-/* ===============================
-   UPDATE CART COUNT
-   =============================== */
+/* =========================
+   AUTO REFRESH CART
+========================= */
 
 setInterval(
-    () => {
-        updateCartBadge();
-    },
+    updateCartBadge,
     1000
 );
 
 
-/* ===============================
-   ESC KEY CLOSE
-   =============================== */
+/* =========================
+   ESCAPE KEY
+========================= */
 
 document.addEventListener(
     "keydown",
     function(event) {
 
-        if (event.key === "Escape") {
+        if (
+            event.key === "Escape"
+        ) {
+
             closeHistory();
+
         }
 
     }
@@ -1154,5 +1801,7 @@ document.addEventListener(
 
 </script>
 
+
 </body>
+
 </html>
