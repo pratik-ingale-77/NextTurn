@@ -1,529 +1,826 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
-
-<title>NextTurn | Staff Dashboard</title>
+<title>NextTurn Staff Dashboard</title>
 
 <style>
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
 }
 
-body {
-    font-family: Arial, sans-serif;
-    background: #080808;
-    color: #f5f5f5;
-    min-height: 100vh;
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#080808;
+    color:#f5f5f5;
+    min-height:100vh;
 }
 
-header {
-    background: #080808;
-    border-bottom: 1px solid rgba(212,175,55,0.25);
-    padding: 18px 20px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
+header{
+    background:#0d0d0d;
+    border-bottom:1px solid #2b2410;
+    padding:18px 24px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    position:sticky;
+    top:0;
+    z-index:100;
 }
 
-.header-inner {
-    max-width: 1200px;
-    margin: auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.logo{
+    color:#d4af37;
+    font-size:25px;
+    font-weight:800;
+    letter-spacing:.5px;
 }
 
-.logo {
-    color: #d4af37;
-    font-size: 26px;
-    font-weight: 800;
+.staff-label{
+    color:#9a9a9a;
+    font-size:13px;
+    margin-top:3px;
 }
 
-.staff-label {
-    color: #9a9a9a;
-    font-size: 14px;
+.logout-btn{
+    background:transparent;
+    color:#d4af37;
+    border:1px solid #d4af37;
+    padding:9px 16px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:600;
 }
 
-.container {
-    max-width: 1200px;
-    margin: auto;
-    padding: 30px 20px 60px;
+.logout-btn:hover{
+    background:#d4af37;
+    color:#080808;
 }
 
-.page-title {
-    font-size: 32px;
-    margin-bottom: 8px;
+.container{
+    width:min(1200px,94%);
+    margin:25px auto 50px;
 }
 
-.subtitle {
-    color: #9a9a9a;
-    margin-bottom: 25px;
+.tabs{
+    display:flex;
+    gap:10px;
+    margin-bottom:24px;
 }
 
-.tabs {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 25px;
+.tab{
+    padding:12px 25px;
+    border:1px solid #3a3016;
+    background:#111;
+    color:#aaa;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:700;
 }
 
-.tab-btn {
-    padding: 12px 24px;
-    border-radius: 10px;
-    border: 1px solid #333;
-    background: #111;
-    color: #aaa;
-    cursor: pointer;
-    font-weight: 700;
+.tab.active{
+    background:#d4af37;
+    color:#080808;
+    border-color:#d4af37;
 }
 
-.tab-btn.active {
-    background: linear-gradient(
-        135deg,
-        #d4af37,
-        #f4d77d
-    );
-    color: #080808;
-    border-color: #d4af37;
+.section{
+    display:none;
 }
 
-.section {
-    display: none;
+.section.active{
+    display:block;
 }
 
-.section.active {
-    display: block;
+.section-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
 }
 
-.card {
-    background: #111;
-    border: 1px solid rgba(212,175,55,0.18);
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 16px;
+.section-title h2{
+    font-size:23px;
+    color:#f4d77d;
 }
 
-.card-title {
-    color: #f4d77d;
-    font-size: 20px;
-    margin-bottom: 5px;
+.refresh-text{
+    color:#777;
+    font-size:12px;
 }
 
-.card-subtitle {
-    color: #888;
-    font-size: 13px;
-    margin-bottom: 18px;
+.orders-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:18px;
 }
 
-.order-card {
-    background: #111;
-    border: 1px solid #242424;
-    border-radius: 15px;
-    padding: 20px;
-    margin-bottom: 15px;
+.order-card{
+    background:#111;
+    border:1px solid #29220e;
+    border-radius:15px;
+    padding:19px;
+    box-shadow:0 8px 25px rgba(0,0,0,.25);
 }
 
-.order-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 15px;
+.order-card:hover{
+    border-color:#6e5a1b;
 }
 
-.order-id {
-    color: #f4d77d;
-    font-weight: 800;
+.order-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:10px;
+    margin-bottom:15px;
 }
 
-.status {
-    padding: 6px 10px;
-    border-radius: 20px;
-    background: #191919;
-    color: #f4d77d;
-    font-size: 12px;
+.order-id{
+    color:#f4d77d;
+    font-size:18px;
+    font-weight:800;
 }
 
-.order-info {
-    color: #aaa;
-    line-height: 1.7;
-    font-size: 14px;
-    margin-bottom: 15px;
+.order-date{
+    color:#777;
+    font-size:11px;
+    margin-top:5px;
 }
 
-.order-items {
-    color: #ddd;
-    margin-bottom: 15px;
-    line-height: 1.7;
+.status{
+    padding:6px 9px;
+    border-radius:7px;
+    font-size:11px;
+    font-weight:700;
+    background:#201b0b;
+    color:#d4af37;
+    border:1px solid #514218;
 }
 
-.action-row {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
+.order-info{
+    border-top:1px solid #222;
+    border-bottom:1px solid #222;
+    padding:12px 0;
+    margin-bottom:14px;
 }
 
-.action-btn {
-    padding: 10px 15px;
-    border-radius: 9px;
-    border: 1px solid #333;
-    background: #181818;
-    color: #ddd;
-    cursor: pointer;
-    font-weight: 700;
+.info-row{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    margin:7px 0;
+    font-size:13px;
 }
 
-.action-btn:hover {
-    border-color: #d4af37;
-    color: #f4d77d;
+.info-row span:first-child{
+    color:#777;
 }
 
-.action-btn.primary {
-    background: linear-gradient(
-        135deg,
-        #d4af37,
-        #f4d77d
-    );
-    color: #080808;
-    border-color: #d4af37;
+.info-row span:last-child{
+    color:#eee;
+    text-align:right;
 }
 
-.action-btn.danger {
-    color: #ff9a9a;
+.total{
+    color:#f4d77d!important;
+    font-weight:800;
 }
 
-.action-btn.success {
-    color: #9affb0;
+.view-btn{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:9px;
+    background:#d4af37;
+    color:#080808;
+    font-weight:800;
+    cursor:pointer;
+    margin-top:5px;
 }
 
-.menu-grid {
-    display: grid;
-    grid-template-columns:
-        repeat(
-            auto-fit,
-            minmax(280px, 1fr)
-        );
-    gap: 16px;
+.view-btn:hover{
+    background:#f4d77d;
 }
 
-.food-card {
-    background: #111;
-    border: 1px solid #242424;
-    border-radius: 15px;
-    padding: 18px;
+.empty{
+    text-align:center;
+    padding:55px 20px;
+    color:#777;
+    border:1px dashed #332a12;
+    border-radius:15px;
 }
 
-.food-name {
-    font-size: 19px;
-    font-weight: 800;
-    margin-bottom: 5px;
+.loading{
+    text-align:center;
+    padding:50px;
+    color:#d4af37;
 }
 
-.food-category {
-    color: #888;
-    font-size: 13px;
-    margin-bottom: 10px;
+.menu-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:16px;
 }
 
-.food-price {
-    color: #f4d77d;
-    font-weight: 800;
-    font-size: 18px;
-    margin-bottom: 15px;
+.food-card{
+    background:#111;
+    border:1px solid #29220e;
+    border-radius:14px;
+    padding:17px;
 }
 
-.flavor-group {
-    background: #0d0d0d;
-    border: 1px solid rgba(212,175,55,0.25);
-    border-radius: 14px;
-    padding: 18px;
-    margin-bottom: 16px;
+.food-name{
+    color:#f4d77d;
+    font-size:17px;
+    font-weight:800;
 }
 
-.flavor-group-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-    gap: 10px;
+.food-meta{
+    color:#999;
+    font-size:13px;
+    margin:7px 0 14px;
 }
 
-.flavor-group-name {
-    color: #f4d77d;
-    font-size: 21px;
-    font-weight: 800;
+.food-actions{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
 }
 
-.flavor-count {
-    color: #888;
-    font-size: 12px;
+.small-btn{
+    border:1px solid #d4af37;
+    background:transparent;
+    color:#d4af37;
+    border-radius:7px;
+    padding:8px 11px;
+    cursor:pointer;
+    font-size:12px;
+    font-weight:700;
 }
 
-.flavor-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-    padding: 13px 0;
-    border-top: 1px solid #222;
+.small-btn:hover{
+    background:#d4af37;
+    color:#080808;
 }
 
-.flavor-info {
-    min-width: 0;
+.available{
+    color:#7bd88f;
 }
 
-.flavor-name {
-    font-size: 15px;
-    font-weight: 700;
+.unavailable{
+    color:#ff7676;
 }
 
-.flavor-price {
-    color: #888;
-    font-size: 13px;
-    margin-top: 4px;
+.modal-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.78);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:15px;
+    z-index:500;
 }
 
-.availability {
-    font-size: 12px;
-    margin-top: 5px;
-    font-weight: 700;
+.modal-overlay.show{
+    display:flex;
 }
 
-.available {
-    color: #8cffaa;
+.modal{
+    width:min(700px,100%);
+    max-height:92vh;
+    overflow-y:auto;
+    background:#101010;
+    border:1px solid #5b4916;
+    border-radius:17px;
+    padding:22px;
+    box-shadow:0 20px 70px rgba(0,0,0,.65);
 }
 
-.unavailable {
-    color: #ff8c8c;
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin-bottom:20px;
 }
 
-.empty {
-    text-align: center;
-    padding: 45px 20px;
-    color: #777;
+.modal-header h2{
+    color:#f4d77d;
+    font-size:22px;
 }
 
-.loading {
-    text-align: center;
-    padding: 35px;
-    color: #888;
+.close-btn{
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    border:1px solid #555;
+    background:#181818;
+    color:#fff;
+    cursor:pointer;
+    font-size:18px;
 }
 
-@media (max-width: 600px) {
+.details-section{
+    background:#151515;
+    border:1px solid #282828;
+    border-radius:12px;
+    padding:15px;
+    margin-bottom:14px;
+}
 
-    header {
-        padding: 15px;
+.details-section h3{
+    color:#d4af37;
+    font-size:14px;
+    margin-bottom:12px;
+}
+
+.details-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+}
+
+.detail-box{
+    background:#0c0c0c;
+    border-radius:8px;
+    padding:10px;
+}
+
+.detail-label{
+    color:#777;
+    font-size:11px;
+    margin-bottom:4px;
+}
+
+.detail-value{
+    color:#eee;
+    font-size:13px;
+    word-break:break-word;
+}
+
+.items-list{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.item-row{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    padding:9px 0;
+    border-bottom:1px solid #242424;
+    font-size:13px;
+}
+
+.item-row:last-child{
+    border-bottom:none;
+}
+
+.item-name{
+    color:#eee;
+}
+
+.item-price{
+    color:#f4d77d;
+    white-space:nowrap;
+}
+
+.payment-image{
+    width:100%;
+    max-height:450px;
+    object-fit:contain;
+    border-radius:10px;
+    background:#050505;
+    border:1px solid #29220e;
+}
+
+.no-image{
+    color:#777;
+    text-align:center;
+    padding:25px;
+    border:1px dashed #333;
+    border-radius:10px;
+}
+
+.modal-actions{
+    display:flex;
+    gap:10px;
+    margin-top:18px;
+}
+
+.verify-btn{
+    flex:1;
+    padding:13px;
+    border:none;
+    border-radius:9px;
+    background:#d4af37;
+    color:#080808;
+    font-weight:800;
+    cursor:pointer;
+}
+
+.verify-btn:hover{
+    background:#f4d77d;
+}
+
+.cancel-btn{
+    padding:13px 18px;
+    border:1px solid #555;
+    border-radius:9px;
+    background:#181818;
+    color:#ddd;
+    cursor:pointer;
+}
+
+.action-row{
+    display:flex;
+    gap:8px;
+    margin-top:12px;
+    flex-wrap:wrap;
+}
+
+.action-btn{
+    flex:1;
+    min-width:120px;
+    padding:10px;
+    border-radius:8px;
+    border:1px solid #d4af37;
+    background:transparent;
+    color:#d4af37;
+    cursor:pointer;
+    font-weight:700;
+    font-size:12px;
+}
+
+.action-btn:hover{
+    background:#d4af37;
+    color:#080808;
+}
+
+.flavor-list{
+    margin-top:14px;
+    border-top:1px solid #252525;
+    padding-top:12px;
+}
+
+.flavor-title{
+    color:#d4af37;
+    font-size:12px;
+    margin-bottom:8px;
+}
+
+.flavor-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:8px 0;
+    border-bottom:1px solid #202020;
+}
+
+@media(max-width:600px){
+
+    header{
+        padding:15px;
     }
 
-    .container {
-        padding: 22px 14px 45px;
+    .logo{
+        font-size:21px;
     }
 
-    .page-title {
-        font-size: 27px;
+    .container{
+        width:94%;
+        margin-top:18px;
     }
 
-    .tabs {
-        width: 100%;
+    .tabs{
+        width:100%;
     }
 
-    .tab-btn {
-        flex: 1;
-        padding: 11px 10px;
+    .tab{
+        flex:1;
+        text-align:center;
+        padding:11px 10px;
     }
 
-    .order-header {
-        align-items: flex-start;
-        flex-direction: column;
+    .orders-grid,
+    .menu-grid{
+        grid-template-columns:1fr;
     }
 
-    .flavor-row {
-        align-items: flex-start;
-        flex-direction: column;
+    .details-grid{
+        grid-template-columns:1fr;
     }
 
-    .flavor-row .action-btn {
-        width: 100%;
+    .modal{
+        padding:16px;
+        border-radius:13px;
     }
 
+    .modal-actions{
+        flex-direction:column;
+    }
+
+    .cancel-btn{
+        width:100%;
+    }
 }
-
 </style>
-
 </head>
 
 <body>
 
 <header>
-
-    <div class="header-inner">
-
-        <div class="logo">
-            NextTurn
-        </div>
-
-        <div class="staff-label">
-            Staff Dashboard
-        </div>
-
+    <div>
+        <div class="logo">NextTurn</div>
+        <div class="staff-label">Staff Dashboard</div>
     </div>
 
+    <button class="logout-btn" onclick="logout()">Logout</button>
 </header>
 
 <div class="container">
 
-    <h1 class="page-title">
-        Staff Dashboard
-    </h1>
-
-    <p class="subtitle">
-        Manage orders and canteen menu availability
-    </p>
-
     <div class="tabs">
-
-        <button
-            id="ordersTab"
-            class="tab-btn active"
-            onclick="showSection('orders')"
-        >
+        <button class="tab active" onclick="showSection('orders',this)">
             Orders
         </button>
 
-        <button
-            id="menuTab"
-            class="tab-btn"
-            onclick="showSection('menu')"
-        >
+        <button class="tab" onclick="showSection('menu',this)">
             Menu
         </button>
-
     </div>
 
-    <section
-        id="ordersSection"
-        class="section active"
-    >
+    <section id="orders" class="section active">
 
-        <div class="card">
+        <div class="section-title">
+            <h2>Incoming Orders</h2>
+            <div class="refresh-text">Auto refresh: 10 sec</div>
+        </div>
 
-            <div class="card-title">
-                Orders
-            </div>
+        <div id="ordersContainer" class="orders-grid">
+            <div class="loading">Loading orders...</div>
+        </div>
 
-            <div class="card-subtitle">
-                Verify payments and manage order status
-            </div>
+    </section>
 
-            <div id="ordersContainer">
+    <section id="menu" class="section">
 
-                <div class="loading">
-                    Loading orders...
+        <div class="section-title">
+            <h2>Food Menu</h2>
+            <div class="refresh-text">Live availability</div>
+        </div>
+
+        <div id="menuContainer" class="menu-grid">
+            <div class="loading">Loading menu...</div>
+        </div>
+
+    </section>
+
+    </div>
+    <!-- ORDER DETAILS MODAL -->
+
+<div id="orderModal" class="modal-overlay">
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <h2 id="modalTitle">
+                Order Details
+            </h2>
+
+            <button class="close-btn" onclick="closeOrderModal()">
+                ×
+            </button>
+
+        </div>
+
+        <!-- STUDENT DETAILS -->
+
+        <div class="details-section">
+
+            <h3>Student Information</h3>
+
+            <div class="details-grid">
+
+                <div class="detail-box">
+                    <div class="detail-label">
+                        Name
+                    </div>
+
+                    <div class="detail-value" id="studentName">
+                        -
+                    </div>
+                </div>
+
+                <div class="detail-box">
+                    <div class="detail-label">
+                        Student ID
+                    </div>
+
+                    <div class="detail-value" id="studentId">
+                        -
+                    </div>
+                </div>
+
+                <div class="detail-box">
+                    <div class="detail-label">
+                        Email
+                    </div>
+
+                    <div class="detail-value" id="studentEmail">
+                        -
+                    </div>
+                </div>
+
+                <div class="detail-box">
+                    <div class="detail-label">
+                        Phone Number
+                    </div>
+
+                    <div class="detail-value" id="studentPhone">
+                        -
+                    </div>
                 </div>
 
             </div>
 
         </div>
 
-    </section>
+        <!-- ORDER INFORMATION -->
 
-    <section
-        id="menuSection"
-        class="section"
-    >
+        <div class="details-section">
 
-        <div class="card">
+            <h3>Order Information</h3>
 
-            <div class="card-title">
-                Menu Management
-            </div>
+            <div class="details-grid">
 
-            <div class="card-subtitle">
-                Control food and individual flavor availability
-            </div>
+                <div class="detail-box">
+                    <div class="detail-label">
+                        Order ID
+                    </div>
 
-            <div id="foodContainer">
+                    <div class="detail-value" id="detailOrderId">
+                        -
+                    </div>
+                </div>
 
-                <div class="loading">
-                    Loading menu...
+                <div class="detail-box">
+                    <div class="detail-label">
+                        Order Status
+                    </div>
+
+                    <div class="detail-value" id="detailOrderStatus">
+                        -
+                    </div>
+                </div>
+
+                <div class="detail-box">
+                    <div class="detail-label">
+                        Payment Status
+                    </div>
+
+                    <div class="detail-value" id="detailPaymentStatus">
+                        -
+                    </div>
+                </div>
+
+                <div class="detail-box">
+                    <div class="detail-label">
+                        Token Number
+                    </div>
+
+                    <div class="detail-value" id="detailToken">
+                        -
+                    </div>
                 </div>
 
             </div>
 
         </div>
 
-    </section>
+        <!-- FOOD ITEMS -->
+
+        <div class="details-section">
+
+            <h3>Ordered Items</h3>
+
+            <div id="detailItems" class="items-list">
+            </div>
+
+        </div>
+
+        <!-- BILL -->
+
+        <div class="details-section">
+
+            <h3>Bill Details</h3>
+
+            <div class="info-row">
+                <span>Subtotal</span>
+                <span id="detailSubtotal">₹0.00</span>
+            </div>
+
+            <div class="info-row">
+                <span>Service Charge</span>
+                <span id="detailServiceCharge">₹0.00</span>
+            </div>
+
+            <div class="info-row">
+                <span>Total Amount</span>
+                <span id="detailTotal" class="total">₹0.00</span>
+            </div>
+
+        </div>
+
+        <!-- PAYMENT SCREENSHOT -->
+
+        <div class="details-section">
+
+            <h3>Payment Screenshot</h3>
+
+            <div id="paymentProofContainer">
+                <div class="no-image">
+                    No payment screenshot available
+                </div>
+            </div>
+
+        </div>
+
+        <!-- MODAL ACTIONS -->
+
+        <div class="modal-actions">
+
+            <button
+                id="verifyPaymentBtn"
+                class="verify-btn"
+                onclick="verifyCurrentPayment()"
+            >
+                Verify Payment
+            </button>
+
+            <button
+                class="cancel-btn"
+                onclick="closeOrderModal()"
+            >
+                Close
+            </button>
+
+        </div>
+
+        <!-- ORDER ACTIONS -->
+
+        <div id="modalOrderActions" class="action-row">
+        </div>
+
+    </div>
 
 </div>
 
 <script>
 
-const API =
-    "https://nextturn-mgbf.onrender.com";
-
-let foodItems = [];
+const API = "https://nextturn-mgbf.onrender.com";
 
 let orders = [];
+let menuItems = [];
+let currentOrder = null;
 
 
 /* =========================
-   TAB SWITCHING
+   SECTION SWITCH
 ========================= */
 
-function showSection(section) {
+function showSection(sectionId, button){
 
-    const ordersSection =
-        document.getElementById(
-            "ordersSection"
-        );
+    document.querySelectorAll(".section")
+        .forEach(section => {
+            section.classList.remove("active");
+        });
 
-    const menuSection =
-        document.getElementById(
-            "menuSection"
-        );
+    document.querySelectorAll(".tab")
+        .forEach(tab => {
+            tab.classList.remove("active");
+        });
 
-    const ordersTab =
-        document.getElementById(
-            "ordersTab"
-        );
+    document.getElementById(sectionId)
+        .classList.add("active");
 
-    const menuTab =
-        document.getElementById(
-            "menuTab"
-        );
-
-    if (section === "orders") {
-
-        ordersSection.classList.add("active");
-
-        menuSection.classList.remove("active");
-
-        ordersTab.classList.add("active");
-
-        menuTab.classList.remove("active");
-
-    } else {
-
-        ordersSection.classList.remove("active");
-
-        menuSection.classList.add("active");
-
-        ordersTab.classList.remove("active");
-
-        menuTab.classList.add("active");
-
+    if(button){
+        button.classList.add("active");
     }
 
+    if(sectionId === "orders"){
+        loadOrders();
+    }
+
+    if(sectionId === "menu"){
+        loadMenu();
+    }
 }
 
 
@@ -531,50 +828,45 @@ function showSection(section) {
    LOAD ORDERS
 ========================= */
 
-async function loadOrders() {
+async function loadOrders(){
 
     const container =
-        document.getElementById(
-            "ordersContainer"
-        );
+        document.getElementById("ordersContainer");
 
-    try {
+    try{
 
         const response =
-            await fetch(
-                `${API}/api/staff/orders?t=${Date.now()}`
-            );
+            await fetch(`${API}/api/staff/orders`);
 
-        if (!response.ok) {
-            throw new Error(
-                "Failed to load orders"
-            );
+        if(!response.ok){
+            throw new Error("Unable to load orders");
         }
 
-        orders =
-            await response.json();
+        orders = await response.json();
 
-        /* Latest order first */
+        /*
+         * Latest order first.
+         */
         orders.sort(
-            (a, b) =>
+            (a,b) =>
                 Number(b.id || 0) -
                 Number(a.id || 0)
         );
 
         renderOrders();
 
-    } catch (error) {
+    }catch(error){
 
         console.error(error);
 
         container.innerHTML = `
             <div class="empty">
-                Unable to load orders
+                Unable to load orders.
+                <br><br>
+                Please refresh the page.
             </div>
         `;
-
     }
-
 }
 
 
@@ -582,18 +874,16 @@ async function loadOrders() {
    RENDER ORDERS
 ========================= */
 
-function renderOrders() {
+function renderOrders(){
 
     const container =
-        document.getElementById(
-            "ordersContainer"
-        );
+        document.getElementById("ordersContainer");
 
-    if (!orders.length) {
+    if(!orders || orders.length === 0){
 
         container.innerHTML = `
             <div class="empty">
-                No orders available
+                No orders available.
             </div>
         `;
 
@@ -603,804 +893,931 @@ function renderOrders() {
     container.innerHTML =
         orders.map(order => {
 
-            const paymentVerified =
-                String(
-                    order.paymentStatus || ""
-                )
-                .toLowerCase()
-                .includes("verified");
-
-            const token =
-                order.tokenNumber;
-
-            let itemsText =
-                "No items";
-
-            if (
-                Array.isArray(
-                    order.foodItems
-                )
-            ) {
-
-                itemsText =
-                    order.foodItems
-                        .map(item => {
-
-                            if (
-                                typeof item ===
-                                "object"
-                            ) {
-
-                                const name =
-                                    item.name || "";
-
-                                const flavor =
-                                    item.flavor || "";
-
-                                const quantity =
-                                    item.quantity || 1;
-
-                                return flavor
-                                    ? `${name} - ${flavor} × ${quantity}`
-                                    : `${name} × ${quantity}`;
-                            }
-
-                            return String(item);
-
-                        })
-                        .join("<br>");
-
-            } else if (
-                typeof order.foodItems ===
-                "string"
-            ) {
-
-                itemsText =
-                    order.foodItems;
-
-            }
+            const status =
+                order.orderStatus ||
+                "Pending";
 
             return `
                 <div class="order-card">
 
-                    <div class="order-header">
+                    <div class="order-top">
 
-                        <div class="order-id">
-                            Order #${order.id}
+                        <div>
+                            <div class="order-id">
+                                Order #${escapeHtml(order.id)}
+                            </div>
+
+                            <div class="order-date">
+                                ${formatDate(order.createdAt)}
+                            </div>
                         </div>
 
                         <div class="status">
-                            ${
-                                order.orderStatus ||
-                                "Unknown"
-                            }
+                            ${escapeHtml(status)}
                         </div>
 
                     </div>
 
                     <div class="order-info">
 
-                        <strong>
-                            Student:
-                        </strong>
-                        ${order.studentName || "N/A"}
+                        <div class="info-row">
+                            <span>Student</span>
+                            <span>
+                                ${escapeHtml(
+                                    order.studentName || "-"
+                                )}
+                            </span>
+                        </div>
 
-                        <br>
+                        <div class="info-row">
+                            <span>Student ID</span>
+                            <span>
+                                ${escapeHtml(
+                                    order.studentId || "-"
+                                )}
+                            </span>
+                        </div>
 
-                        <strong>
-                            Student ID:
-                        </strong>
-                        ${order.studentId || "N/A"}
+                        <div class="info-row">
+                            <span>Payment</span>
+                            <span>
+                                ${escapeHtml(
+                                    order.paymentStatus || "-"
+                                )}
+                            </span>
+                        </div>
 
-                        <br>
-
-                        <strong>
-                            Email:
-                        </strong>
-                        ${order.studentEmail || "N/A"}
-
-                        <br>
-
-                        <strong>
-                            Payment:
-                        </strong>
-                        ${
-                            order.paymentStatus ||
-                            "Pending"
-                        }
-
-                        <br>
-
-                        <strong>
-                            Token:
-                        </strong>
-                        ${
-                            token ||
-                            "Not Generated"
-                        }
-
-                        <br>
-
-                        <strong>
-                            Total:
-                        </strong>
-                        ₹${Number(
-                            order.totalAmount || 0
-                        ).toFixed(2)}
+                        <div class="info-row">
+                            <span>Total</span>
+                            <span class="total">
+                                ₹${Number(
+                                    order.totalAmount || 0
+                                ).toFixed(2)}
+                            </span>
+                        </div>
 
                     </div>
 
-                    <div class="order-items">
-
-                        <strong>
-                            Items:
-                        </strong>
-
-                        <br>
-
-                        ${itemsText}
-
-                    </div>
-
-                    <div class="action-row">
-
-                        ${
-                            !paymentVerified
-                            ? `
-                                <button
-                                    class="action-btn primary"
-                                    onclick="verifyPayment(${order.id})"
-                                >
-                                    Verify Payment
-                                </button>
-                              `
-                            : ""
-                        }
-
-                        ${
-                            paymentVerified &&
-                            (!token ||
-                             token ===
-                             "Not Generated")
-                            ? `
-                                <button
-                                    class="action-btn primary"
-                                    onclick="generateToken(${order.id})"
-                                >
-                                    Generate Token
-                                </button>
-                              `
-                            : ""
-                        }
-
-                        ${
-                            paymentVerified &&
-                            token &&
-                            token !==
-                            "Not Generated" &&
-                            String(
-                                order.orderStatus || ""
-                            )
-                            .toLowerCase()
-                            .includes("payment")
-                            ? `
-                                <button
-                                    class="action-btn"
-                                    onclick="markPreparing(${order.id})"
-                                >
-                                    Start Preparing
-                                </button>
-                              `
-                            : ""
-                        }
-
-                        ${
-                            String(
-                                order.orderStatus || ""
-                            )
-                            .toLowerCase()
-                            .includes("preparing")
-                            ? `
-                                <button
-                                    class="action-btn success"
-                                    onclick="markReady(${order.id})"
-                                >
-                                    Mark Ready
-                                </button>
-                              `
-                            : ""
-                        }
-
-                        ${
-                            String(
-                                order.orderStatus || ""
-                            )
-                            .toLowerCase()
-                            .includes("ready")
-                            ? `
-                                <button
-                                    class="action-btn primary"
-                                    onclick="completeOrder(${order.id})"
-                                >
-                                    Complete Order
-                                </button>
-                              `
-                            : ""
-                        }
-
-                    </div>
+                    <button
+                        class="view-btn"
+                        onclick="openOrderModal(${Number(order.id)})"
+                    >
+                        View Order
+                    </button>
 
                 </div>
             `;
 
         }).join("");
-
-}
-  /* =========================
-   ORDER ACTIONS
-========================= */
-
-async function verifyPayment(id) {
-
-    await updateOrder(
-        `/api/staff/payments/${id}/verify`
-    );
-
-}
-
-
-async function generateToken(id) {
-
-    await updateOrder(
-        `/api/staff/tokens/${id}/generate`
-    );
-
-}
-
-
-async function markPreparing(id) {
-
-    await updateOrder(
-        `/api/staff/orders/${id}/preparing`
-    );
-
-}
-
-
-async function markReady(id) {
-
-    await updateOrder(
-        `/api/staff/ready/${id}`
-    );
-
-}
-
-
-async function completeOrder(id) {
-
-    await updateOrder(
-        `/api/staff/orders/${id}/complete`
-    );
-
-}
-
-
-async function updateOrder(endpoint) {
-
-    try {
-
-        const response =
-            await fetch(
-                `${API}${endpoint}`,
-                {
-                    method: "PUT"
-                }
-            );
-
-        if (!response.ok) {
-
-            throw new Error(
-                "Order update failed"
-            );
-
-        }
-
-        await loadOrders();
-
-    } catch (error) {
-
-        console.error(error);
-
-        alert(
-            "Unable to update order."
-        );
-
-    }
-
 }
 
 
 /* =========================
-   LOAD FOOD
+   OPEN ORDER MODAL
 ========================= */
 
-async function loadFood() {
+function openOrderModal(orderId){
 
-    const container =
-        document.getElementById(
-            "foodContainer"
+    currentOrder =
+        orders.find(
+            order =>
+                Number(order.id) === Number(orderId)
         );
 
-    try {
-
-        const response =
-            await fetch(
-                `${API}/api/staff/food?t=${Date.now()}`
-            );
-
-        if (!response.ok) {
-
-            throw new Error(
-                "Failed to load menu"
-            );
-
-        }
-
-        foodItems =
-            await response.json();
-
-        renderFood();
-
-    } catch (error) {
-
-        console.error(error);
-
-        container.innerHTML = `
-            <div class="empty">
-                Unable to load menu
-            </div>
-        `;
-
+    if(!currentOrder){
+        return;
     }
 
+    document.getElementById("modalTitle").textContent =
+        `Order #${currentOrder.id}`;
+
+    document.getElementById("studentName").textContent =
+        currentOrder.studentName || "-";
+
+    document.getElementById("studentId").textContent =
+        currentOrder.studentId || "-";
+
+    document.getElementById("studentEmail").textContent =
+        currentOrder.studentEmail || "-";
+
+    document.getElementById("studentPhone").textContent =
+        currentOrder.studentPhone || "-";
+
+    document.getElementById("detailOrderId").textContent =
+        currentOrder.id || "-";
+
+    document.getElementById("detailOrderStatus").textContent =
+        currentOrder.orderStatus || "-";
+
+    document.getElementById("detailPaymentStatus").textContent =
+        currentOrder.paymentStatus || "-";
+
+    document.getElementById("detailToken").textContent =
+        currentOrder.tokenNumber || "Not generated";
+
+    document.getElementById("detailSubtotal").textContent =
+        `₹${Number(
+            currentOrder.subtotal || 0
+        ).toFixed(2)}`;
+
+    document.getElementById("detailServiceCharge").textContent =
+        `₹${Number(
+            currentOrder.serviceCharge || 0
+        ).toFixed(2)}`;
+
+    document.getElementById("detailTotal").textContent =
+        `₹${Number(
+            currentOrder.totalAmount || 0
+        ).toFixed(2)}`;
+
+    renderOrderItems(currentOrder);
+
+    renderPaymentProof(currentOrder);
+
+    renderModalActions(currentOrder);
+
+    document
+        .getElementById("orderModal")
+        .classList.add("show");
 }
 
 
 /* =========================
-   RENDER FOOD
+   CLOSE MODAL
 ========================= */
 
-function renderFood() {
+function closeOrderModal(){
+
+    document
+        .getElementById("orderModal")
+        .classList.remove("show");
+
+    currentOrder = null;
+}
+
+
+/* =========================
+   ORDER ITEMS
+========================= */
+
+function renderOrderItems(order){
 
     const container =
-        document.getElementById(
-            "foodContainer"
-        );
+        document.getElementById("detailItems");
 
-    if (!foodItems.length) {
+    let items = [];
+
+    try{
+
+        if(typeof order.foodItems === "string"){
+            items = JSON.parse(order.foodItems);
+        }else if(Array.isArray(order.foodItems)){
+            items = order.foodItems;
+        }
+
+    }catch(error){
+
+        console.error(
+            "Food item parsing error:",
+            error
+        );
+    }
+
+    if(!Array.isArray(items) || items.length === 0){
 
         container.innerHTML = `
-            <div class="empty">
-                No food items found
+            <div class="no-image">
+                No item details available
             </div>
         `;
 
         return;
     }
 
+    container.innerHTML =
+        items.map(item => {
 
-    const flavorFoods = [
-        "Chips",
-        "Kurkure"
-    ];
+            let name = "";
+            let quantity = 1;
+            let price = 0;
+            let flavor = "";
 
+            if(typeof item === "string"){
 
-    const flavorGroups = {};
+                name = item;
 
-    const normalFoods = [];
+            }else{
 
+                name =
+                    item.name ||
+                    item.foodName ||
+                    "Food Item";
 
-    foodItems.forEach(item => {
+                quantity =
+                    Number(item.quantity || 1);
 
-        if (
-            flavorFoods.includes(item.name) &&
-            item.flavor
-        ) {
+                price =
+                    Number(item.price || 0);
 
-            if (!flavorGroups[item.name]) {
-
-                flavorGroups[item.name] = [];
-
+                flavor =
+                    item.flavor ||
+                    "";
             }
 
-            flavorGroups[item.name].push(item);
+            return `
+                <div class="item-row">
 
-        } else {
+                    <div class="item-name">
 
-            normalFoods.push(item);
+                        ${escapeHtml(name)}
 
-        }
+                        ${
+                            flavor
+                            ? `<br>
+                               <small style="color:#d4af37">
+                                   Flavor: ${escapeHtml(flavor)}
+                               </small>`
+                            : ""
+                        }
 
-    });
-
-
-    let html = `
-        <div class="menu-grid">
-    `;
-
-
-    /* =========================
-       FLAVOR GROUPS
-    ========================= */
-
-    Object.keys(flavorGroups).forEach(
-        foodName => {
-
-            const flavors =
-                flavorGroups[foodName];
-
-
-            const availableCount =
-                flavors.filter(
-                    item => item.available
-                ).length;
-
-
-            html += `
-
-                <div class="flavor-group">
-
-                    <div class="flavor-group-header">
-
-                        <div>
-
-                            <div class="flavor-group-name">
-                                ${foodName}
-                            </div>
-
-                            <div class="flavor-count">
-                                ${availableCount}
-                                of
-                                ${flavors.length}
-                                flavors available
-                            </div>
-
-                        </div>
+                        <small style="color:#777">
+                            × ${quantity}
+                        </small>
 
                     </div>
 
-
-                    ${flavors.map(item => `
-
-                        <div class="flavor-row">
-
-                            <div class="flavor-info">
-
-                                <div class="flavor-name">
-                                    ${item.flavor}
-                                </div>
-
-                                <div class="flavor-price">
-                                    ₹${Number(
-                                        item.price
-                                    ).toFixed(2)}
-                                </div>
-
-                                <div class="
-                                    availability
-                                    ${
-                                        item.available
-                                            ? "available"
-                                            : "unavailable"
-                                    }
-                                ">
-
-                                    ${
-                                        item.available
-                                            ? "● Available"
-                                            : "● Unavailable"
-                                    }
-
-                                </div>
-
-                            </div>
-
-
-                            <button
-                                class="action-btn
-                                ${
-                                    item.available
-                                        ? "danger"
-                                        : "success"
-                                }"
-                                onclick="${
-                                    item.available
-                                        ? `makeFlavorUnavailable(${item.id})`
-                                        : `makeFlavorAvailable(${item.id})`
-                                }"
-                            >
-
-                                ${
-                                    item.available
-                                        ? "Make Unavailable"
-                                        : "Make Available"
-                                }
-
-                            </button>
-
-                        </div>
-
-                    `).join("")}
+                    <div class="item-price">
+                        ₹${(
+                            price * quantity
+                        ).toFixed(2)}
+                    </div>
 
                 </div>
-
             `;
 
-        }
-    );
-
-
-    html += `
-        </div>
-
-        <h3
-            style="
-                color:#f4d77d;
-                margin:28px 0 16px;
-            "
-        >
-            Other Food Items
-        </h3>
-
-        <div class="menu-grid">
-    `;
-
-
-    /* =========================
-       NORMAL FOOD ITEMS
-    ========================= */
-
-    normalFoods.forEach(item => {
-
-        html += `
-
-            <div class="food-card">
-
-                <div class="food-name">
-                    ${item.name}
-                </div>
-
-                <div class="food-category">
-                    ${item.category || "Food"}
-                </div>
-
-                <div class="food-price">
-                    ₹${Number(
-                        item.price
-                    ).toFixed(2)}
-                </div>
-
-                <div
-                    class="
-                        availability
-                        ${
-                            item.available
-                                ? "available"
-                                : "unavailable"
-                        }
-                    "
-                    style="margin-bottom:14px;"
-                >
-
-                    ${
-                        item.available
-                            ? "● Available"
-                            : "● Unavailable"
-                    }
-
-                </div>
-
-                <button
-                    class="
-                        action-btn
-                        ${
-                            item.available
-                                ? "danger"
-                                : "success"
-                        }
-                    "
-                    onclick="${
-                        item.available
-                            ? `makeUnavailable(${item.id})`
-                            : `makeAvailable(${item.id})`
-                    }"
-                >
-
-                    ${
-                        item.available
-                            ? "Make Unavailable"
-                            : "Make Available"
-                    }
-
-                </button>
-
-            </div>
-
-        `;
-
-    });
-
-
-    html += `
-        </div>
-    `;
-
-
-    container.innerHTML = html;
-
+        }).join("");
 }
 
 
 /* =========================
-   NORMAL FOOD AVAILABILITY
+   PAYMENT SCREENSHOT
 ========================= */
 
-async function makeUnavailable(id) {
+function renderPaymentProof(order){
 
-    try {
-
-        const response =
-            await fetch(
-                `${API}/api/staff/food/${id}/unavailable`,
-                {
-                    method: "PUT"
-                }
-            );
-
-        if (!response.ok) {
-
-            throw new Error(
-                "Failed to update availability"
-            );
-
-        }
-
-        await loadFood();
-
-    } catch (error) {
-
-        console.error(error);
-
-        alert(
-            "Unable to make food unavailable."
+    const container =
+        document.getElementById(
+            "paymentProofContainer"
         );
 
-    }
+    const proof =
+        order.paymentProof;
 
+    if(
+        proof &&
+        typeof proof === "string" &&
+        (
+            proof.startsWith("data:image") ||
+            proof.startsWith("http://") ||
+            proof.startsWith("https://")
+        )
+    ){
+
+        container.innerHTML = `
+            <img
+                src="${escapeAttribute(proof)}"
+                class="payment-image"
+                alt="Payment Screenshot"
+            >
+        `;
+
+    }else{
+
+        container.innerHTML = `
+            <div class="no-image">
+                No payment screenshot available
+            </div>
+        `;
+    }
 }
 
 
-async function makeAvailable(id) {
-
-    try {
-
-        const response =
-            await fetch(
-                `${API}/api/staff/food/${id}/available`,
-                {
-                    method: "PUT"
-                }
-            );
-
-        if (!response.ok) {
-
-            throw new Error(
-                "Failed to update availability"
-            );
-
-        }
-
-        await loadFood();
-
-    } catch (error) {
-
-        console.error(error);
-
-        alert(
-            "Unable to make food available."
-        );
-
-    }
-
-    }
-    /* =========================
-   FLAVOR AVAILABILITY
+/* =========================
+   VERIFY PAYMENT
 ========================= */
 
-async function makeFlavorUnavailable(id) {
+async function verifyCurrentPayment(){
 
-    try {
+    if(!currentOrder){
+        return;
+    }
+
+    const button =
+        document.getElementById(
+            "verifyPaymentBtn"
+        );
+
+    if(
+        currentOrder.paymentStatus &&
+        currentOrder.paymentStatus
+            .toLowerCase()
+            .includes("verified")
+    ){
+
+        alert("Payment is already verified.");
+        return;
+    }
+
+    button.disabled = true;
+    button.textContent = "Verifying...";
+
+    try{
 
         const response =
             await fetch(
-                `${API}/api/staff/food/${id}/flavor/unavailable`,
+                `${API}/api/staff/payments/${currentOrder.id}/verify`,
                 {
-                    method: "PUT"
+                    method:"PUT"
                 }
             );
 
-        if (!response.ok) {
-
+        if(!response.ok){
             throw new Error(
-                "Failed to update flavor"
+                "Payment verification failed"
             );
-
         }
 
-        await loadFood();
+        alert("Payment verified successfully.");
 
-    } catch (error) {
+        closeOrderModal();
+
+        await loadOrders();
+
+    }catch(error){
 
         console.error(error);
 
         alert(
-            "Unable to make flavor unavailable."
+            "Unable to verify payment. Please try again."
         );
 
-    }
+    }finally{
 
+        button.disabled = false;
+        button.textContent = "Verify Payment";
+    }
 }
 
 
-async function makeFlavorAvailable(id) {
+/* =========================
+   MODAL ORDER ACTIONS
+========================= */
 
-    try {
+function renderModalActions(order){
+
+    const container =
+        document.getElementById(
+            "modalOrderActions"
+        );
+
+    const status =
+        String(order.orderStatus || "")
+            .toLowerCase();
+
+    let html = "";
+
+    if(
+        status.includes("verified") ||
+        status.includes("payment")
+    ){
+
+        if(
+            !status.includes("preparing") &&
+            !status.includes("ready") &&
+            !status.includes("completed")
+        ){
+
+            html += `
+                <button
+                    class="action-btn"
+                    onclick="startPreparing(${order.id})"
+                >
+                    Start Preparing
+                </button>
+            `;
+        }
+    }
+
+    if(status.includes("preparing")){
+
+        html += `
+            <button
+                class="action-btn"
+                onclick="markReady(${order.id})"
+            >
+                Mark Ready
+            </button>
+        `;
+    }
+
+    if(status.includes("ready")){
+
+        html += `
+            <button
+                class="action-btn"
+                onclick="completeOrder(${order.id})"
+            >
+                Complete Order
+            </button>
+        `;
+    }
+
+    container.innerHTML = html;
+}
+
+
+/* =========================
+   START PREPARING
+========================= */
+
+async function startPreparing(id){
+
+    await orderAction(
+        `/api/staff/orders/${id}/preparing`,
+        "Order moved to preparing."
+    );
+}
+
+
+/* =========================
+   MARK READY
+========================= */
+
+async function markReady(id){
+
+    await orderAction(
+        `/api/staff/ready/${id}`,
+        "Order marked ready."
+    );
+}
+
+
+/* =========================
+   COMPLETE
+========================= */
+
+async function completeOrder(id){
+
+    await orderAction(
+        `/api/staff/orders/${id}/complete`,
+        "Order completed."
+    );
+}
+
+
+/* =========================
+   COMMON ORDER ACTION
+========================= */
+
+async function orderAction(endpoint,message){
+
+    try{
 
         const response =
             await fetch(
-                `${API}/api/staff/food/${id}/flavor/available`,
+                API + endpoint,
                 {
-                    method: "PUT"
+                    method:"PUT"
                 }
             );
 
-        if (!response.ok) {
-
-            throw new Error(
-                "Failed to update flavor"
-            );
-
+        if(!response.ok){
+            throw new Error("Action failed");
         }
 
-        await loadFood();
+        alert(message);
 
-    } catch (error) {
+        closeOrderModal();
+
+        await loadOrders();
+
+    }catch(error){
 
         console.error(error);
 
         alert(
-            "Unable to make flavor available."
+            "Unable to update order."
+        );
+    }
+}
+
+
+/* =========================
+   LOAD MENU
+========================= */
+
+async function loadMenu(){
+
+    const container =
+        document.getElementById(
+            "menuContainer"
         );
 
+    try{
+
+        const response =
+            await fetch(
+                `${API}/api/staff/food`
+            );
+
+        if(!response.ok){
+            throw new Error("Unable to load menu");
+        }
+
+        menuItems =
+            await response.json();
+
+        renderMenu();
+
+    }catch(error){
+
+        console.error(error);
+
+        container.innerHTML = `
+            <div class="empty">
+                Unable to load menu.
+            </div>
+        `;
+    }
+}
+
+
+/* =========================
+   RENDER MENU
+========================= */
+
+function renderMenu(){
+
+    const container =
+        document.getElementById(
+            "menuContainer"
+        );
+
+    if(
+        !menuItems ||
+        menuItems.length === 0
+    ){
+
+        container.innerHTML = `
+            <div class="empty">
+                No food items available.
+            </div>
+        `;
+
+        return;
     }
 
+    /*
+     * Group flavor rows visually
+     * under the same food name.
+     */
+
+    const grouped = {};
+
+    menuItems.forEach(item => {
+
+        const name =
+            item.name || "Food";
+
+        if(!grouped[name]){
+            grouped[name] = [];
+        }
+
+        grouped[name].push(item);
+    });
+
+    container.innerHTML =
+        Object.keys(grouped)
+            .map(name => {
+
+                const rows =
+                    grouped[name];
+
+                const first =
+                    rows[0];
+
+                const hasFlavors =
+                    rows.some(
+                        item => item.flavor
+                    );
+                  let flavorHtml = "";
+
+                if(hasFlavors){
+
+                    flavorHtml = `
+                        <div class="flavor-list">
+
+                            <div class="flavor-title">
+                                Flavors
+                            </div>
+
+                            ${
+                                rows
+                                    .filter(
+                                        item =>
+                                            item.flavor
+                                    )
+                                    .map(item => `
+
+                                        <div class="flavor-row">
+
+                                            <span>
+                                                ${escapeHtml(
+                                                    item.flavor
+                                                )}
+
+                                                ${
+                                                    item.available
+                                                    ? `<span class="available">
+                                                         Available
+                                                       </span>`
+                                                    : `<span class="unavailable">
+                                                         Unavailable
+                                                       </span>`
+                                                }
+                                            </span>
+
+                                            <button
+                                                class="small-btn"
+                                                onclick="toggleFlavor(
+                                                    ${item.id},
+                                                    ${item.available}
+                                                )"
+                                            >
+                                                ${
+                                                    item.available
+                                                    ? "Disable"
+                                                    : "Enable"
+                                                }
+                                            </button>
+
+                                        </div>
+
+                                    `)
+                                    .join("")
+                            }
+
+                        </div>
+                    `;
+                }
+
+                return `
+
+                    <div class="food-card">
+
+                        <div class="food-name">
+                            ${escapeHtml(name)}
+                        </div>
+
+                        <div class="food-meta">
+
+                            ₹${Number(
+                                first.price || 0
+                            ).toFixed(2)}
+
+                            •
+
+                            ${escapeHtml(
+                                first.category || "-"
+                            )}
+
+                            <br>
+
+                            ${
+                                first.available
+                                ? `<span class="available">
+                                     Available
+                                   </span>`
+                                : `<span class="unavailable">
+                                     Unavailable
+                                   </span>`
+                            }
+
+                        </div>
+
+                        <div class="food-actions">
+
+                            <button
+                                class="small-btn"
+                                onclick="toggleFood(
+                                    ${first.id},
+                                    ${first.available}
+                                )"
+                            >
+                                ${
+                                    first.available
+                                    ? "Mark Unavailable"
+                                    : "Mark Available"
+                                }
+                            </button>
+
+                        </div>
+
+                        ${flavorHtml}
+
+                    </div>
+
+                `;
+
+            })
+            .join("");
 }
+
+
+/* =========================
+   TOGGLE FOOD
+========================= */
+
+async function toggleFood(id,available){
+
+    const endpoint =
+        available
+        ? `/api/staff/food/${id}/unavailable`
+        : `/api/staff/food/${id}/available`;
+
+    try{
+
+        const response =
+            await fetch(
+                API + endpoint,
+                {
+                    method:"PUT"
+                }
+            );
+
+        if(!response.ok){
+            throw new Error(
+                "Food update failed"
+            );
+        }
+
+        await loadMenu();
+
+    }catch(error){
+
+        console.error(error);
+
+        alert(
+            "Unable to update food availability."
+        );
+    }
+}
+
+
+/* =========================
+   TOGGLE FLAVOR
+========================= */
+
+async function toggleFlavor(id,available){
+
+    const endpoint =
+        available
+        ? `/api/staff/food/${id}/flavor/unavailable`
+        : `/api/staff/food/${id}/flavor/available`;
+
+    try{
+
+        const response =
+            await fetch(
+                API + endpoint,
+                {
+                    method:"PUT"
+                }
+            );
+
+        if(!response.ok){
+            throw new Error(
+                "Flavor update failed"
+            );
+        }
+
+        await loadMenu();
+
+    }catch(error){
+
+        console.error(error);
+
+        alert(
+            "Unable to update flavor availability."
+        );
+    }
+}
+
+
+/* =========================
+   DATE FORMAT
+========================= */
+
+function formatDate(value){
+
+    if(!value){
+        return "Date unavailable";
+    }
+
+    try{
+
+        return new Date(value)
+            .toLocaleString(
+                "en-IN",
+                {
+                    day:"2-digit",
+                    month:"short",
+                    year:"numeric",
+                    hour:"2-digit",
+                    minute:"2-digit"
+                }
+            );
+
+    }catch(error){
+
+        return String(value);
+    }
+}
+
+
+/* =========================
+   HTML ESCAPE
+========================= */
+
+function escapeHtml(value){
+
+    if(value === null || value === undefined){
+        return "";
+    }
+
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
+
+
+function escapeAttribute(value){
+
+    return escapeHtml(value);
+}
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+function logout(){
+
+    localStorage.removeItem(
+        "nextTurnUserRole"
+    );
+
+    localStorage.removeItem(
+        "nextTurnUser"
+    );
+
+    localStorage.removeItem(
+        "nextTurnPartnerId"
+    );
+
+    window.location.href =
+        "login.html";
+}
+
+
+/* =========================
+   MODAL BACKDROP
+========================= */
+
+document
+    .getElementById("orderModal")
+    .addEventListener(
+        "click",
+        function(event){
+
+            if(event.target === this){
+                closeOrderModal();
+            }
+
+        }
+    );
 
 
 /* =========================
    INITIAL LOAD
 ========================= */
 
-document.addEventListener(
-    "DOMContentLoaded",
-    () => {
+loadOrders();
 
-        loadOrders();
-
-        loadFood();
-
-    }
-);
+loadMenu();
 
 
 /* =========================
@@ -1412,23 +1829,27 @@ setInterval(
 
         loadOrders();
 
+        /*
+         * Only refresh menu data
+         * when Menu tab is active.
+         */
+
+        const menuSection =
+            document.getElementById("menu");
+
+        if(
+            menuSection.classList.contains("active")
+        ){
+            loadMenu();
+        }
+
     },
     10000
 );
-
-
-setInterval(
-    () => {
-
-        loadFood();
-
-    },
-    10000
-);
-
 
 </script>
 
 </body>
-
 </html>
+
+       
