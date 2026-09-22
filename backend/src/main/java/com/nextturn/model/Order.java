@@ -15,6 +15,10 @@ public class Order {
     private String studentName;
     private String studentId;
     private String studentEmail;
+    private String studentPhone;
+
+    @Lob
+    @Column(columnDefinition = "LONGTEXT")
     private String paymentProof;
 
     private String foodItems;
@@ -62,6 +66,14 @@ public class Order {
 
     public void setStudentEmail(String studentEmail) {
         this.studentEmail = studentEmail;
+    }
+
+    public String getStudentPhone() {
+        return studentPhone;
+    }
+
+    public void setStudentPhone(String studentPhone) {
+        this.studentPhone = studentPhone;
     }
 
     public String getPaymentProof() {
