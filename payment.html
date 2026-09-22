@@ -1,587 +1,440 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>NextTurn - Payment</title>
+<meta charset="UTF-8">
 
-    <link rel="stylesheet" href="styles.css">
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+<title>NextTurn - Payment</title>
 
-        body {
-            background:
-                radial-gradient(
-                    circle at top right,
-                    rgba(212,175,55,0.08),
-                    transparent 35%
-                ),
-                #080808;
-            color: #f5f5f5;
-            min-height: 100vh;
-        }
+<style>
 
-        .payment-page {
-            width: 100%;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 30px 20px 60px;
-        }
+* {
+    box-sizing: border-box;
+}
 
-        .payment-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 18px 0 28px;
-            border-bottom: 1px solid rgba(212,175,55,0.15);
-            margin-bottom: 28px;
-        }
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #080808;
+    color: #f5f5f5;
+    min-height: 100vh;
+}
 
-        .payment-brand {
-            font-size: 26px;
-            font-weight: 800;
-            color: #D4AF37;
-            letter-spacing: -0.5px;
-        }
+.payment-page {
+    max-width: 900px;
+    margin: auto;
+    padding: 25px 18px 60px;
+}
 
-        .payment-subtitle {
-            color: #9a9a9a;
-            font-size: 14px;
-        }
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 0 25px;
+    border-bottom: 1px solid rgba(212,175,55,.2);
+    margin-bottom: 25px;
+}
 
-        .payment-title {
-            margin-bottom: 22px;
-        }
+.logo {
+    color: #D4AF37;
+    font-size: 27px;
+    font-weight: 800;
+}
 
-        .payment-title h1 {
-            font-size: clamp(28px, 5vw, 40px);
-            margin-bottom: 8px;
-            color: #F5F5F5;
-        }
+.subtitle {
+    color: #888;
+    font-size: 13px;
+}
 
-        .payment-title p {
-            color: #9a9a9a;
-            font-size: 15px;
-        }
+h1 {
+    margin-bottom: 8px;
+}
 
-        .payment-card {
-            background: linear-gradient(145deg, #151515, #0e0e0e);
-            border: 1px solid rgba(212,175,55,0.22);
-            border-radius: 22px;
-            padding: 26px;
-            margin-bottom: 20px;
-            box-shadow: 0 18px 50px rgba(0,0,0,0.35);
-        }
+.page-subtitle {
+    color: #999;
+    margin-bottom: 25px;
+}
 
-        .section-title {
-            font-size: 19px;
-            color: #F4D77D;
-            margin-bottom: 18px;
-        }
+.card {
+    background: #111;
+    border: 1px solid rgba(212,175,55,.2);
+    border-radius: 18px;
+    padding: 22px;
+    margin-bottom: 18px;
+}
 
-        .order-summary {
-            background: #0a0a0a;
-            border: 1px solid rgba(212,175,55,0.14);
-            border-radius: 16px;
-            padding: 18px;
-        }
+.card h2 {
+    color: #F4D77D;
+    margin-top: 0;
+}
 
-        .summary-item {
-            display: flex;
-            justify-content: space-between;
-            gap: 15px;
-            padding: 10px 0;
-            color: #cfcfcf;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
+.summary {
+    background: #090909;
+    border-radius: 13px;
+    padding: 15px;
+}
 
-        .summary-item:last-child {
-            border-bottom: none;
-        }
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #222;
+}
 
-        .summary-item strong {
-            color: #F5F5F5;
-            white-space: nowrap;
-        }
+.summary-row:last-child {
+    border-bottom: none;
+}
 
-        .summary-row {
-            display: flex;
-            justify-content: space-between;
-            gap: 15px;
-            padding: 10px 0;
-            color: #aaa;
-        }
+.total {
+    color: #D4AF37;
+    font-size: 19px;
+    font-weight: 800;
+}
 
-        .summary-row strong {
-            color: #ddd;
-        }
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
 
-        .total-row {
-            border-top: 1px solid rgba(212,175,55,0.3);
-            margin-top: 8px;
-            padding-top: 16px;
-            font-size: 20px;
-        }
+.field {
+    display: flex;
+    flex-direction: column;
+}
 
-        .total-row span,
-        .total-row strong {
-            color: #D4AF37;
-            font-weight: 800;
-        }
+.field.full {
+    grid-column: 1 / -1;
+}
 
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 18px;
-        }
+label {
+    margin-bottom: 7px;
+    color: #ddd;
+    font-size: 14px;
+}
 
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
+input {
+    width: 100%;
+    padding: 13px;
+    background: #090909;
+    border: 1px solid #292929;
+    border-radius: 10px;
+    color: white;
+    outline: none;
+}
 
-        .form-group.full {
-            grid-column: 1 / -1;
-        }
+input:focus {
+    border-color: #D4AF37;
+}
 
-        .form-group label {
-            color: #d7d7d7;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
+.upload {
+    border: 1px dashed rgba(212,175,55,.45);
+    padding: 20px;
+    border-radius: 13px;
+    text-align: center;
+}
 
-        .form-group input {
-            width: 100%;
-            padding: 14px 15px;
-            background: #090909;
-            border: 1px solid #292929;
-            border-radius: 11px;
-            color: #f5f5f5;
-            font-size: 15px;
-            outline: none;
-            transition: 0.2s ease;
-        }
+.upload p {
+    color: #ddd;
+}
 
-        .form-group input::placeholder {
-            color: #666;
-        }
+.upload small {
+    display: block;
+    color: #777;
+    margin-bottom: 12px;
+}
 
-        .form-group input:focus {
-            border-color: #D4AF37;
-            box-shadow: 0 0 0 3px rgba(212,175,55,0.08);
-        }
+button {
+    width: 100%;
+    padding: 15px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 11px;
+    background: linear-gradient(
+        135deg,
+        #D4AF37,
+        #F4D77D
+    );
+    color: #080808;
+    font-weight: 800;
+    font-size: 16px;
+    cursor: pointer;
+}
 
-        .upload-box {
-            border: 1.5px dashed rgba(212,175,55,0.4);
-            background: rgba(212,175,55,0.035);
-            border-radius: 15px;
-            padding: 22px;
-            text-align: center;
-            transition: 0.2s ease;
-        }
+button:disabled {
+    opacity: .5;
+}
 
-        .upload-box:hover {
-            border-color: #D4AF37;
-            background: rgba(212,175,55,0.06);
-        }
+.error {
+    display: none;
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 10px;
+    color: #ff9999;
+    background: rgba(180,40,40,.12);
+}
 
-        .upload-icon {
-            font-size: 30px;
-            margin-bottom: 8px;
-        }
+.success {
+    display: none;
+    text-align: center;
+}
 
-        .upload-box p {
-            color: #ddd;
-            margin-bottom: 5px;
-            font-weight: 600;
-        }
+.success h2 {
+    color: #D4AF37;
+}
 
-        .upload-box small {
-            color: #777;
-            display: block;
-            margin-bottom: 15px;
-        }
+.success p {
+    color: #999;
+    line-height: 1.6;
+}
 
-        .upload-box input {
-            width: 100%;
-            color: #aaa;
-        }
+.back {
+    display: inline-block;
+    color: #D4AF37;
+    border: 1px solid #D4AF37;
+    padding: 11px 18px;
+    border-radius: 9px;
+    text-decoration: none;
+    margin-top: 15px;
+}
 
-        .submit-payment {
-            width: 100%;
-            border: none;
-            border-radius: 13px;
-            padding: 16px;
-            margin-top: 22px;
-            background: linear-gradient(
-                135deg,
-                #D4AF37,
-                #F4D77D
-            );
-            color: #090909;
-            font-size: 16px;
-            font-weight: 800;
-            cursor: pointer;
-            transition: 0.2s ease;
-            box-shadow: 0 10px 25px rgba(212,175,55,0.12);
-        }
+@media(max-width:650px) {
 
-        .submit-payment:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 14px 30px rgba(212,175,55,0.2);
-        }
+    .grid {
+        grid-template-columns: 1fr;
+    }
 
-        .submit-payment:disabled {
-            opacity: 0.55;
-            cursor: not-allowed;
-            transform: none;
-        }
+    .field.full {
+        grid-column: auto;
+    }
 
-        .error-message {
-            display: none;
-            margin-top: 16px;
-            padding: 13px;
-            border-radius: 11px;
-            background: rgba(180,40,40,0.12);
-            border: 1px solid rgba(220,70,70,0.25);
-            color: #ff9b9b;
-            text-align: center;
-            font-size: 14px;
-        }
+    header {
+        padding-top: 5px;
+    }
 
-        .success-card {
-            display: none;
-            text-align: center;
-            padding: 35px 25px;
-        }
+    .logo {
+        font-size: 23px;
+    }
+}
 
-        .success-icon {
-            width: 70px;
-            height: 70px;
-            margin: 0 auto 18px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(212,175,55,0.1);
-            border: 1px solid rgba(212,175,55,0.4);
-            font-size: 32px;
-        }
+</style>
 
-        .success-card h2 {
-            color: #D4AF37;
-            margin-bottom: 12px;
-            font-size: 26px;
-        }
-
-        .success-card p {
-            color: #aaa;
-            line-height: 1.6;
-            margin: 5px 0;
-        }
-
-        .back-btn {
-            display: inline-block;
-            margin-top: 22px;
-            padding: 12px 18px;
-            border: 1px solid rgba(212,175,55,0.35);
-            border-radius: 10px;
-            color: #D4AF37;
-            text-decoration: none;
-            font-weight: 700;
-        }
-
-        @media (max-width: 650px) {
-
-            .payment-page {
-                padding: 18px 14px 45px;
-            }
-
-            .payment-header {
-                padding-top: 8px;
-            }
-
-            .payment-brand {
-                font-size: 23px;
-            }
-
-            .payment-subtitle {
-                font-size: 12px;
-            }
-
-            .payment-card {
-                padding: 19px;
-                border-radius: 17px;
-            }
-
-            .form-grid {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-
-            .form-group.full {
-                grid-column: auto;
-            }
-
-            .summary-item,
-            .summary-row {
-                font-size: 14px;
-            }
-        }
-    </style>
 </head>
 
 <body>
 
 <div class="payment-page">
 
-    <header class="payment-header">
+<header>
 
-        <div class="payment-brand">
-            NextTurn
-        </div>
-
-        <div class="payment-subtitle">
-            College Canteen
-        </div>
-
-    </header>
-
-    <div class="payment-title">
-
-        <h1>
-            Complete Your Order
-        </h1>
-
-        <p>
-            Submit your payment proof to confirm your canteen order.
-        </p>
-
+    <div class="logo">
+        NextTurn
     </div>
 
-    <!-- ORDER SUMMARY -->
-
-    <div class="payment-card">
-
-        <h2 class="section-title">
-            Order Summary
-        </h2>
-
-        <div class="order-summary">
-
-            <div id="cartItems"></div>
-
-            <div class="summary-row">
-
-                <span>
-                    Subtotal
-                </span>
-
-                <strong id="subtotal">
-                    ₹0.00
-                </strong>
-
-            </div>
-
-            <div class="summary-row">
-
-                <span>
-                    Service Charge
-                </span>
-
-                <strong id="serviceCharge">
-                    ₹0.00
-                </strong>
-
-            </div>
-
-            <div class="summary-row total-row">
-
-                <span>
-                    Total
-                </span>
-
-                <strong id="totalAmount">
-                    ₹0.00
-                </strong>
-
-            </div>
-
-        </div>
-
+    <div class="subtitle">
+        College Canteen
     </div>
 
-    <!-- STUDENT DETAILS -->
+</header>
 
-    <div class="payment-card">
+<h1>
+    Complete Your Order
+</h1>
 
-        <h2 class="section-title">
-            Student Details
-        </h2>
+<p class="page-subtitle">
+    Submit your payment proof for staff verification.
+</p>
 
-        <div class="form-grid">
+<div class="card">
 
-            <div class="form-group">
-
-                <label for="fullName">
-                    Full Name
-                </label>
-
-                <input
-                    type="text"
-                    id="fullName"
-                    placeholder="Enter your full name"
-                    required
-                >
-
-            </div>
-
-            <div class="form-group">
-
-                <label for="studentId">
-                    Student ID
-                </label>
-
-                <input
-                    type="text"
-                    id="studentId"
-                    placeholder="Enter your student ID"
-                    required
-                >
-
-            </div>
-
-            <div class="form-group">
-
-                <label for="email">
-                    College Gmail
-                </label>
-
-                <input
-                    type="email"
-                    id="email"
-                    placeholder="Enter your college Gmail"
-                    required
-                >
-
-            </div>
-
-            <div class="form-group">
-
-                <label for="phone">
-                    Phone Number
-                </label>
-
-                <input
-                    type="tel"
-                    id="phone"
-                    placeholder="Enter your phone number"
-                    required
-                >
-
-            </div>
-
-            <div class="form-group full">
-
-                <label for="paymentScreenshot">
-                    Payment Screenshot
-                </label>
-
-                <div class="upload-box">
-
-                    <div class="upload-icon">
-                        📸
-                    </div>
-
-                    <p>
-                        Upload Payment Screenshot
-                    </p>
-
-                    <small>
-                        Upload a clear screenshot of your payment
-                    </small>
-
-                    <input
-                        type="file"
-                        id="paymentScreenshot"
-                        accept="image/*"
-                        required
-                    >
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <button
-            class="submit-payment"
-            id="submitPayment"
-            onclick="submitPayment()"
-        >
-            Submit Payment Proof
-        </button>
-
-        <div
-            class="error-message"
-            id="errorMessage"
-        ></div>
-
-    </div>
-
-    <!-- SUCCESS -->
+    <h2>
+        Order Summary
+    </h2>
 
     <div
-        class="payment-card success-card"
-        id="successMessage"
-    >
+        class="summary"
+        id="cartItems"
+    ></div>
 
-        <div class="success-icon">
-            ✓
+    <div class="summary-row">
+        <span>Subtotal</span>
+        <strong id="subtotal">
+            ₹0.00
+        </strong>
+    </div>
+
+    <div class="summary-row">
+        <span>Service Charge</span>
+        <strong id="serviceCharge">
+            ₹0.00
+        </strong>
+    </div>
+
+    <div class="summary-row total">
+        <span>Total</span>
+        <strong id="totalAmount">
+            ₹0.00
+        </strong>
+    </div>
+
+</div>
+
+<div
+    class="card"
+    id="paymentCard"
+>
+
+    <h2>
+        Student Details
+    </h2>
+
+    <div class="grid">
+
+        <div class="field">
+
+            <label>
+                Full Name
+            </label>
+
+            <input
+                id="fullName"
+                type="text"
+                required
+            >
+
         </div>
 
-        <h2>
-            Payment Submitted
-        </h2>
+        <div class="field">
 
-        <p>
-            Your payment proof has been submitted successfully.
-        </p>
+            <label>
+                Student ID
+            </label>
 
-        <p>
-            Please wait while the canteen staff verifies your payment.
-        </p>
+            <input
+                id="studentId"
+                type="text"
+                required
+            >
 
-        <p>
-            Your token will be generated after verification.
-        </p>
+        </div>
 
-        <a
-            href="student.html"
-            class="back-btn"
-        >
-            Go to Dashboard
-        </a>
+        <div class="field">
+
+            <label>
+                College Gmail
+            </label>
+
+            <input
+                id="email"
+                type="email"
+                required
+            >
+
+        </div>
+
+        <div class="field">
+
+            <label>
+                Phone Number
+            </label>
+
+            <input
+                id="phone"
+                type="tel"
+                placeholder="Enter phone number"
+                required
+            >
+
+        </div>
+
+        <div class="field full">
+
+            <label>
+                Payment Screenshot
+            </label>
+
+            <div class="upload">
+
+                <p>
+                    📸 Upload Payment Screenshot
+                </p>
+
+                <small>
+                    Staff will use this to verify your payment.
+                </small>
+
+                <input
+                    id="paymentScreenshot"
+                    type="file"
+                    accept="image/*"
+                    required
+                >
+
+            </div>
+
+        </div>
 
     </div>
+
+    <button
+        id="submitButton"
+        onclick="submitPayment()"
+    >
+        Submit Payment Proof
+    </button>
+
+    <div
+        class="error"
+        id="errorMessage"
+    ></div>
+
+</div>
+
+<div
+    class="card success"
+    id="successCard"
+>
+
+    <h2>
+        ✓ Payment Submitted
+    </h2>
+
+    <p>
+        Your payment proof has been submitted successfully.
+    </p>
+
+    <p>
+        Staff will verify your payment and generate your token.
+    </p>
+
+    <a
+        href="student.html"
+        class="back"
+    >
+        Go to Dashboard
+    </a>
+
+</div>
 
 </div>
 
 <script>
 
-const API_BASE_URL =
+const API =
     "https://nextturn-mgbf.onrender.com";
 
 let cart = [];
 
 const student =
     JSON.parse(
-        localStorage.getItem("nextTurnUser") || "{}"
+        localStorage.getItem(
+            "nextTurnUser"
+        ) || "{}"
     );
 
 
@@ -589,68 +442,57 @@ function loadCart() {
 
     cart =
         JSON.parse(
-            localStorage.getItem("nextTurnCart") || "[]"
+            localStorage.getItem(
+                "nextTurnCart"
+            ) || "[]"
         );
 
-    const cartItems =
-        document.getElementById("cartItems");
+    const container =
+        document.getElementById(
+            "cartItems"
+        );
 
-    if (cart.length === 0) {
+    if (!cart.length) {
 
-        cartItems.innerHTML =
-            '<div class="summary-item">' +
-            '<span>Your cart is empty.</span>' +
-            '</div>';
+        container.innerHTML =
+            "<div>No items in cart.</div>";
 
         calculateTotal();
 
         return;
     }
 
-    cartItems.innerHTML = "";
+    container.innerHTML = "";
 
     cart.forEach(item => {
 
         const row =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
         row.className =
-            "summary-item";
-
-        const name =
-            document.createElement("span");
-
-        /*
-         * IMPORTANT:
-         * Preserve the exact selected flavor.
-         *
-         * Example:
-         * Chips - Tangy Tomato × 2
-         * Kurkure - Masala × 1
-         */
+            "summary-row";
 
         const displayName =
             item.flavor
                 ? `${item.name} - ${item.flavor}`
                 : item.name;
 
-        name.textContent =
-            `${displayName} × ${item.quantity}`;
+        row.innerHTML = `
+            <span>
+                ${displayName} × ${item.quantity}
+            </span>
 
-        const price =
-            document.createElement("strong");
+            <strong>
+                ₹${(
+                    item.price *
+                    item.quantity
+                ).toFixed(2)}
+            </strong>
+        `;
 
-        price.textContent =
-            `₹${(
-                item.price *
-                item.quantity
-            ).toFixed(2)}`;
-
-        row.appendChild(name);
-
-        row.appendChild(price);
-
-        cartItems.appendChild(row);
+        container.appendChild(row);
 
     });
 
@@ -658,39 +500,43 @@ function loadCart() {
 }
 
 
-function getServiceCharge(price) {
+function serviceChargeForItem(
+    item
+) {
 
-    return price <= 20
-        ? 0.50
-        : 1.00;
+    return (
+        Number(item.price) <= 20
+            ? 0.50
+            : 1.00
+    ) * Number(item.quantity);
+
 }
 
 
 function calculateSubtotal() {
 
     return cart.reduce(
-        (total, item) =>
-            total +
+        (sum, item) =>
+            sum +
             (
-                item.price *
-                item.quantity
+                Number(item.price) *
+                Number(item.quantity)
             ),
         0
     );
+
 }
 
 
 function calculateServiceCharge() {
 
     return cart.reduce(
-        (total, item) =>
-            total +
-            (
-                getServiceCharge(item.price) *
-                item.quantity
-            ),
+        (sum, item) =>
+            sum +
+            serviceChargeForItem(item),
         0
     );
+
 }
 
 
@@ -699,38 +545,86 @@ function calculateTotal() {
     const subtotal =
         calculateSubtotal();
 
-    const serviceCharge =
+    const charge =
         calculateServiceCharge();
 
     const total =
-        subtotal +
-        serviceCharge;
+        subtotal + charge;
 
-    document.getElementById("subtotal")
-        .textContent =
+    document.getElementById(
+        "subtotal"
+    ).textContent =
         `₹${subtotal.toFixed(2)}`;
 
-    document.getElementById("serviceCharge")
-        .textContent =
-        `₹${serviceCharge.toFixed(2)}`;
+    document.getElementById(
+        "serviceCharge"
+    ).textContent =
+        `₹${charge.toFixed(2)}`;
 
-    document.getElementById("totalAmount")
-        .textContent =
+    document.getElementById(
+        "totalAmount"
+    ).textContent =
         `₹${total.toFixed(2)}`;
+
 }
 
 
-function loadStudentDetails() {
+function loadStudent() {
 
-    document.getElementById("fullName").value =
+    document.getElementById(
+        "fullName"
+    ).value =
         student.fullName || "";
 
-    document.getElementById("studentId").value =
+    document.getElementById(
+        "studentId"
+    ).value =
         student.studentId || "";
 
-    document.getElementById("email").value =
+    document.getElementById(
+        "email"
+    ).value =
         student.email || "";
-            student.email || "";
+
+}
+
+
+function showError(message) {
+
+    const box =
+        document.getElementById(
+            "errorMessage"
+        );
+
+    box.textContent =
+        message;
+
+    box.style.display =
+        "block";
+
+}
+
+
+function fileToBase64(file) {
+
+    return new Promise(
+        (resolve, reject) => {
+
+            const reader =
+                new FileReader();
+
+            reader.onload = () =>
+                resolve(
+                    reader.result
+                );
+
+            reader.onerror =
+                reject;
+
+            reader.readAsDataURL(file);
+
+        }
+    );
 
 }
 
@@ -738,12 +632,11 @@ function loadStudentDetails() {
 async function submitPayment() {
 
     const button =
-        document.getElementById("submitPayment");
+        document.getElementById(
+            "submitButton"
+        );
 
-    const errorMessage =
-        document.getElementById("errorMessage");
-
-    const screenshot =
+    const file =
         document.getElementById(
             "paymentScreenshot"
         ).files[0];
@@ -768,14 +661,15 @@ async function submitPayment() {
             "phone"
         ).value.trim();
 
+    document.getElementById(
+        "errorMessage"
+    ).style.display = "none";
 
-    errorMessage.style.display = "none";
 
-
-    if (cart.length === 0) {
+    if (!cart.length) {
 
         showError(
-            "Your cart is empty. Please add food items first."
+            "Your cart is empty."
         );
 
         return;
@@ -787,11 +681,25 @@ async function submitPayment() {
         !studentId ||
         !email ||
         !phone ||
-        !screenshot
+        !file
     ) {
 
         showError(
-            "Please fill all details and upload your payment screenshot."
+            "Please fill all details and upload the payment screenshot."
+        );
+
+        return;
+    }
+
+
+    if (
+        !file.type.startsWith(
+            "image/"
+        )
+    ) {
+
+        showError(
+            "Please upload an image file."
         );
 
         return;
@@ -801,113 +709,90 @@ async function submitPayment() {
     button.disabled = true;
 
     button.textContent =
-        "Submitting Payment...";
-
-
-    const subtotal =
-        calculateSubtotal();
-
-    const serviceCharge =
-        calculateServiceCharge();
-
-    const totalAmount =
-        subtotal +
-        serviceCharge;
-
-
-    /*
-     * IMPORTANT FLAVOR HANDLING
-     *
-     * The cart already contains:
-     *
-     * {
-     *     name: "Chips",
-     *     flavor: "Tangy Tomato",
-     *     price: 10,
-     *     quantity: 2
-     * }
-     *
-     * We create a clean copy before sending
-     * it to the backend.
-     *
-     * This guarantees that the selected flavor
-     * is included in foodItems.
-     */
-
-    const orderItems =
-        cart.map(item => {
-
-            return {
-                name: item.name || "",
-                flavor: item.flavor || null,
-                price: Number(item.price) || 0,
-                quantity: Number(item.quantity) || 1
-            };
-
-        });
-
-
-    /*
-     * Backend order object
-     */
-
-    const order = {
-
-        studentName:
-            fullName,
-
-        studentId:
-            studentId,
-
-        studentEmail:
-            email,
-
-        /*
-         * Example backend value:
-         *
-         * [
-         *   {
-         *     "name":"Chips",
-         *     "flavor":"Tangy Tomato",
-         *     "price":10,
-         *     "quantity":2
-         *   }
-         * ]
-         */
-
-        foodItems:
-            JSON.stringify(orderItems),
-
-        subtotal:
-            subtotal,
-
-        serviceCharge:
-            serviceCharge,
-
-        totalAmount:
-            totalAmount,
-
-        paymentStatus:
-            "Pending Verification",
-
-        orderStatus:
-            "Payment Submitted",
-
-        tokenNumber:
-            null,
-
-        paymentProof:
-            screenshot.name
-
-    };
+        "Submitting...";
 
 
     try {
 
+        const paymentProof =
+            await fileToBase64(
+                file
+            );
+
+
+        const orderItems =
+            cart.map(item => ({
+                name:
+                    item.name || "",
+
+                flavor:
+                    item.flavor || null,
+
+                price:
+                    Number(item.price) || 0,
+
+                quantity:
+                    Number(item.quantity) || 1
+            }));
+
+
+        const subtotal =
+            calculateSubtotal();
+
+        const serviceCharge =
+            calculateServiceCharge();
+
+        const totalAmount =
+            subtotal +
+            serviceCharge;
+
+
+        const order = {
+
+            studentName:
+                fullName,
+
+            studentId:
+                studentId,
+
+            studentEmail:
+                email,
+
+            studentPhone:
+                phone,
+
+            foodItems:
+                JSON.stringify(
+                    orderItems
+                ),
+
+            subtotal:
+                subtotal,
+
+            serviceCharge:
+                serviceCharge,
+
+            totalAmount:
+                totalAmount,
+
+            paymentStatus:
+                "Pending Verification",
+
+            orderStatus:
+                "Payment Submitted",
+
+            tokenNumber:
+                null,
+
+            paymentProof:
+                paymentProof
+
+        };
+
+
         const response =
             await fetch(
-                API_BASE_URL +
-                "/api/student/create-order",
+                `${API}/api/student/create-order`,
                 {
                     method: "POST",
 
@@ -917,110 +802,61 @@ async function submitPayment() {
                     },
 
                     body:
-                        JSON.stringify(order)
+                        JSON.stringify(
+                            order
+                        )
                 }
             );
 
 
-        let data = {};
-
-
-        try {
-
-            data =
-                await response.json();
-
-        } catch {
-
-            data = {};
-
-        }
+        const data =
+            await response.json();
 
 
         if (!response.ok) {
 
             throw new Error(
                 data.message ||
-                data.error ||
-                "Order creation failed."
+                "Unable to create order."
             );
 
         }
 
-
-        /*
-         * Save the complete backend order.
-         */
 
         localStorage.setItem(
             "nextTurnCurrentOrder",
             JSON.stringify(data)
         );
 
-
         localStorage.setItem(
             "nextTurnPaymentSubmitted",
             "true"
         );
-
-
-        localStorage.setItem(
-            "nextTurnPaymentProof",
-            screenshot.name
-        );
-
-
-        /*
-         * Clear cart only after successful
-         * backend order creation.
-         */
 
         localStorage.removeItem(
             "nextTurnCart"
         );
 
 
-        /*
-         * Hide student details/payment form.
-         */
-
-        const cards =
-            document.querySelectorAll(
-                ".payment-card"
-            );
-
-
-        if (cards.length >= 2) {
-
-            cards[1].style.display =
-                "none";
-
-        }
-
-
-        /*
-         * Show success message.
-         */
+        document.getElementById(
+            "paymentCard"
+        ).style.display =
+            "none";
 
         document.getElementById(
-            "successMessage"
+            "successCard"
         ).style.display =
             "block";
 
 
     } catch (error) {
 
-        console.error(
-            "Payment submission error:",
-            error
-        );
-
+        console.error(error);
 
         showError(
             error.message ||
-            "Unable to submit your order right now."
+            "Unable to submit payment."
         );
-
 
         button.disabled =
             false;
@@ -1028,31 +864,17 @@ async function submitPayment() {
         button.textContent =
             "Submit Payment Proof";
     }
-}
 
-
-function showError(message) {
-
-    const errorMessage =
-        document.getElementById(
-            "errorMessage"
-        );
-
-    errorMessage.textContent =
-        message;
-
-    errorMessage.style.display =
-        "block";
 }
 
 
 document.addEventListener(
     "DOMContentLoaded",
-    function() {
+    () => {
 
         loadCart();
 
-        loadStudentDetails();
+        loadStudent();
 
     }
 );
@@ -1060,4 +882,5 @@ document.addEventListener(
 </script>
 
 </body>
-</html>
+
+                </html>
