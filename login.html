@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
@@ -143,6 +144,10 @@ body {
 }
 
 
+/* =========================
+   ROLE SELECTION
+========================= */
+
 .role-title {
 
     font-size: 13px;
@@ -223,6 +228,79 @@ body {
 }
 
 
+/* =========================
+   STUDENT MODE TABS
+========================= */
+
+.student-tabs {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 7px;
+
+    background: #090909;
+
+    padding: 5px;
+
+    border-radius: 13px;
+
+    border: 1px solid #292929;
+
+    margin-bottom: 22px;
+
+}
+
+
+.student-tab {
+
+    border: none;
+
+    background: transparent;
+
+    color: #777;
+
+    padding: 11px 8px;
+
+    border-radius: 9px;
+
+    font-size: 13px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+
+}
+
+
+.student-tab.active {
+
+    background:
+        linear-gradient(
+            135deg,
+            #D4AF37,
+            #F4D77D
+        );
+
+    color: #090909;
+
+}
+
+
+.student-tab:hover:not(.active) {
+
+    color: #F4D77D;
+
+}
+
+
+/* =========================
+   FORMS
+========================= */
+
 .form-group {
 
     margin-bottom: 17px;
@@ -286,6 +364,10 @@ body {
 }
 
 
+/* =========================
+   MAIN BUTTON
+========================= */
+
 .login-btn {
 
     width: 100%;
@@ -340,6 +422,10 @@ body {
 }
 
 
+/* =========================
+   MESSAGE
+========================= */
+
 .message {
 
     display: none;
@@ -389,6 +475,21 @@ body {
 }
 
 
+/* =========================
+   HIDDEN
+========================= */
+
+.hidden {
+
+    display: none !important;
+
+}
+
+
+/* =========================
+   BACK HOME
+========================= */
+
 .back-home {
 
     display: block;
@@ -415,6 +516,10 @@ body {
 }
 
 
+/* =========================
+   SECURITY
+========================= */
+
 .security-note {
 
     text-align: center;
@@ -437,23 +542,36 @@ body {
 }
 
 
+/* =========================
+   MOBILE
+========================= */
+
 @media (max-width: 500px) {
 
     body {
+
         padding: 14px;
+
     }
 
     .login-card {
+
         padding: 21px;
+
         border-radius: 19px;
+
     }
 
     .brand {
+
         font-size: 30px;
+
     }
 
     .welcome h1 {
+
         font-size: 23px;
+
     }
 
 }
@@ -462,7 +580,9 @@ body {
 @media (max-width: 360px) {
 
     .roles {
+
         grid-template-columns: 1fr;
+
     }
 
 }
@@ -474,8 +594,11 @@ body {
 
 <body>
 
+
 <div class="login-wrapper">
 
+
+    <!-- BRAND -->
 
     <div class="brand-area">
 
@@ -490,22 +613,28 @@ body {
     </div>
 
 
+    <!-- CARD -->
+
     <div class="login-card">
 
+
+        <!-- WELCOME -->
 
         <div class="welcome">
 
             <h1>
-                Welcome back
+                Welcome to NextTurn
             </h1>
 
             <p>
-                Sign in to your NextTurn account
-                to manage your canteen experience.
+                Sign in to your account or
+                create a new student account.
             </p>
 
         </div>
 
+
+        <!-- ROLE -->
 
         <div class="role-title">
             Choose account type
@@ -518,6 +647,7 @@ body {
             <button
                 type="button"
                 class="role-btn active"
+                id="studentRoleBtn"
                 onclick="selectRole('student', this)"
             >
                 Student
@@ -545,19 +675,226 @@ body {
         </div>
 
 
-        <form id="loginForm">
+        <!-- =========================
+             STUDENT SECTION
+        ========================== -->
+
+        <div id="studentSection">
+
+
+            <!-- LOGIN / REGISTER TABS -->
+
+            <div class="student-tabs">
+
+
+                <button
+                    type="button"
+                    class="student-tab active"
+                    id="studentLoginTab"
+                    onclick="showStudentLogin()"
+                >
+                    Login
+                </button>
+
+
+                <button
+                    type="button"
+                    class="student-tab"
+                    id="studentRegisterTab"
+                    onclick="showStudentRegister()"
+                >
+                    Register
+                </button>
+
+
+            </div>
+
+
+            <!-- =========================
+                 EXISTING STUDENT LOGIN
+            ========================== -->
+
+            <form id="studentLoginForm">
+
+
+                <div class="form-group">
+
+                    <label>
+                        College Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="studentLoginEmail"
+                        placeholder="Enter your registered email"
+                        required
+                        autocomplete="username"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        NextTurn Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="studentLoginPassword"
+                        placeholder="Enter your NextTurn password"
+                        required
+                        autocomplete="current-password"
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="login-btn"
+                    id="studentLoginBtn"
+                >
+                    Login as Student
+                </button>
+
+
+            </form>
+
+
+            <!-- =========================
+                 NEW STUDENT REGISTER
+            ========================== -->
+
+            <form
+                id="studentRegisterForm"
+                class="hidden"
+            >
+
+
+                <div class="form-group">
+
+                    <label>
+                        Full Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="registerName"
+                        placeholder="Enter your full name"
+                        required
+                        autocomplete="name"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Student ID
+                    </label>
+
+                    <input
+                        type="text"
+                        id="registerStudentId"
+                        placeholder="Enter your college student ID"
+                        required
+                        autocomplete="off"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        College Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="registerEmail"
+                        placeholder="Enter your Gmail"
+                        required
+                        autocomplete="email"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Create Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="registerPassword"
+                        placeholder="Create your NextTurn password"
+                        required
+                        minlength="6"
+                        autocomplete="new-password"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Confirm Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="registerConfirmPassword"
+                        placeholder="Re-enter your password"
+                        required
+                        minlength="6"
+                        autocomplete="new-password"
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="login-btn"
+                    id="registerBtn"
+                >
+                    Create Student Account
+                </button>
+
+
+            </form>
+
+
+        </div>
+
+
+        <!-- =========================
+             STAFF / PARTNER FORM
+        ========================== -->
+
+        <form
+            id="otherLoginForm"
+            class="hidden"
+        >
 
 
             <div class="form-group">
 
-                <label id="emailLabel">
-                    College Email
+                <label id="otherLoginLabel">
+                    Staff ID
                 </label>
 
                 <input
-                    type="email"
-                    id="email"
-                    placeholder="Enter your registered email"
+                    type="text"
+                    id="otherLoginValue"
+                    placeholder="Enter Staff ID"
                     required
                     autocomplete="username"
                 >
@@ -573,7 +910,7 @@ body {
 
                 <input
                     type="password"
-                    id="password"
+                    id="otherLoginPassword"
                     placeholder="Enter your NextTurn password"
                     required
                     autocomplete="current-password"
@@ -585,20 +922,24 @@ body {
             <button
                 type="submit"
                 class="login-btn"
-                id="loginBtn"
+                id="otherLoginBtn"
             >
-                Login as Student
+                Login as Staff
             </button>
 
 
         </form>
 
 
+        <!-- MESSAGE -->
+
         <div
             id="message"
             class="message"
         ></div>
 
+
+        <!-- HOME -->
 
         <a
             href="index.html"
@@ -608,12 +949,14 @@ body {
         </a>
 
 
+        <!-- SECURITY -->
+
         <div class="security-note">
 
             <strong>NextTurn Account Login</strong><br>
 
-            This is the official login page for
-            the NextTurn college canteen system.
+            Official login page for the
+            NextTurn college canteen system.
 
         </div>
 
@@ -634,6 +977,14 @@ const API_BASE_URL =
 let selectedRole =
     "student";
 
+
+let studentMode =
+    "login";
+
+
+/* =========================
+   ROLE SELECTION
+========================= */
 
 function selectRole(role, button) {
 
@@ -658,63 +1009,35 @@ function selectRole(role, button) {
     );
 
 
-    const emailLabel =
+    const studentSection =
         document.getElementById(
-            "emailLabel"
+            "studentSection"
         );
 
 
-    const emailInput =
+    const otherLoginForm =
         document.getElementById(
-            "email"
+            "otherLoginForm"
         );
 
 
-    const loginBtn =
-        document.getElementById(
-            "loginBtn"
-        );
+    hideMessage();
 
 
     if (role === "student") {
 
 
-        emailLabel.textContent =
-            "College Email";
+        studentSection.classList.remove(
+            "hidden"
+        );
 
 
-        emailInput.type =
-            "email";
+        otherLoginForm.classList.add(
+            "hidden"
+        );
 
 
-        emailInput.placeholder =
-            "Enter your registered email";
-
-
-        loginBtn.textContent =
-            "Login as Student";
-
-
-    }
-
-
-    else if (role === "staff") {
-
-
-        emailLabel.textContent =
-            "Staff ID";
-
-
-        emailInput.type =
-            "text";
-
-
-        emailInput.placeholder =
-            "Enter Staff ID";
-
-
-        loginBtn.textContent =
-            "Login as Staff";
+        showStudentLogin();
 
 
     }
@@ -723,29 +1046,125 @@ function selectRole(role, button) {
     else {
 
 
-        emailLabel.textContent =
-            "Partner ID";
+        studentSection.classList.add(
+            "hidden"
+        );
 
 
-        emailInput.type =
-            "text";
+        otherLoginForm.classList.remove(
+            "hidden"
+        );
 
 
-        emailInput.placeholder =
-            "Enter Partner ID";
+        const label =
+            document.getElementById(
+                "otherLoginLabel"
+            );
 
 
-        loginBtn.textContent =
-            "Login as Partner";
+        const input =
+            document.getElementById(
+                "otherLoginValue"
+            );
+
+
+        const button =
+            document.getElementById(
+                "otherLoginBtn"
+            );
+
+
+        if (role === "staff") {
+
+
+            label.textContent =
+                "Staff ID";
+
+
+            input.placeholder =
+                "Enter Staff ID";
+
+
+            button.textContent =
+                "Login as Staff";
+
+
+        }
+
+
+        else {
+
+
+            label.textContent =
+                "Partner ID";
+
+
+            input.placeholder =
+                "Enter Partner ID";
+
+
+            button.textContent =
+                "Login as Partner";
+
+        }
+
+
+        input.value = "";
+
+        document.getElementById(
+            "otherLoginPassword"
+        ).value = "";
 
     }
 
+}
 
-    emailInput.value = "";
 
-    document.getElementById(
-        "password"
-    ).value = "";
+/* =========================
+   STUDENT LOGIN TAB
+========================= */
+
+function showStudentLogin() {
+
+
+    studentMode =
+        "login";
+
+
+    document
+        .getElementById(
+            "studentLoginTab"
+        )
+        .classList.add(
+            "active"
+        );
+
+
+    document
+        .getElementById(
+            "studentRegisterTab"
+        )
+        .classList.remove(
+            "active"
+        );
+
+
+    document
+        .getElementById(
+            "studentLoginForm"
+        )
+        .classList.remove(
+            "hidden"
+        );
+
+
+    document
+        .getElementById(
+            "studentRegisterForm"
+        )
+        .classList.add(
+            "hidden"
+        );
 
 
     hideMessage();
@@ -753,8 +1172,562 @@ function selectRole(role, button) {
 }
 
 
+/* =========================
+   STUDENT REGISTER TAB
+========================= */
+
+function showStudentRegister() {
+
+
+    studentMode =
+        "register";
+
+
+    document
+        .getElementById(
+            "studentLoginTab"
+        )
+        .classList.remove(
+            "active"
+        );
+
+
+    document
+        .getElementById(
+            "studentRegisterTab"
+        )
+        .classList.add(
+            "active"
+        );
+
+
+    document
+        .getElementById(
+            "studentLoginForm"
+        )
+        .classList.add(
+            "hidden"
+        );
+
+
+    document
+        .getElementById(
+            "studentRegisterForm"
+        )
+        .classList.remove(
+            "hidden"
+        );
+
+
+    hideMessage();
+
+}
+
+
+/* =========================
+   EXISTING STUDENT LOGIN
+========================= */
+
 document
-    .getElementById("loginForm")
+    .getElementById(
+        "studentLoginForm"
+    )
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+
+            event.preventDefault();
+
+
+            const email =
+                document
+                    .getElementById(
+                        "studentLoginEmail"
+                    )
+                    .value
+                    .trim();
+
+
+            const password =
+                document
+                    .getElementById(
+                        "studentLoginPassword"
+                    )
+                    .value;
+
+
+            const button =
+                document.getElementById(
+                    "studentLoginBtn"
+                );
+
+
+            hideMessage();
+
+
+            button.disabled =
+                true;
+
+
+            button.textContent =
+                "Logging in...";
+
+
+            try {
+
+
+                const response =
+                    await fetch(
+                        API_BASE_URL +
+                        "/api/student-login",
+                        {
+
+                            method:
+                                "POST",
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/json"
+
+                            },
+
+                            body:
+                                JSON.stringify({
+
+                                    email:
+                                        email,
+
+                                    password:
+                                        password
+
+                                })
+
+                        }
+                    );
+
+
+                let data = {};
+
+
+                try {
+
+                    data =
+                        await response.json();
+
+                }
+
+                catch {
+
+                    data = {};
+
+                }
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Invalid Gmail or password."
+                    );
+
+                }
+
+
+                /*
+                 * IMPORTANT:
+                 * Store the exact student returned
+                 * by the backend.
+                 *
+                 * This means every student gets
+                 * their own account.
+                 */
+
+                localStorage.setItem(
+                    "nextTurnRole",
+                    "student"
+                );
+
+
+                localStorage.setItem(
+                    "nextTurnUser",
+                    JSON.stringify(data)
+                );
+
+
+                /*
+                 * Keep student-specific ID
+                 * available for student.html
+                 */
+
+                if (data.studentId) {
+
+                    localStorage.setItem(
+                        "nextTurnStudentId",
+                        data.studentId
+                    );
+
+                }
+
+
+                showMessage(
+                    "Login successful! Redirecting...",
+                    "success"
+                );
+
+
+                setTimeout(
+                    function() {
+
+                        window.location.href =
+                            "student.html";
+
+                    },
+                    700
+                );
+
+
+            }
+
+
+            catch (error) {
+
+
+                console.error(
+                    "Student login error:",
+                    error
+                );
+
+
+                showMessage(
+                    error.message ||
+                    "Unable to login. Please try again.",
+                    "error"
+                );
+
+            }
+
+
+            finally {
+
+
+                button.disabled =
+                    false;
+
+
+                button.textContent =
+                    "Login as Student";
+
+            }
+
+        }
+    );
+
+
+/* =========================
+   STUDENT REGISTRATION
+========================= */
+
+document
+    .getElementById(
+        "studentRegisterForm"
+    )
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+
+            event.preventDefault();
+
+
+            const fullName =
+                document
+                    .getElementById(
+                        "registerName"
+                    )
+                    .value
+                    .trim();
+
+
+            const studentId =
+                document
+                    .getElementById(
+                        "registerStudentId"
+                    )
+                    .value
+                    .trim();
+
+
+            const email =
+                document
+                    .getElementById(
+                        "registerEmail"
+                    )
+                    .value
+                    .trim();
+
+
+            const password =
+                document
+                    .getElementById(
+                        "registerPassword"
+                    )
+                    .value;
+
+
+            const confirmPassword =
+                document
+                    .getElementById(
+                        "registerConfirmPassword"
+                    )
+                    .value;
+
+
+            const button =
+                document.getElementById(
+                    "registerBtn"
+                );
+
+
+            hideMessage();
+
+
+            if (
+                !fullName ||
+                !studentId ||
+                !email ||
+                !password ||
+                !confirmPassword
+            ) {
+
+                showMessage(
+                    "Please fill all registration details.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            if (
+                password.length < 6
+            ) {
+
+                showMessage(
+                    "Password must contain at least 6 characters.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            if (
+                password !==
+                confirmPassword
+            ) {
+
+                showMessage(
+                    "Passwords do not match.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            button.disabled =
+                true;
+
+
+            button.textContent =
+                "Creating Account...";
+
+
+            try {
+
+
+                /*
+                 * This endpoint will be added
+                 * to the Spring Boot backend.
+                 */
+
+                const response =
+                    await fetch(
+                        API_BASE_URL +
+                        "/api/student-register",
+                        {
+
+                            method:
+                                "POST",
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/json"
+
+                            },
+
+                            body:
+                                JSON.stringify({
+
+                                    fullName:
+                                        fullName,
+
+                                    studentId:
+                                        studentId,
+
+                                    email:
+                                        email,
+
+                                    password:
+                                        password
+
+                                })
+
+                        }
+                    );
+
+
+                let data = {};
+
+
+                try {
+
+                    data =
+                        await response.json();
+
+                }
+
+                catch {
+
+                    data = {};
+
+                }
+
+
+                if (!response.ok) {
+
+
+                    if (
+                        response.status ===
+                        409
+                    ) {
+
+                        throw new Error(
+                            "This Gmail or Student ID is already registered."
+                        );
+
+                    }
+
+
+                    throw new Error(
+                        data.message ||
+                        data.error ||
+                        "Registration failed. Please try again."
+                    );
+
+                }
+
+
+                showMessage(
+                    "Account created successfully! You can now login.",
+                    "success"
+                );
+
+
+                /*
+                 * Clear registration form
+                 */
+
+                document
+                    .getElementById(
+                        "studentRegisterForm"
+                    )
+                    .reset();
+
+
+                /*
+                 * Automatically switch
+                 * back to Login after a
+                 * short delay.
+                 */
+
+                setTimeout(
+                    function() {
+
+                        showStudentLogin();
+
+                    },
+                    1000
+                );
+
+
+            }
+
+
+            catch (error) {
+
+
+                console.error(
+                    "Registration error:",
+                    error
+                );
+
+
+                if (
+                    error instanceof
+                    TypeError
+                ) {
+
+                    showMessage(
+                        "Cannot connect to NextTurn server. Please try again.",
+                        "error"
+                    );
+
+                }
+
+
+                else {
+
+                    showMessage(
+                        error.message ||
+                        "Registration failed.",
+                        "error"
+                    );
+
+                }
+
+            }
+
+
+            finally {
+
+
+                button.disabled =
+                    false;
+
+
+                button.textContent =
+                    "Create Student Account";
+
+            }
+
+        }
+    );
+
+
+/* =========================
+   STAFF / PARTNER LOGIN
+========================= */
+
+document
+    .getElementById(
+        "otherLoginForm"
+    )
     .addEventListener(
         "submit",
         async function(event) {
@@ -765,20 +1738,24 @@ document
 
             const loginValue =
                 document
-                    .getElementById("email")
+                    .getElementById(
+                        "otherLoginValue"
+                    )
                     .value
                     .trim();
 
 
             const password =
                 document
-                    .getElementById("password")
+                    .getElementById(
+                        "otherLoginPassword"
+                    )
                     .value;
 
 
-            const loginBtn =
+            const button =
                 document.getElementById(
-                    "loginBtn"
+                    "otherLoginBtn"
                 );
 
 
@@ -800,35 +1777,15 @@ document
             }
 
 
-            let endpoint = "";
+            let endpoint =
+                "";
 
-            let requestBody = {};
+
+            let requestBody =
+                {};
 
 
             if (
-                selectedRole ===
-                "student"
-            ) {
-
-
-                endpoint =
-                    "/api/student-login";
-
-
-                requestBody = {
-
-                    email:
-                        loginValue,
-
-                    password:
-                        password
-
-                };
-
-            }
-
-
-            else if (
                 selectedRole ===
                 "staff"
             ) {
@@ -871,11 +1828,11 @@ document
             }
 
 
-            loginBtn.disabled =
+            button.disabled =
                 true;
 
 
-            loginBtn.textContent =
+            button.textContent =
                 "Logging in...";
 
 
@@ -927,11 +1884,7 @@ document
                 if (!response.ok) {
 
                     throw new Error(
-
-                        data.message ||
-                        data.error ||
                         "Invalid login details."
-
                     );
 
                 }
@@ -949,6 +1902,20 @@ document
                 );
 
 
+                if (
+                    selectedRole ===
+                    "partner" &&
+                    data.partnerId
+                ) {
+
+                    localStorage.setItem(
+                        "nextTurnPartnerId",
+                        data.partnerId
+                    );
+
+                }
+
+
                 showMessage(
                     "Login successful! Redirecting...",
                     "success"
@@ -960,17 +1927,6 @@ document
 
 
                         if (
-                            selectedRole ===
-                            "student"
-                        ) {
-
-                            window.location.href =
-                                "student.html";
-
-                        }
-
-
-                        else if (
                             selectedRole ===
                             "staff"
                         ) {
@@ -1006,33 +1962,11 @@ document
                 );
 
 
-                if (
-                    error instanceof
-                    TypeError ||
-                    error.message.includes(
-                        "Failed to fetch"
-                    )
-                ) {
-
-
-                    showMessage(
-                        "Cannot connect to NextTurn server. Please try again.",
-                        "error"
-                    );
-
-
-                }
-
-
-                else {
-
-
-                    showMessage(
-                        error.message,
-                        "error"
-                    );
-
-                }
+                showMessage(
+                    error.message ||
+                    "Unable to login.",
+                    "error"
+                );
 
             }
 
@@ -1040,27 +1974,16 @@ document
             finally {
 
 
-                loginBtn.disabled =
+                button.disabled =
                     false;
 
 
                 if (
                     selectedRole ===
-                    "student"
-                ) {
-
-                    loginBtn.textContent =
-                        "Login as Student";
-
-                }
-
-
-                else if (
-                    selectedRole ===
                     "staff"
                 ) {
 
-                    loginBtn.textContent =
+                    button.textContent =
                         "Login as Staff";
 
                 }
@@ -1068,7 +1991,7 @@ document
 
                 else {
 
-                    loginBtn.textContent =
+                    button.textContent =
                         "Login as Partner";
 
                 }
@@ -1079,10 +2002,15 @@ document
     );
 
 
+/* =========================
+   MESSAGE
+========================= */
+
 function showMessage(
     text,
     type
 ) {
+
 
     const message =
         document.getElementById(
@@ -1102,6 +2030,7 @@ function showMessage(
 
 function hideMessage() {
 
+
     const message =
         document.getElementById(
             "message"
@@ -1118,7 +2047,15 @@ function hideMessage() {
 }
 
 
+/* =========================
+   START
+========================= */
+
+showStudentLogin();
+
+
 </script>
+
 
 </body>
 
