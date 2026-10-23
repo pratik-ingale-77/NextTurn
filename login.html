@@ -1,2062 +1,518 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-<meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
-
-<title>NextTurn - Account Login</title>
-
-<link rel="stylesheet" href="styles.css">
-
-<style>
-
-* {
-    box-sizing: border-box;
-}
-
-body {
-
-    min-height: 100vh;
-
-    background:
-        radial-gradient(
-            circle at top left,
-            rgba(212,175,55,0.12),
-            transparent 35%
-        ),
-        radial-gradient(
-            circle at bottom right,
-            rgba(212,175,55,0.06),
-            transparent 35%
-        ),
-        #080808;
-
-    color: #f5f5f5;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    padding: 20px;
-
-}
-
-
-.login-wrapper {
-
-    width: 100%;
-
-    max-width: 440px;
-
-}
-
-
-.brand-area {
-
-    text-align: center;
-
-    margin-bottom: 25px;
-
-}
-
-
-.brand {
-
-    font-size: 34px;
-
-    font-weight: 900;
-
-    letter-spacing: -1px;
-
-    color: #D4AF37;
-
-    margin-bottom: 8px;
-
-}
-
-
-.tagline {
-
-    color: #858585;
-
-    font-size: 14px;
-
-}
-
-
-.login-card {
-
-    background:
-        linear-gradient(
-            145deg,
-            #151515,
-            #0d0d0d
-        );
-
-    border: 1px solid
-        rgba(212,175,55,0.24);
-
-    border-radius: 24px;
-
-    padding: 30px;
-
-    box-shadow:
-        0 25px 70px
-        rgba(0,0,0,0.55);
-
-}
-
-
-.welcome {
-
-    margin-bottom: 24px;
-
-}
-
-
-.welcome h1 {
-
-    font-size: 25px;
-
-    margin-bottom: 7px;
-
-    color: #f5f5f5;
-
-}
-
-
-.welcome p {
-
-    color: #888;
-
-    font-size: 14px;
-
-    line-height: 1.5;
-
-}
-
-
-/* =========================
-   ROLE SELECTION
-========================= */
-
-.role-title {
-
-    font-size: 13px;
-
-    color: #999;
-
-    margin-bottom: 10px;
-
-    font-weight: 600;
-
-}
-
-
-.roles {
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(3, 1fr);
-
-    gap: 8px;
-
-    margin-bottom: 23px;
-
-}
-
-
-.role-btn {
-
-    border: 1px solid #292929;
-
-    background: #0b0b0b;
-
-    color: #aaa;
-
-    border-radius: 11px;
-
-    padding: 12px 6px;
-
-    font-size: 13px;
-
-    font-weight: 700;
-
-    cursor: pointer;
-
-    transition: 0.2s ease;
-
-}
-
-
-.role-btn:hover {
-
-    border-color:
-        rgba(212,175,55,0.5);
-
-    color: #F4D77D;
-
-}
-
-
-.role-btn.active {
-
-    background:
-        linear-gradient(
-            135deg,
-            #D4AF37,
-            #F4D77D
-        );
-
-    color: #090909;
-
-    border-color: #D4AF37;
-
-    box-shadow:
-        0 7px 20px
-        rgba(212,175,55,0.14);
-
-}
-
-
-/* =========================
-   STUDENT MODE TABS
-========================= */
-
-.student-tabs {
-
-    display: grid;
-
-    grid-template-columns: 1fr 1fr;
-
-    gap: 7px;
-
-    background: #090909;
-
-    padding: 5px;
-
-    border-radius: 13px;
-
-    border: 1px solid #292929;
-
-    margin-bottom: 22px;
-
-}
-
-
-.student-tab {
-
-    border: none;
-
-    background: transparent;
-
-    color: #777;
-
-    padding: 11px 8px;
-
-    border-radius: 9px;
-
-    font-size: 13px;
-
-    font-weight: 800;
-
-    cursor: pointer;
-
-    transition: 0.2s ease;
-
-}
-
-
-.student-tab.active {
-
-    background:
-        linear-gradient(
-            135deg,
-            #D4AF37,
-            #F4D77D
-        );
-
-    color: #090909;
-
-}
-
-
-.student-tab:hover:not(.active) {
-
-    color: #F4D77D;
-
-}
-
-
-/* =========================
-   FORMS
-========================= */
-
-.form-group {
-
-    margin-bottom: 17px;
-
-}
-
-
-.form-group label {
-
-    display: block;
-
-    margin-bottom: 8px;
-
-    font-size: 14px;
-
-    color: #d5d5d5;
-
-    font-weight: 600;
-
-}
-
-
-.form-group input {
-
-    width: 100%;
-
-    padding: 14px 15px;
-
-    background: #090909;
-
-    border: 1px solid #292929;
-
-    border-radius: 11px;
-
-    color: #f5f5f5;
-
-    font-size: 15px;
-
-    outline: none;
-
-    transition: 0.2s ease;
-
-}
-
-
-.form-group input::placeholder {
-
-    color: #606060;
-
-}
-
-
-.form-group input:focus {
-
-    border-color: #D4AF37;
-
-    box-shadow:
-        0 0 0 3px
-        rgba(212,175,55,0.08);
-
-}
-
-
-/* =========================
-   MAIN BUTTON
-========================= */
-
-.login-btn {
-
-    width: 100%;
-
-    padding: 15px;
-
-    margin-top: 4px;
-
-    border: none;
-
-    border-radius: 12px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #D4AF37,
-            #F4D77D
-        );
-
-    color: #090909;
-
-    font-size: 16px;
-
-    font-weight: 800;
-
-    cursor: pointer;
-
-    transition: 0.2s ease;
-
-}
-
-
-.login-btn:hover {
-
-    transform: translateY(-1px);
-
-    box-shadow:
-        0 12px 28px
-        rgba(212,175,55,0.18);
-
-}
-
-
-.login-btn:disabled {
-
-    opacity: 0.55;
-
-    cursor: not-allowed;
-
-    transform: none;
-
-}
-
-
-/* =========================
-   MESSAGE
-========================= */
-
-.message {
-
-    display: none;
-
-    margin-top: 15px;
-
-    padding: 12px;
-
-    border-radius: 10px;
-
-    text-align: center;
-
-    font-size: 13px;
-
-    line-height: 1.4;
-
-}
-
-
-.message.success {
-
-    display: block;
-
-    background:
-        rgba(212,175,55,0.09);
-
-    border: 1px solid
-        rgba(212,175,55,0.25);
-
-    color: #F4D77D;
-
-}
-
-
-.message.error {
-
-    display: block;
-
-    background:
-        rgba(180,40,40,0.10);
-
-    border: 1px solid
-        rgba(220,70,70,0.22);
-
-    color: #ff9b9b;
-
-}
-
-
-/* =========================
-   HIDDEN
-========================= */
-
-.hidden {
-
-    display: none !important;
-
-}
-
-
-/* =========================
-   BACK HOME
-========================= */
-
-.back-home {
-
-    display: block;
-
-    text-align: center;
-
-    margin-top: 20px;
-
-    color: #777;
-
-    text-decoration: none;
-
-    font-size: 13px;
-
-    transition: 0.2s ease;
-
-}
-
-
-.back-home:hover {
-
-    color: #D4AF37;
-
-}
-
-
-/* =========================
-   SECURITY
-========================= */
-
-.security-note {
-
-    text-align: center;
-
-    margin-top: 18px;
-
-    color: #666;
-
-    font-size: 11px;
-
-    line-height: 1.5;
-
-}
-
-
-.security-note strong {
-
-    color: #888;
-
-}
-
-
-/* =========================
-   MOBILE
-========================= */
-
-@media (max-width: 500px) {
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080808">
+  <title>NextTurn | College Canteen Login</title>
+  <meta name="description" content="Sign in to NextTurn, a college canteen ordering and queue management system.">
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    * { box-sizing: border-box; }
 
     body {
-
-        padding: 14px;
-
+      margin: 0;
+      min-height: 100vh;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top left, rgba(212,175,55,.12), transparent 40%), #080808;
+      color: #f5f5f5;
+      font-family: Arial, sans-serif;
     }
 
-    .login-card {
+    .wrapper { width: 100%; max-width: 440px; }
 
-        padding: 21px;
+    .brand { text-align: center; margin-bottom: 24px; }
 
-        border-radius: 19px;
-
+    .brand h1 {
+      color: #D4AF37;
+      font-size: 36px;
+      margin: 0 0 8px;
     }
 
-    .brand {
+    .brand p { color: #999; font-size: 14px; margin: 0; }
 
-        font-size: 30px;
-
+    .card {
+      padding: 28px;
+      border-radius: 20px;
+      border: 1px solid rgba(212,175,55,.25);
+      background: linear-gradient(145deg,#171717,#0d0d0d);
+      box-shadow: 0 20px 60px rgba(0,0,0,.4);
     }
 
-    .welcome h1 {
+    .welcome h2 { font-size: 24px; margin: 0 0 8px; }
 
-        font-size: 23px;
-
+    .welcome p {
+      color: #999;
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 24px;
     }
 
-}
-
-
-@media (max-width: 360px) {
-
-    .roles {
-
-        grid-template-columns: 1fr;
-
+    .label-title {
+      display: block;
+      color: #bbb;
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 10px;
     }
 
-}
+    .roles, .tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 22px;
+    }
 
-</style>
+    .tabs {
+      grid-template-columns: repeat(2, 1fr);
+      padding: 5px;
+      background: #090909;
+      border: 1px solid #292929;
+      border-radius: 12px;
+    }
 
+    button { font: inherit; cursor: pointer; }
+
+    .role, .tab {
+      padding: 12px 5px;
+      border-radius: 10px;
+      border: 1px solid #303030;
+      background: #0b0b0b;
+      color: #bbb;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .tab { border: none; }
+
+    .role.active, .tab.active, .submit {
+      color: #080808;
+      background: linear-gradient(135deg,#D4AF37,#F4D77D);
+    }
+
+    .field { margin-bottom: 17px; }
+
+    .field label {
+      display: block;
+      margin-bottom: 8px;
+      color: #ddd;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .field input {
+      width: 100%;
+      padding: 14px;
+      background: #090909;
+      color: white;
+      border: 1px solid #333;
+      border-radius: 10px;
+      font-size: 15px;
+      outline: none;
+    }
+
+    .field input:focus { border-color: #D4AF37; }
+
+    .submit {
+      width: 100%;
+      padding: 15px;
+      margin-top: 4px;
+      border: none;
+      border-radius: 11px;
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    .submit:disabled { opacity: .6; cursor: wait; }
+
+    .message {
+      display: none;
+      margin-top: 16px;
+      padding: 12px;
+      border-radius: 9px;
+      font-size: 13px;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .message.show { display: block; }
+    .message.success { color: #f4d77d; background: #211d0d; }
+    .message.error { color: #ffaaaa; background: #251010; }
+    .hidden { display: none !important; }
+
+    .back {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      color: #aaa;
+      text-decoration: none;
+      font-size: 13px;
+    }
+
+    .back:hover { color: #D4AF37; }
+
+    .privacy {
+      margin-top: 18px;
+      text-align: center;
+      color: #888;
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 380px) {
+      .card { padding: 20px; }
+      .brand h1 { font-size: 30px; }
+    }
+  </style>
 </head>
 
-
 <body>
+  <main class="wrapper">
+    <header class="brand">
+      <h1>NextTurn</h1>
+      <p>College Canteen Ordering System</p>
+    </header>
 
+    <section class="card">
+      <div class="welcome">
+        <h2>Welcome to NextTurn</h2>
+        <p>Sign in to manage your canteen orders and queue.</p>
+      </div>
 
-<div class="login-wrapper">
+      <span class="label-title">Choose account type</span>
 
+      <div class="roles">
+        <button type="button" class="role active" data-role="student">Student</button>
+        <button type="button" class="role" data-role="staff">Staff</button>
+        <button type="button" class="role" data-role="partner">Partner</button>
+      </div>
 
-    <!-- BRAND -->
-
-    <div class="brand-area">
-
-        <div class="brand">
-            NextTurn
+      <section id="studentSection">
+        <div class="tabs">
+          <button type="button" class="tab active" id="loginTab">Login</button>
+          <button type="button" class="tab" id="registerTab">Register</button>
         </div>
 
-        <div class="tagline">
-            Digital Canteen Ordering System
-        </div>
-
-    </div>
-
-
-    <!-- CARD -->
-
-    <div class="login-card">
-
-
-        <!-- WELCOME -->
-
-        <div class="welcome">
-
-            <h1>
-                Welcome to NextTurn
-            </h1>
-
-            <p>
-                Sign in to your account or
-                create a new student account.
-            </p>
-
-        </div>
-
-
-        <!-- ROLE -->
-
-        <div class="role-title">
-            Choose account type
-        </div>
-
-
-        <div class="roles">
-
-
-            <button
-                type="button"
-                class="role-btn active"
-                id="studentRoleBtn"
-                onclick="selectRole('student', this)"
-            >
-                Student
-            </button>
-
-
-            <button
-                type="button"
-                class="role-btn"
-                onclick="selectRole('staff', this)"
-            >
-                Staff
-            </button>
-
-
-            <button
-                type="button"
-                class="role-btn"
-                onclick="selectRole('partner', this)"
-            >
-                Partner
-            </button>
-
-
-        </div>
-
-
-        <!-- =========================
-             STUDENT SECTION
-        ========================== -->
-
-        <div id="studentSection">
-
-
-            <!-- LOGIN / REGISTER TABS -->
-
-            <div class="student-tabs">
-
-
-                <button
-                    type="button"
-                    class="student-tab active"
-                    id="studentLoginTab"
-                    onclick="showStudentLogin()"
-                >
-                    Login
-                </button>
-
-
-                <button
-                    type="button"
-                    class="student-tab"
-                    id="studentRegisterTab"
-                    onclick="showStudentRegister()"
-                >
-                    Register
-                </button>
-
-
-            </div>
-
-
-            <!-- =========================
-                 EXISTING STUDENT LOGIN
-            ========================== -->
-
-            <form id="studentLoginForm">
-
-
-                <div class="form-group">
-
-                    <label>
-                        College Email
-                    </label>
-
-                    <input
-                        type="email"
-                        id="studentLoginEmail"
-                        placeholder="Enter your registered email"
-                        required
-                        autocomplete="username"
-                    >
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        NextTurn Password
-                    </label>
-
-                    <input
-                        type="password"
-                        id="studentLoginPassword"
-                        placeholder="Enter your NextTurn password"
-                        required
-                        autocomplete="current-password"
-                    >
-
-                </div>
-
-
-                <button
-                    type="submit"
-                    class="login-btn"
-                    id="studentLoginBtn"
-                >
-                    Login as Student
-                </button>
-
-
-            </form>
-
-
-            <!-- =========================
-                 NEW STUDENT REGISTER
-            ========================== -->
-
-            <form
-                id="studentRegisterForm"
-                class="hidden"
-            >
-
-
-                <div class="form-group">
-
-                    <label>
-                        Full Name
-                    </label>
-
-                    <input
-                        type="text"
-                        id="registerName"
-                        placeholder="Enter your full name"
-                        required
-                        autocomplete="name"
-                    >
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        Student ID
-                    </label>
-
-                    <input
-                        type="text"
-                        id="registerStudentId"
-                        placeholder="Enter your college student ID"
-                        required
-                        autocomplete="off"
-                    >
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        College Email
-                    </label>
-
-                    <input
-                        type="email"
-                        id="registerEmail"
-                        placeholder="Enter your Gmail"
-                        required
-                        autocomplete="email"
-                    >
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        Create Password
-                    </label>
-
-                    <input
-                        type="password"
-                        id="registerPassword"
-                        placeholder="Create your NextTurn password"
-                        required
-                        minlength="6"
-                        autocomplete="new-password"
-                    >
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        Confirm Password
-                    </label>
-
-                    <input
-                        type="password"
-                        id="registerConfirmPassword"
-                        placeholder="Re-enter your password"
-                        required
-                        minlength="6"
-                        autocomplete="new-password"
-                    >
-
-                </div>
-
-
-                <button
-                    type="submit"
-                    class="login-btn"
-                    id="registerBtn"
-                >
-                    Create Student Account
-                </button>
-
-
-            </form>
-
-
-        </div>
-
-
-        <!-- =========================
-             STAFF / PARTNER FORM
-        ========================== -->
-
-        <form
-            id="otherLoginForm"
-            class="hidden"
-        >
-
-
-            <div class="form-group">
-
-                <label id="otherLoginLabel">
-                    Staff ID
-                </label>
-
-                <input
-                    type="text"
-                    id="otherLoginValue"
-                    placeholder="Enter Staff ID"
-                    required
-                    autocomplete="username"
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label>
-                    NextTurn Password
-                </label>
-
-                <input
-                    type="password"
-                    id="otherLoginPassword"
-                    placeholder="Enter your NextTurn password"
-                    required
-                    autocomplete="current-password"
-                >
-
-            </div>
-
-
-            <button
-                type="submit"
-                class="login-btn"
-                id="otherLoginBtn"
-            >
-                Login as Staff
-            </button>
-
-
+        <form id="studentLoginForm">
+          <div class="field">
+            <label for="studentEmail">College Email</label>
+            <input id="studentEmail" type="email"
+              placeholder="Enter your registered email"
+              autocomplete="username" required>
+          </div>
+
+          <div class="field">
+            <label for="studentPassword">NextTurn Password</label>
+            <input id="studentPassword" type="password"
+              placeholder="Enter your NextTurn password"
+              autocomplete="current-password" required>
+          </div>
+
+          <button class="submit" id="studentLoginBtn" type="submit">
+            Login as Student
+          </button>
         </form>
 
+        <form id="studentRegisterForm" class="hidden">
+          <div class="field">
+            <label for="fullName">Full Name</label>
+            <input id="fullName" type="text" autocomplete="name" required>
+          </div>
 
-        <!-- MESSAGE -->
+          <div class="field">
+            <label for="studentId">College Student ID</label>
+            <input id="studentId" type="text" autocomplete="off" required>
+          </div>
 
-        <div
-            id="message"
-            class="message"
-        ></div>
+          <div class="field">
+            <label for="registerEmail">College Email</label>
+            <input id="registerEmail" type="email"
+              placeholder="Enter your college email"
+              autocomplete="email" required>
+          </div>
 
+          <div class="field">
+            <label for="registerPassword">Create Password</label>
+            <input id="registerPassword" type="password"
+              minlength="6" autocomplete="new-password" required>
+          </div>
 
-        <!-- HOME -->
+          <div class="field">
+            <label for="confirmPassword">Confirm Password</label>
+            <input id="confirmPassword" type="password"
+              minlength="6" autocomplete="new-password" required>
+          </div>
 
-        <a
-            href="index.html"
-            class="back-home"
-        >
-            ← Back to Home
-        </a>
+          <button class="submit" id="registerBtn" type="submit">
+            Create Student Account
+          </button>
+        </form>
+      </section>
 
-
-        <!-- SECURITY -->
-
-        <div class="security-note">
-
-            <strong>NextTurn Account Login</strong><br>
-
-            Official login page for the
-            NextTurn college canteen system.
-
+      <form id="otherLoginForm" class="hidden">
+        <div class="field">
+          <label id="otherLabel" for="otherId">Staff ID</label>
+          <input id="otherId" type="text" autocomplete="username" required>
         </div>
 
+        <div class="field">
+          <label for="otherPassword">NextTurn Password</label>
+          <input id="otherPassword" type="password"
+            autocomplete="current-password" required>
+        </div>
 
-    </div>
+        <button class="submit" id="otherLoginBtn" type="submit">
+          Login as Staff
+        </button>
+      </form>
 
+      <div id="message" class="message" role="status" aria-live="polite"></div>
 
-</div>
+      <a href="index.html" class="back">← Back to Home</a>
 
+      <div class="privacy">
+        <strong>NextTurn Account Portal</strong><br>
+        For the college canteen ordering system.<br>
+        Never enter your Google account password here.
+      </div>
+    </section>
+    </main>
+      <script>
+    "use strict";
 
-<script>
+    const API_BASE_URL = "https://nextturn-mgbf.onrender.com";
+    let selectedRole = "student";
 
+    const $ = id => document.getElementById(id);
 
-const API_BASE_URL =
-    "https://nextturn-mgbf.onrender.com";
+    function showMessage(text, type = "error") {
+      const box = $("message");
+      box.textContent = text;
+      box.className = "message show " + type;
+    }
 
+    function hideMessage() {
+      $("message").textContent = "";
+      $("message").className = "message";
+    }
 
-let selectedRole =
-    "student";
+    async function postJSON(endpoint, payload) {
+      const response = await fetch(API_BASE_URL + endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
 
+      let data = {};
 
-let studentMode =
-    "login";
+      try {
+        data = await response.json();
+      } catch {
+        data = {};
+      }
 
+      if (!response.ok) {
+        if (response.status === 409) {
+          throw new Error("This account or student ID is already registered.");
+        }
 
-/* =========================
-   ROLE SELECTION
-========================= */
+        throw new Error(
+          data.message || data.error || "Request failed. Please try again."
+        );
+      }
 
-function selectRole(role, button) {
+      return data;
+    }
 
+    function setLoading(button, loading, label) {
+      button.disabled = loading;
+      button.textContent = loading ? "Please wait..." : label;
+    }
 
-    selectedRole =
-        role;
+    function showStudentLogin() {
+      $("studentLoginForm").classList.remove("hidden");
+      $("studentRegisterForm").classList.add("hidden");
+      $("loginTab").classList.add("active");
+      $("registerTab").classList.remove("active");
+      hideMessage();
+    }
 
+    function showStudentRegister() {
+      $("studentLoginForm").classList.add("hidden");
+      $("studentRegisterForm").classList.remove("hidden");
+      $("loginTab").classList.remove("active");
+      $("registerTab").classList.add("active");
+      hideMessage();
+    }
 
-    document
-        .querySelectorAll(".role-btn")
-        .forEach(function(btn) {
+    $("loginTab").addEventListener("click", showStudentLogin);
+    $("registerTab").addEventListener("click", showStudentRegister);
 
-            btn.classList.remove(
-                "active"
-            );
+    document.querySelectorAll(".role").forEach(button => {
+      button.addEventListener("click", () => {
+        selectedRole = button.dataset.role;
 
+        document.querySelectorAll(".role").forEach(item => {
+          item.classList.toggle("active", item === button);
         });
 
+        const isStudent = selectedRole === "student";
 
-    button.classList.add(
-        "active"
-    );
+        $("studentSection").classList.toggle("hidden", !isStudent);
+        $("otherLoginForm").classList.toggle("hidden", isStudent);
 
+        if (!isStudent) {
+          const isStaff = selectedRole === "staff";
 
-    const studentSection =
-        document.getElementById(
-            "studentSection"
-        );
+          $("otherLabel").textContent = isStaff ? "Staff ID" : "Partner ID";
+          $("otherId").placeholder = isStaff
+            ? "Enter your Staff ID"
+            : "Enter your Partner ID";
 
+          $("otherLoginBtn").textContent = isStaff
+            ? "Login as Staff"
+            : "Login as Partner";
 
-    const otherLoginForm =
-        document.getElementById(
-            "otherLoginForm"
-        );
-
-
-    hideMessage();
-
-
-    if (role === "student") {
-
-
-        studentSection.classList.remove(
-            "hidden"
-        );
-
-
-        otherLoginForm.classList.add(
-            "hidden"
-        );
-
-
-        showStudentLogin();
-
-
-    }
-
-
-    else {
-
-
-        studentSection.classList.add(
-            "hidden"
-        );
-
-
-        otherLoginForm.classList.remove(
-            "hidden"
-        );
-
-
-        const label =
-            document.getElementById(
-                "otherLoginLabel"
-            );
-
-
-        const input =
-            document.getElementById(
-                "otherLoginValue"
-            );
-
-
-        const button =
-            document.getElementById(
-                "otherLoginBtn"
-            );
-
-
-        if (role === "staff") {
-
-
-            label.textContent =
-                "Staff ID";
-
-
-            input.placeholder =
-                "Enter Staff ID";
-
-
-            button.textContent =
-                "Login as Staff";
-
-
+          $("otherLoginForm").reset();
         }
 
+        hideMessage();
+      });
+    });
 
-        else {
+    $("studentLoginForm").addEventListener("submit", async event => {
+      event.preventDefault();
 
+      const button = $("studentLoginBtn");
+      setLoading(button, true, "Login as Student");
+      hideMessage();
 
-            label.textContent =
-                "Partner ID";
+      try {
+        const data = await postJSON("/api/student-login", {
+          email: $("studentEmail").value.trim(),
+          password: $("studentPassword").value
+        });
 
+        localStorage.setItem("nextTurnRole", "student");
+        localStorage.setItem("nextTurnUser", JSON.stringify(data));
 
-            input.placeholder =
-                "Enter Partner ID";
-
-
-            button.textContent =
-                "Login as Partner";
-
+        if (data.studentId) {
+          localStorage.setItem("nextTurnStudentId", data.studentId);
         }
 
-
-        input.value = "";
-
-        document.getElementById(
-            "otherLoginPassword"
-        ).value = "";
-
-    }
-
-}
-
-
-/* =========================
-   STUDENT LOGIN TAB
-========================= */
-
-function showStudentLogin() {
-
-
-    studentMode =
-        "login";
-
-
-    document
-        .getElementById(
-            "studentLoginTab"
-        )
-        .classList.add(
-            "active"
-        );
-
-
-    document
-        .getElementById(
-            "studentRegisterTab"
-        )
-        .classList.remove(
-            "active"
-        );
-
-
-    document
-        .getElementById(
-            "studentLoginForm"
-        )
-        .classList.remove(
-            "hidden"
-        );
-
-
-    document
-        .getElementById(
-            "studentRegisterForm"
-        )
-        .classList.add(
-            "hidden"
-        );
-
-
-    hideMessage();
-
-}
-
-
-/* =========================
-   STUDENT REGISTER TAB
-========================= */
-
-function showStudentRegister() {
-
-
-    studentMode =
-        "register";
-
-
-    document
-        .getElementById(
-            "studentLoginTab"
-        )
-        .classList.remove(
-            "active"
-        );
-
-
-    document
-        .getElementById(
-            "studentRegisterTab"
-        )
-        .classList.add(
-            "active"
-        );
-
-
-    document
-        .getElementById(
-            "studentLoginForm"
-        )
-        .classList.add(
-            "hidden"
-        );
-
-
-    document
-        .getElementById(
-            "studentRegisterForm"
-        )
-        .classList.remove(
-            "hidden"
-        );
-
-
-    hideMessage();
-
-}
-
-
-/* =========================
-   EXISTING STUDENT LOGIN
-========================= */
-
-document
-    .getElementById(
-        "studentLoginForm"
-    )
-    .addEventListener(
-        "submit",
-        async function(event) {
-
-
-            event.preventDefault();
-
-
-            const email =
-                document
-                    .getElementById(
-                        "studentLoginEmail"
-                    )
-                    .value
-                    .trim();
-
-
-            const password =
-                document
-                    .getElementById(
-                        "studentLoginPassword"
-                    )
-                    .value;
-
-
-            const button =
-                document.getElementById(
-                    "studentLoginBtn"
-                );
-
-
-            hideMessage();
-
-
-            button.disabled =
-                true;
-
-
-            button.textContent =
-                "Logging in...";
-
-
-            try {
-
-
-                const response =
-                    await fetch(
-                        API_BASE_URL +
-                        "/api/student-login",
-                        {
-
-                            method:
-                                "POST",
-
-                            headers: {
-
-                                "Content-Type":
-                                    "application/json"
-
-                            },
-
-                            body:
-                                JSON.stringify({
-
-                                    email:
-                                        email,
-
-                                    password:
-                                        password
-
-                                })
-
-                        }
-                    );
-
-
-                let data = {};
-
-
-                try {
-
-                    data =
-                        await response.json();
-
-                }
-
-                catch {
-
-                    data = {};
-
-                }
-
-
-                if (!response.ok) {
-
-                    throw new Error(
-                        "Invalid Gmail or password."
-                    );
-
-                }
-
-
-                /*
-                 * IMPORTANT:
-                 * Store the exact student returned
-                 * by the backend.
-                 *
-                 * This means every student gets
-                 * their own account.
-                 */
-
-                localStorage.setItem(
-                    "nextTurnRole",
-                    "student"
-                );
-
-
-                localStorage.setItem(
-                    "nextTurnUser",
-                    JSON.stringify(data)
-                );
-
-
-                /*
-                 * Keep student-specific ID
-                 * available for student.html
-                 */
-
-                if (data.studentId) {
-
-                    localStorage.setItem(
-                        "nextTurnStudentId",
-                        data.studentId
-                    );
-
-                }
-
-
-                showMessage(
-                    "Login successful! Redirecting...",
-                    "success"
-                );
-
-
-                setTimeout(
-                    function() {
-
-                        window.location.href =
-                            "student.html";
-
-                    },
-                    700
-                );
-
-
-            }
-
-
-            catch (error) {
-
-
-                console.error(
-                    "Student login error:",
-                    error
-                );
-
-
-                showMessage(
-                    error.message ||
-                    "Unable to login. Please try again.",
-                    "error"
-                );
-
-            }
-
-
-            finally {
-
-
-                button.disabled =
-                    false;
-
-
-                button.textContent =
-                    "Login as Student";
-
-            }
-
+        showMessage("Login successful. Opening your dashboard...", "success");
+
+        setTimeout(() => {
+          window.location.href = "student.html";
+        }, 700);
+
+      } catch (error) {
+        showMessage(error.message || "Unable to log in.");
+      } finally {
+        setLoading(button, false, "Login as Student");
+      }
+    });
+
+    $("studentRegisterForm").addEventListener("submit", async event => {
+      event.preventDefault();
+
+      const button = $("registerBtn");
+      hideMessage();
+
+      const fullName = $("fullName").value.trim();
+      const studentId = $("studentId").value.trim();
+      const email = $("registerEmail").value.trim();
+      const password = $("registerPassword").value;
+      const confirmPassword = $("confirmPassword").value;
+
+      if (password.length < 6) {
+        showMessage("Your password must contain at least 6 characters.");
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        showMessage("The passwords do not match.");
+        return;
+      }
+
+      setLoading(button, true, "Create Student Account");
+
+      try {
+        await postJSON("/api/student-register", {
+          fullName,
+          studentId,
+          email,
+          password
+        });
+
+        $("studentRegisterForm").reset();
+        showMessage("Account created. You can now log in.", "success");
+
+        setTimeout(showStudentLogin, 1200);
+
+      } catch (error) {
+        showMessage(error.message || "Registration failed.");
+      } finally {
+        setLoading(button, false, "Create Student Account");
+      }
+    });
+
+    $("otherLoginForm").addEventListener("submit", async event => {
+      event.preventDefault();
+
+      const button = $("otherLoginBtn");
+      const loginValue = $("otherId").value.trim();
+      const password = $("otherPassword").value;
+      const isStaff = selectedRole === "staff";
+
+      const endpoint = isStaff
+        ? "/api/staff-login"
+        : "/api/partner-login";
+
+      const payload = isStaff
+        ? { staffId: loginValue, password }
+        : { partnerId: loginValue, password };
+
+      setLoading(
+        button,
+        true,
+        isStaff ? "Login as Staff" : "Login as Partner"
+      );
+
+      hideMessage();
+
+      try {
+        const data = await postJSON(endpoint, payload);
+
+        localStorage.setItem("nextTurnRole", selectedRole);
+        localStorage.setItem("nextTurnUser", JSON.stringify(data));
+
+        if (!isStaff && data.partnerId) {
+          localStorage.setItem("nextTurnPartnerId", data.partnerId);
         }
-    );
 
-
-/* =========================
-   STUDENT REGISTRATION
-========================= */
-
-document
-    .getElementById(
-        "studentRegisterForm"
-    )
-    .addEventListener(
-        "submit",
-        async function(event) {
-
-
-            event.preventDefault();
-
-
-            const fullName =
-                document
-                    .getElementById(
-                        "registerName"
-                    )
-                    .value
-                    .trim();
-
-
-            const studentId =
-                document
-                    .getElementById(
-                        "registerStudentId"
-                    )
-                    .value
-                    .trim();
-
-
-            const email =
-                document
-                    .getElementById(
-                        "registerEmail"
-                    )
-                    .value
-                    .trim();
-
-
-            const password =
-                document
-                    .getElementById(
-                        "registerPassword"
-                    )
-                    .value;
-
-
-            const confirmPassword =
-                document
-                    .getElementById(
-                        "registerConfirmPassword"
-                    )
-                    .value;
-
-
-            const button =
-                document.getElementById(
-                    "registerBtn"
-                );
-
-
-            hideMessage();
-
-
-            if (
-                !fullName ||
-                !studentId ||
-                !email ||
-                !password ||
-                !confirmPassword
-            ) {
-
-                showMessage(
-                    "Please fill all registration details.",
-                    "error"
-                );
-
-                return;
-
-            }
-
-
-            if (
-                password.length < 6
-            ) {
-
-                showMessage(
-                    "Password must contain at least 6 characters.",
-                    "error"
-                );
-
-                return;
-
-            }
-
-
-            if (
-                password !==
-                confirmPassword
-            ) {
-
-                showMessage(
-                    "Passwords do not match.",
-                    "error"
-                );
-
-                return;
-
-            }
-
-
-            button.disabled =
-                true;
-
-
-            button.textContent =
-                "Creating Account...";
-
-
-            try {
-
-
-                /*
-                 * This endpoint will be added
-                 * to the Spring Boot backend.
-                 */
-
-                const response =
-                    await fetch(
-                        API_BASE_URL +
-                        "/api/student-register",
-                        {
-
-                            method:
-                                "POST",
-
-                            headers: {
-
-                                "Content-Type":
-                                    "application/json"
-
-                            },
-
-                            body:
-                                JSON.stringify({
-
-                                    fullName:
-                                        fullName,
-
-                                    studentId:
-                                        studentId,
-
-                                    email:
-                                        email,
-
-                                    password:
-                                        password
-
-                                })
-
-                        }
-                    );
-
-
-                let data = {};
-
-
-                try {
-
-                    data =
-                        await response.json();
-
-                }
-
-                catch {
-
-                    data = {};
-
-                }
-
-
-                if (!response.ok) {
-
-
-                    if (
-                        response.status ===
-                        409
-                    ) {
-
-                        throw new Error(
-                            "This Gmail or Student ID is already registered."
-                        );
-
-                    }
-
-
-                    throw new Error(
-                        data.message ||
-                        data.error ||
-                        "Registration failed. Please try again."
-                    );
-
-                }
-
-
-                showMessage(
-                    "Account created successfully! You can now login.",
-                    "success"
-                );
-
-
-                /*
-                 * Clear registration form
-                 */
-
-                document
-                    .getElementById(
-                        "studentRegisterForm"
-                    )
-                    .reset();
-
-
-                /*
-                 * Automatically switch
-                 * back to Login after a
-                 * short delay.
-                 */
-
-                setTimeout(
-                    function() {
-
-                        showStudentLogin();
-
-                    },
-                    1000
-                );
-
-
-            }
-
-
-            catch (error) {
-
-
-                console.error(
-                    "Registration error:",
-                    error
-                );
-
-
-                if (
-                    error instanceof
-                    TypeError
-                ) {
-
-                    showMessage(
-                        "Cannot connect to NextTurn server. Please try again.",
-                        "error"
-                    );
-
-                }
-
-
-                else {
-
-                    showMessage(
-                        error.message ||
-                        "Registration failed.",
-                        "error"
-                    );
-
-                }
-
-            }
-
-
-            finally {
-
-
-                button.disabled =
-                    false;
-
-
-                button.textContent =
-                    "Create Student Account";
-
-            }
-
-        }
-    );
-
-
-/* =========================
-   STAFF / PARTNER LOGIN
-========================= */
-
-document
-    .getElementById(
-        "otherLoginForm"
-    )
-    .addEventListener(
-        "submit",
-        async function(event) {
-
-
-            event.preventDefault();
-
-
-            const loginValue =
-                document
-                    .getElementById(
-                        "otherLoginValue"
-                    )
-                    .value
-                    .trim();
-
-
-            const password =
-                document
-                    .getElementById(
-                        "otherLoginPassword"
-                    )
-                    .value;
-
-
-            const button =
-                document.getElementById(
-                    "otherLoginBtn"
-                );
-
-
-            hideMessage();
-
-
-            if (
-                !loginValue ||
-                !password
-            ) {
-
-                showMessage(
-                    "Please enter your login details.",
-                    "error"
-                );
-
-                return;
-
-            }
-
-
-            let endpoint =
-                "";
-
-
-            let requestBody =
-                {};
-
-
-            if (
-                selectedRole ===
-                "staff"
-            ) {
-
-
-                endpoint =
-                    "/api/staff-login";
-
-
-                requestBody = {
-
-                    staffId:
-                        loginValue,
-
-                    password:
-                        password
-
-                };
-
-            }
-
-
-            else {
-
-
-                endpoint =
-                    "/api/partner-login";
-
-
-                requestBody = {
-
-                    partnerId:
-                        loginValue,
-
-                    password:
-                        password
-
-                };
-
-            }
-
-
-            button.disabled =
-                true;
-
-
-            button.textContent =
-                "Logging in...";
-
-
-            try {
-
-
-                const response =
-                    await fetch(
-                        API_BASE_URL +
-                        endpoint,
-                        {
-
-                            method:
-                                "POST",
-
-                            headers: {
-
-                                "Content-Type":
-                                    "application/json"
-
-                            },
-
-                            body:
-                                JSON.stringify(
-                                    requestBody
-                                )
-
-                        }
-                    );
-
-
-                let data = {};
-
-
-                try {
-
-                    data =
-                        await response.json();
-
-                }
-
-                catch {
-
-                    data = {};
-
-                }
-
-
-                if (!response.ok) {
-
-                    throw new Error(
-                        "Invalid login details."
-                    );
-
-                }
-
-
-                localStorage.setItem(
-                    "nextTurnRole",
-                    selectedRole
-                );
-
-
-                localStorage.setItem(
-                    "nextTurnUser",
-                    JSON.stringify(data)
-                );
-
-
-                if (
-                    selectedRole ===
-                    "partner" &&
-                    data.partnerId
-                ) {
-
-                    localStorage.setItem(
-                        "nextTurnPartnerId",
-                        data.partnerId
-                    );
-
-                }
-
-
-                showMessage(
-                    "Login successful! Redirecting...",
-                    "success"
-                );
-
-
-                setTimeout(
-                    function() {
-
-
-                        if (
-                            selectedRole ===
-                            "staff"
-                        ) {
-
-                            window.location.href =
-                                "staff.html";
-
-                        }
-
-
-                        else {
-
-                            window.location.href =
-                                "partner.html";
-
-                        }
-
-
-                    },
-                    700
-                );
-
-
-            }
-
-
-            catch (error) {
-
-
-                console.error(
-                    "Login error:",
-                    error
-                );
-
-
-                showMessage(
-                    error.message ||
-                    "Unable to login.",
-                    "error"
-                );
-
-            }
-
-
-            finally {
-
-
-                button.disabled =
-                    false;
-
-
-                if (
-                    selectedRole ===
-                    "staff"
-                ) {
-
-                    button.textContent =
-                        "Login as Staff";
-
-                }
-
-
-                else {
-
-                    button.textContent =
-                        "Login as Partner";
-
-                }
-
-            }
-
-        }
-    );
-
-
-/* =========================
-   MESSAGE
-========================= */
-
-function showMessage(
-    text,
-    type
-) {
-
-
-    const message =
-        document.getElementById(
-            "message"
+        showMessage("Login successful. Opening your dashboard...", "success");
+
+        setTimeout(() => {
+          window.location.href = isStaff ? "staff.html" : "partner.html";
+        }, 700);
+
+      } catch (error) {
+        showMessage(error.message || "Unable to log in.");
+      } finally {
+        setLoading(
+          button,
+          false,
+          isStaff ? "Login as Staff" : "Login as Partner"
         );
+      }
+    });
 
-
-    message.textContent =
-        text;
-
-
-    message.className =
-        "message " + type;
-
-}
-
-
-function hideMessage() {
-
-
-    const message =
-        document.getElementById(
-            "message"
-        );
-
-
-    message.textContent =
-        "";
-
-
-    message.className =
-        "message";
-
-}
-
-
-/* =========================
-   START
-========================= */
-
-showStudentLogin();
-
-
-</script>
-
-
+    showStudentLogin();
+  </script>
 </body>
-
-</html>
+    </html>
